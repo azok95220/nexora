@@ -38,6 +38,7 @@ function footer() {
       ${brand}
       <p>${site.tagline}. Un seul contact pour coordonner les bons professionnels de votre rénovation.</p>
       <a class="footer-phone" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
+      <a class="footer-phone footer-mail" href="mailto:${site.email}">${icon("mail")}${site.email}</a>
     </div>
     <div>
       <h2 class="footer-title">Nos métiers</h2>
@@ -143,6 +144,7 @@ export const businessLd = {
   name: site.name,
   url: site.url + "/",
   telephone: site.phone,
+  email: site.email,
   image: site.url + "/assets/img/og-image.jpg",
   description: site.description,
   areaServed: [
@@ -224,10 +226,11 @@ export function quoteForm(id = "devis-form") {
     <div class="form-actions">
       <button class="btn btn-primary btn-lg" type="submit" data-channel="whatsapp">${icon("whatsapp")}Envoyer sur WhatsApp</button>
       <button class="btn btn-outline btn-lg" type="submit" data-channel="sms">${icon("sms")}Envoyer par SMS</button>
+      <button class="btn btn-outline btn-lg" type="submit" data-channel="email">${icon("mail")}Envoyer par e-mail</button>
     </div>
     <div class="step-nav step-nav-start"><button class="btn btn-text" type="button" data-prev>Retour</button></div>
   </div>
 
-  <p class="form-note">Demande sans engagement. Vous pourrez relire votre message avant de l’envoyer. Vous pouvez aussi nous appeler au <a href="tel:${site.phone}">${site.phoneDisplay}</a>.</p>
+  <p class="form-note">Demande sans engagement. Vous pourrez relire votre message avant de l’envoyer. Vous pouvez aussi nous appeler au <a href="tel:${site.phone}">${site.phoneDisplay}</a> ou écrire à <a href="mailto:${site.email}">${site.email}</a>.</p>
 </form>`;
 }

@@ -171,6 +171,7 @@ ${methodSection()}
       <ul class="contact-points">
         <li>${icon("shield")}<span><strong>Demande sans engagement</strong>Vos informations servent uniquement à étudier votre projet.</span></li>
         <li>${icon("phone")}<span><strong>Plutôt par téléphone ?</strong><a href="tel:${site.phone}">${site.phoneDisplay}</a></span></li>
+        <li>${icon("mail")}<span><strong>Par e-mail</strong><a href="mailto:${site.email}">${site.email}</a></span></li>
       </ul>
     </div>
     <div class="form-card">${quoteForm("home-form")}</div>
@@ -381,6 +382,7 @@ function devisPage() {
       <ul class="contact-points">
         <li>${icon("shield")}<span><strong>Demande sans engagement</strong>Vos informations servent uniquement à étudier votre projet.</span></li>
         <li>${icon("phone")}<span><strong>Plutôt par téléphone ?</strong><a href="tel:${site.phone}">${site.phoneDisplay}</a></span></li>
+        <li>${icon("mail")}<span><strong>Par e-mail</strong><a href="mailto:${site.email}">${site.email}</a></span></li>
       </ul>
     </div>
     <div class="form-card form-card-raised">${quoteForm("devis-form")}</div>
@@ -412,7 +414,8 @@ function legalPage() {
     Statut juridique : ${todo("forme juridique, ex. micro-entreprise")}<br>
     SIRET : ${todo("numéro SIRET")}<br>
     Adresse : ${todo("adresse postale")}<br>
-    Téléphone : <a href="tel:${site.phone}">${site.phoneDisplay}</a></p>
+    Téléphone : <a href="tel:${site.phone}">${site.phoneDisplay}</a><br>
+    E-mail : <a href="mailto:${site.email}">${site.email}</a></p>
     <h2>Hébergement</h2>
     <p>Cloudflare, Inc. — 101 Townsend St, San Francisco, CA 94107, États-Unis — <a href="https://www.cloudflare.com" rel="noopener">cloudflare.com</a></p>
     <h2>Activité</h2>
@@ -438,7 +441,7 @@ function privacyPage() {
   <div class="container prose">
     <h1 class="h1">Politique de confidentialité</h1>
     <h2>Données collectées</h2>
-    <p>Le formulaire de demande ne stocke aucune donnée sur ce site. Lorsque vous cliquez sur « Continuer sur WhatsApp » ou « Envoyer par SMS », un message pré-rempli s’ouvre dans votre application : vous le relisez et choisissez de l’envoyer ou non. Seules les informations que vous nous envoyez ainsi (nom, code postal, type de travaux, description du projet, et votre numéro de téléphone) nous parviennent.</p>
+    <p>Le formulaire de demande ne stocke aucune donnée sur ce site. Lorsque vous cliquez sur « Envoyer sur WhatsApp », « Envoyer par SMS » ou « Envoyer par e-mail », un message pré-rempli s’ouvre dans votre application : vous le relisez et choisissez de l’envoyer ou non. Seules les informations que vous nous envoyez ainsi (nom, code postal, type de travaux, description du projet, ainsi que votre numéro de téléphone ou votre adresse e-mail) nous parviennent.</p>
     <h2>Finalité</h2>
     <p>Ces informations servent uniquement à étudier votre projet, à organiser la visite et à vous mettre en relation avec le professionnel adapté. Elles peuvent être transmises à ce professionnel dans ce seul but.</p>
     <h2>Durée de conservation</h2>
@@ -446,7 +449,7 @@ function privacyPage() {
     <h2>Cookies et mesure d’audience</h2>
     <p>Ce site n’utilise pas de cookie publicitaire ni d’outil de suivi.</p>
     <h2>Vos droits</h2>
-    <p>Vous pouvez demander l’accès, la rectification ou la suppression de vos données en nous contactant au <a href="tel:${site.phone}">${site.phoneDisplay}</a>. Vous pouvez également introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).</p>
+    <p>Vous pouvez demander l’accès, la rectification ou la suppression de vos données en nous écrivant à <a href="mailto:${site.email}">${site.email}</a> ou en nous appelant au <a href="tel:${site.phone}">${site.phoneDisplay}</a>. Vous pouvez également introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).</p>
     <p>Responsable du traitement : ${site.name}, ${todo("nom et adresse du responsable")}</p>
   </div>
 </section>`;

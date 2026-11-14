@@ -2,6 +2,7 @@
   "use strict";
   const PHONE = "+33605572482";
   const WHATSAPP = "https://wa.me/33605572482";
+  const EMAIL = "contact@nexoratravaux.fr";
   const doc = document.documentElement;
   doc.classList.add("js");
 
@@ -152,7 +153,13 @@
         ([k, v]) => v && lines.push(`${k} : ${v}`)
       );
       const text = encodeURIComponent(lines.join("\n"));
-      window.location.assign(channel === "sms" ? `sms:${PHONE}?&body=${text}` : `${WHATSAPP}?text=${text}`);
+      const subject = encodeURIComponent(`Demande de devis${metiers.length ? " – " + metiers.join(", ") : ""}`);
+      const urls = {
+        whatsapp: `${WHATSAPP}?text=${text}`,
+        sms: `sms:${PHONE}?&body=${text}`,
+        email: `mailto:${EMAIL}?subject=${subject}&body=${text}`,
+      };
+      window.location.assign(urls[channel] || urls.whatsapp);
     });
 
     f.addEventListener("input", (e) => {

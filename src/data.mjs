@@ -8,6 +8,7 @@ export const site = {
   phone: "+33605572482",
   phoneDisplay: "06 05 57 24 82",
   whatsapp: "https://wa.me/33605572482",
+  email: "contact@nexoratravaux.fr",
   description:
     "Nexora Travaux cadre votre projet de rénovation, organise la visite et vous met en relation avec les professionnels adaptés : électricité, plomberie, peinture, sols… en Île-de-France, dans l’Oise et dans l’Eure.",
 };
@@ -43,6 +44,7 @@ export const icons = {
   file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/>',
   sms: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/>',
   copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
   menu: '<path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>',
   close: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
 };

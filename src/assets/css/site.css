@@ -518,3 +518,8 @@ fieldset.form-step > legend { float: left; width: 100%; margin-bottom: 0; }
 fieldset.form-step > .step-hint { margin-top: 0; }
 fieldset.form-step > legend + * { clear: both; }
 @media (max-width: 520px) { .step-nav .btn-primary { flex: 1; } }
+.footer-mail { display: flex; font-size: 0.95rem; font-weight: 500; margin-top: 10px; overflow-wrap: anywhere; }
+.contact-points a { overflow-wrap: anywhere; }
+.form-note a { white-space: normal; overflow-wrap: anywhere; }
+/* L’e-mail est une option secondaire : bouton discret sur toute la largeur */
+.form-actions [data-channel="email"] { flex-basis: 100%; min-height: 46px; font-size: 0.92rem; border-style: dashed; }
