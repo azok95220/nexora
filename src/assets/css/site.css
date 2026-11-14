@@ -461,3 +461,60 @@ p { margin: 0; text-wrap: pretty; }
 }
 .project-count { white-space: nowrap; }
 @media (max-width: 420px) { .project-bar { gap: 10px; padding-left: 16px; font-size: 0.86rem; } .project-bar .btn { padding-inline: 14px; } }
+
+/* ---------- Formulaire en étapes ---------- */
+.form-step { display: grid; gap: 16px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.form-step[hidden] { display: none; }
+.form-step:focus { outline: none; }
+.quote-form:not(.is-stepped) .form-progress,
+.quote-form:not(.is-stepped) .step-nav { display: none; }
+.quote-form:not(.is-stepped) .form-step + .form-step { padding-top: 20px; border-top: 1px solid var(--line); }
+.step-title { font-family: var(--font-display); font-size: 1.35rem; font-weight: 650; letter-spacing: -0.02em; padding: 0; line-height: 1.2; }
+.step-hint { color: var(--muted); font-size: 0.92rem; margin-top: -8px; }
+.form-progress { display: flex; align-items: center; gap: 14px; font-size: 0.82rem; color: var(--muted); }
+.form-progress b { color: var(--ink); }
+.form-progress-label { white-space: nowrap; }
+.form-progress-bar { flex: 1; height: 6px; border-radius: 99px; background: var(--paper-2); overflow: hidden; }
+.form-progress-bar span { display: block; height: 100%; width: 33%; background: var(--blue); border-radius: inherit; transition: width .35s ease; }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.tile { position: relative; cursor: pointer; }
+.tile input { position: absolute; opacity: 0; inset: 0; pointer-events: none; }
+.tile > span {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; height: 100%;
+  padding: 12px; border: 1.5px solid var(--line); border-radius: 12px; font-size: 0.9rem; font-weight: 600; line-height: 1.25;
+  transition: border-color .15s, background-color .15s; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.tile:last-child { grid-column: 1 / -1; }
+.tile:last-child > span { flex-direction: row; align-items: center; }
+.tile-icon { width: 22px; height: 22px; color: var(--blue); }
+.tile-check {
+  position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; padding: 3px; border-radius: 50%;
+  background: var(--blue); color: #fff; stroke-width: 3; opacity: 0; transform: scale(.6); transition: opacity .15s, transform .15s;
+}
+.tile:hover > span { border-color: #b8c4e8; }
+.tile input:checked + span { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-600); }
+.tile input:checked + span .tile-check { opacity: 1; transform: none; }
+.tile input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: 2px; }
+@media (max-width: 520px) { .tiles { grid-template-columns: 1fr 1fr; } }
+.step-nav { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+.step-nav-start { justify-content: flex-start; margin-top: -6px; }
+.btn-text { background: none; border: 0; color: var(--muted); padding-inline: 8px; }
+.btn-text:hover { color: var(--ink); }
+.form-step .form-actions { margin-top: 4px; }
+/* Textes du formulaire posé sur fond sombre */
+.form-card .step-title { color: var(--ink); }
+.form-card .step-hint, .form-card .form-note { color: var(--muted); }
+.form-card .form-error { color: var(--danger); }
+@media (max-width: 520px) {
+  .tile > span { flex-direction: row; align-items: center; gap: 10px; padding: 12px 34px 12px 12px; min-height: 52px; }
+  .tile-check { top: 50%; margin-top: -10px; }
+}
+/* La barre d’appel mobile s’efface quand le formulaire est à l’écran */
+.mobile-bar { transition: transform .25s ease; }
+.form-in-view .mobile-bar { transform: translateY(110%); }
+/* Mobile : le formulaire arrive juste après le titre (téléphone déjà dans la barre du bas) */
+@media (max-width: 960px) { .section-contact .contact-points { display: none; } .section-contact .contact-grid { gap: 28px; } }
+fieldset.form-step > legend { float: left; width: 100%; margin-bottom: 0; }
+fieldset.form-step > .step-hint { margin-top: 0; }
+fieldset.form-step > legend + * { clear: both; }
+@media (max-width: 520px) { .step-nav .btn-primary { flex: 1; } }

@@ -86,7 +86,7 @@ function home() {
       <h1 class="display">Les bons professionnels. <span class="accent">Un seul contact.</span></h1>
       <p class="lead">Nous cadrons votre besoin, organisons la visite et vous mettons en relation avec les professionnels adaptés à votre chantier.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary btn-lg" href="#projet">Parler de mon projet ${icon("arrow")}</a>
+        <a class="btn btn-primary btn-lg" href="#home-form">Parler de mon projet ${icon("arrow")}</a>
         <a class="btn btn-outline btn-lg" href="#metiers">Découvrir nos métiers</a>
       </div>
       <ul class="trust">

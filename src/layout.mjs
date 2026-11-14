@@ -174,39 +174,60 @@ export function faqHtml(pairs) {
     .join("")}</div>`;
 }
 
-/** Formulaire de demande (accueil + page devis). */
+/** Formulaire de demande en 3 étapes (accueil + page devis).
+ *  Sans JavaScript, les 3 étapes s’affichent simplement les unes sous les autres. */
 export function quoteForm(id = "devis-form") {
+  const tile = (value, slug, ic) =>
+    `<label class="tile"><input type="checkbox" name="metiers" value="${value}" data-metier="${slug}"><span>${icon(ic, "icon tile-icon")}${value}${icon("check", "icon tile-check")}</span></label>`;
   return `<form class="quote-form" id="${id}" novalidate data-quote-form>
-  <div class="field-row">
-    <div class="field">
-      <label for="${id}-name">Votre nom</label>
-      <input id="${id}-name" name="name" autocomplete="name" placeholder="Prénom et nom" required>
-    </div>
-    <div class="field">
-      <label for="${id}-cp">Code postal</label>
-      <input id="${id}-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" placeholder="Ex. 95220" pattern="[0-9]{5}" maxlength="5" required>
-    </div>
+  <div class="form-progress" aria-hidden="true">
+    <span class="form-progress-label">Étape <b data-step-num>1</b> sur 3</span>
+    <span class="form-progress-bar"><span data-step-bar></span></span>
   </div>
-  <fieldset class="field">
-    <legend>Type de travaux <span class="optional">plusieurs choix possibles</span></legend>
-    <div class="chips">
-      ${metiers
-        .map(
-          (m) =>
-            `<label class="chip"><input type="checkbox" name="metiers" value="${m.name}" data-metier="${m.slug}"><span>${icon("check", "icon chip-check")}${m.name}</span></label>`
-        )
-        .join("")}
+
+  <fieldset class="form-step" data-step="1">
+    <legend class="step-title">Quels travaux envisagez-vous ?</legend>
+    <p class="step-hint">Touchez un ou plusieurs métiers.</p>
+    <div class="tiles">
+      ${metiers.map((m) => tile(m.name, m.slug, m.slug)).join("")}
+      ${tile("Autre / je ne sais pas encore", "autre", "chat")}
     </div>
+    <p class="form-error" role="alert" hidden></p>
+    <div class="step-nav"><button class="btn btn-primary btn-lg" type="button" data-next>Suivant ${icon("arrow")}</button></div>
   </fieldset>
-  <div class="field">
-    <label for="${id}-project">Décrivez votre projet</label>
-    <textarea id="${id}-project" name="project" rows="4" placeholder="Pièces concernées, travaux souhaités, délais envisagés…" required></textarea>
+
+  <div class="form-step" data-step="2">
+    <label class="step-title" for="${id}-project">Décrivez votre projet <span class="optional">facultatif</span></label>
+    <p class="step-hint">Pièces concernées, surfaces, délais… Vous pourrez ajouter des photos directement dans WhatsApp.</p>
+    <div class="field">
+      <textarea id="${id}-project" name="project" rows="5" placeholder="Ex. : rénovation de la salle de bain, environ 6 m², pour le printemps."></textarea>
+    </div>
+    <div class="step-nav">
+      <button class="btn btn-text" type="button" data-prev>Retour</button>
+      <button class="btn btn-primary btn-lg" type="button" data-next>Suivant ${icon("arrow")}</button>
+    </div>
   </div>
-  <p class="form-error" role="alert" hidden></p>
-  <div class="form-actions">
-    <button class="btn btn-primary btn-lg" type="submit" data-channel="whatsapp">${icon("whatsapp")}Continuer sur WhatsApp</button>
-    <button class="btn btn-outline btn-lg" type="submit" data-channel="sms">${icon("sms")}Envoyer par SMS</button>
+
+  <div class="form-step" data-step="3">
+    <p class="step-title">Pour vous recontacter</p>
+    <div class="field-row">
+      <div class="field">
+        <label for="${id}-name">Votre nom</label>
+        <input id="${id}-name" name="name" autocomplete="name" placeholder="Prénom et nom" required>
+      </div>
+      <div class="field">
+        <label for="${id}-cp">Code postal</label>
+        <input id="${id}-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" placeholder="Ex. 95220" pattern="[0-9]{5}" maxlength="5" required>
+      </div>
+    </div>
+    <p class="form-error" role="alert" hidden></p>
+    <div class="form-actions">
+      <button class="btn btn-primary btn-lg" type="submit" data-channel="whatsapp">${icon("whatsapp")}Envoyer sur WhatsApp</button>
+      <button class="btn btn-outline btn-lg" type="submit" data-channel="sms">${icon("sms")}Envoyer par SMS</button>
+    </div>
+    <div class="step-nav step-nav-start"><button class="btn btn-text" type="button" data-prev>Retour</button></div>
   </div>
-  <p class="form-note">Vous pourrez relire votre message avant de l’envoyer. Vous pouvez aussi nous appeler au <a href="tel:${site.phone}">${site.phoneDisplay}</a>.</p>
+
+  <p class="form-note">Demande sans engagement. Vous pourrez relire votre message avant de l’envoyer. Vous pouvez aussi nous appeler au <a href="tel:${site.phone}">${site.phoneDisplay}</a>.</p>
 </form>`;
 }

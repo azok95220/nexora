@@ -38,7 +38,7 @@
       bar = document.createElement("div");
       bar.className = "project-bar";
       bar.setAttribute("role", "status");
-      bar.innerHTML = '<span class="project-count"></span><a class="btn btn-primary" href="#projet">Décrire mon projet</a>';
+      bar.innerHTML = '<span class="project-count"></span><a class="btn btn-primary" href="#home-form">Décrire mon projet</a>';
       document.body.appendChild(bar);
     }
     const n = checked.length;
@@ -64,9 +64,64 @@
   if (pre && chip(pre)) chip(pre).checked = true;
   refreshSelection();
 
-  /* ---------- Envoi : WhatsApp ou SMS ---------- */
+  /* ---------- Formulaire en 3 étapes + envoi WhatsApp / SMS ---------- */
+  const isValidCp = (cp) => /^\d{5}$/.test(cp);
+
   document.querySelectorAll("[data-quote-form]").forEach((f) => {
-    const error = f.querySelector(".form-error");
+    const steps = [...f.querySelectorAll("[data-step]")];
+    const num = f.querySelector("[data-step-num]");
+    const barFill = f.querySelector("[data-step-bar]");
+    let current = 0;
+    f.classList.add("is-stepped");
+
+    const showError = (step, msg) => {
+      const err = step.querySelector(".form-error");
+      if (!err) return;
+      err.textContent = msg || "";
+      err.hidden = !msg;
+    };
+
+    function go(index, { focus = true } = {}) {
+      current = Math.max(0, Math.min(steps.length - 1, index));
+      steps.forEach((st, k) => (st.hidden = k !== current));
+      if (num) num.textContent = String(current + 1);
+      if (barFill) barFill.style.width = `${((current + 1) / steps.length) * 100}%`;
+      if (!focus) return;
+      // Garde le haut du formulaire visible, sans faire remonter toute la page
+      const top = f.getBoundingClientRect().top;
+      if (top < 80 || top > window.innerHeight * 0.6) {
+        f.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      const target = steps[current];
+      target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+    }
+    f.goStep = go;
+
+    function validate(index) {
+      const st = steps[index];
+      if (st.dataset.step === "1" && !f.querySelector('input[name="metiers"]:checked')) {
+        showError(st, "Choisissez au moins un type de travaux (ou « Autre »).");
+        return false;
+      }
+      showError(st, "");
+      return true;
+    }
+
+    f.querySelectorAll("[data-next]").forEach((b) =>
+      b.addEventListener("click", () => validate(current) && go(current + 1))
+    );
+    f.querySelectorAll("[data-prev]").forEach((b) => b.addEventListener("click", () => go(current - 1)));
+    f.addEventListener("change", (e) => {
+      if (e.target.name === "metiers") showError(steps[0], "");
+    });
+    // « Entrée » dans un champ texte d’une étape intermédiaire = étape suivante
+    f.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "checkbox" && current < steps.length - 1) {
+        e.preventDefault();
+        if (validate(current)) go(current + 1);
+      }
+    });
 
     f.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -77,35 +132,57 @@
       const project = String(data.get("project") || "").trim();
       const metiers = data.getAll("metiers");
 
-      const problems = [];
+      if (!validate(0)) return go(0);
+      const last = steps[steps.length - 1];
       const mark = (field, bad) => field && field.setAttribute("aria-invalid", String(bad));
       mark(f.elements.name, !name);
-      mark(f.elements.postalCode, !/^\d{5}$/.test(cp));
-      mark(f.elements.project, !project);
+      mark(f.elements.postalCode, !isValidCp(cp));
+      const problems = [];
       if (!name) problems.push("votre nom");
-      if (!/^\d{5}$/.test(cp)) problems.push("un code postal à 5 chiffres");
-      if (!project) problems.push("une description de votre projet");
+      if (!isValidCp(cp)) problems.push("un code postal à 5 chiffres");
       if (problems.length) {
-        error.textContent = "Merci d’indiquer " + problems.join(", ") + ".";
-        error.hidden = false;
+        showError(last, "Merci d’indiquer " + problems.join(" et ") + ".");
         f.querySelector('[aria-invalid="true"]')?.focus();
         return;
       }
-      error.hidden = true;
+      showError(last, "");
 
       const lines = ["Bonjour Nexora Travaux, je souhaite vous parler de mon projet."];
       [["Nom", name], ["Code postal", cp], ["Travaux", metiers.join(", ")], ["Mon projet", project]].forEach(
         ([k, v]) => v && lines.push(`${k} : ${v}`)
       );
       const text = encodeURIComponent(lines.join("\n"));
-      window.location.assign(
-        channel === "sms" ? `sms:${PHONE}?&body=${text}` : `${WHATSAPP}?text=${text}`
-      );
+      window.location.assign(channel === "sms" ? `sms:${PHONE}?&body=${text}` : `${WHATSAPP}?text=${text}`);
     });
 
     f.addEventListener("input", (e) => {
       if (e.target.getAttribute("aria-invalid") === "true") e.target.setAttribute("aria-invalid", "false");
     });
+
+    go(0, { focus: false });
   });
 
+  // Masque la barre d’appel mobile tant qu’un formulaire est visible
+  if ("IntersectionObserver" in window) {
+    const seen = new Set();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => (en.isIntersecting ? seen.add(en.target) : seen.delete(en.target)));
+      document.body.classList.toggle("form-in-view", seen.size > 0);
+    }, { threshold: 0.15 });
+    document.querySelectorAll("[data-quote-form]").forEach((f) => io.observe(f));
+  }
+
+  // Accueil : les métiers ajoutés depuis les cartes mènent directement à l’étape 2,
+  // et le bouton « Demander un devis » de la barre mobile reste sur la page.
+  const homeForm = document.querySelector("#projet [data-quote-form]");
+  if (homeForm) {
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest('.project-bar a, .mobile-bar a[href="/devis/"], a[href="#home-form"]');
+      if (!link) return;
+      e.preventDefault();
+      const hasMetier = !!homeForm.querySelector('input[name="metiers"]:checked');
+      homeForm.scrollIntoView({ behavior: "smooth", block: "start" });
+      homeForm.goStep(hasMetier ? 1 : 0, { focus: false });
+    });
+  }
 })();
