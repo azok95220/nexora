@@ -465,11 +465,11 @@ const fmt = (n) => n.toLocaleString("fr-FR");
 const referralFaq = [
   [
     "Combien puis-je gagner ?",
-    `${P.rate} % du montant HT des travaux signés par la personne que vous avez recommandée (${P.bonusRate} % à partir de votre 3e chantier signé dans l’année), avec un minimum de ${P.min} € et un maximum de ${fmt(P.max)} € par chantier. Exemple : une rénovation de salle de bain à 12 000 € HT vous rapporte ${fmt(Math.round(12000 * P.rate / 100))} €.`,
+    `${P.rate} % du montant HT des travaux signés par la personne que vous avez recommandée (${P.bonusRate} % à partir de votre 3e chantier signé dans l’année), pour tout projet d’au moins ${fmt(P.seuil)} € HT, dans la limite de ${fmt(P.max)} € par projet. Exemple : une rénovation de salle de bain à 12 000 € HT vous rapporte ${fmt(Math.round(12000 * P.rate / 100))} €.`,
   ],
   [
     "Quand suis-je payé ?",
-    `Par virement, dans les ${P.delai} qui suivent le paiement du chantier par le client. Vous êtes tenu informé de l’avancement sur WhatsApp.`,
+    `Par virement, dans les ${P.delai} qui suivent le paiement complet du chantier par le client, une fois le contrat d’apporteur signé et votre identité vérifiée. Vous êtes tenu informé de l’avancement sur WhatsApp.`,
   ],
   [
     "La personne que je recommande paie-t-elle plus cher ?",
@@ -477,11 +477,15 @@ const referralFaq = [
   ],
   [
     "Comment Nexora sait-il que le client vient de moi ?",
-    "Partagez votre lien personnel : votre code est automatiquement ajouté au message de votre proche. Il peut aussi simplement donner votre nom ou votre code lors de sa demande.",
+    `Partagez votre lien personnel : votre code est automatiquement ajouté au message de votre proche et reste mémorisé ${P.dureeLien} jours. Si plusieurs personnes recommandent le même client, c’est la première enregistrée qui est retenue. Votre proche peut aussi simplement donner votre nom lors de sa demande : nous le lui confirmons toujours.`,
+  ],
+  [
+    "Mon proche est-il informé que je suis récompensé ?",
+    "Oui. Par transparence, nous indiquons toujours au client qu’il a été recommandé et que la personne qui l’a recommandé peut être récompensée. Cela ne change rien à son devis.",
   ],
   [
     "Dois-je avoir un statut d’entreprise ?",
-    "Pas pour recommander occasionnellement. Les sommes perçues sont toutefois des revenus à déclarer aux impôts. Si vous recommandez régulièrement, un statut de micro-entrepreneur est conseillé. Un contrat d’apporteur d’affaires simple est signé avant votre premier versement.",
+    `Pas pour recommander occasionnellement. Les sommes perçues sont toutefois des revenus à déclarer aux impôts. Au-delà de ${P.maxParticulier} chantiers récompensés par an, il s’agit d’une activité régulière : un numéro SIRET (par exemple micro-entrepreneur) vous sera demandé. Un contrat d’apporteur d’affaires simple est signé avant votre premier versement.`,
   ],
 ];
 
@@ -490,7 +494,7 @@ function referralPage() {
     ["Accueil", "/"],
     ["Parrainage", "/parrainage/"],
   ]);
-  const ex = [5000, 12000, 25000, 50000].map((v) => [v, Math.min(P.max, Math.max(P.min, Math.round((v * P.rate) / 100)))]);
+  const ex = [5000, 12000, 25000, 50000].map((v) => [v, Math.min(P.max, Math.round((v * P.rate) / 100))]);
   const body = `
 <section class="page-hero referral-hero">
   <div class="container">
@@ -510,7 +514,7 @@ function referralPage() {
         <ul>
           ${ex.map(([v, g]) => `<li><span>Chantier de ${fmt(v)}&nbsp;€</span><strong>${fmt(g)}&nbsp;€</strong></li>`).join("")}
         </ul>
-        <p>Calculés à ${P.rate}&nbsp;% du montant HT, plafonnés à ${fmt(P.max)}&nbsp;€.</p>
+        <p>Calculés à ${P.rate}&nbsp;% du montant HT, pour des projets à partir de ${fmt(P.seuil)}&nbsp;€, plafonnés à ${fmt(P.max)}&nbsp;€.</p>
       </aside>
     </div>
   </div>
@@ -542,7 +546,7 @@ function referralPage() {
         <li>${icon("check")}<span><strong>Les artisans</strong> reçoivent des chantiers sérieux et bien préparés.</span></li>
       </ul>
     </div>
-    <div class="sim-card reveal" data-sim data-rate="${P.rate}" data-bonus="${P.bonusRate}" data-min="${P.min}" data-max="${P.max}">
+    <div class="sim-card reveal" data-sim data-rate="${P.rate}" data-bonus="${P.bonusRate}" data-min="0" data-seuil="${P.seuil}" data-max="${P.max}">
       <label class="sim-label" for="sim-range">Montant des travaux</label>
       <output class="sim-amount" for="sim-range" data-sim-amount>12&nbsp;000&nbsp;€</output>
       <input id="sim-range" type="range" min="2000" max="80000" step="1000" value="12000" data-sim-range>
@@ -552,7 +556,7 @@ function referralPage() {
         <span>Vous gagnez</span>
         <strong data-sim-gain>${fmt(Math.round(12000 * P.rate / 100))}&nbsp;€</strong>
       </div>
-      <p class="sim-note">Estimation indicative, calculée sur le montant HT signé. Minimum ${P.min}&nbsp;€, maximum ${fmt(P.max)}&nbsp;€ par chantier.</p>
+      <p class="sim-note">Estimation indicative, calculée sur le montant HT signé. Projets à partir de ${fmt(P.seuil)}&nbsp;€&nbsp;HT, maximum ${fmt(P.max)}&nbsp;€ par projet.</p>
     </div>
   </div>
 </section>
@@ -565,7 +569,7 @@ function referralPage() {
       <p>Gratuit et sans engagement. Votre code est ajouté automatiquement aux demandes de vos proches.</p>
       <h3 class="h4 who-title">Idéal pour</h3>
       <ul class="who-list">
-        <li>Famille, amis, voisins</li><li>Agents immobiliers</li><li>Gardiens et syndics</li><li>Architectes et décorateurs</li><li>Artisans (autres métiers)</li><li>Commerçants du quartier</li>
+        <li>Famille, amis, voisins</li><li>Collègues</li><li>Commerçants du quartier</li><li>Artisans (autres métiers)</li><li>Déménageurs</li><li>Clients satisfaits</li>
       </ul>
     </div>
     <div class="form-card ref-card" data-ref-gen>
@@ -594,14 +598,16 @@ function referralPage() {
       <details class="conditions">
         <summary>Conditions du programme</summary>
         <ul>
-          <li>La personne recommandée est un nouveau client, qui n’était pas déjà en contact avec Nexora.</li>
-          <li>La récompense est due une fois le chantier signé <strong>et</strong> réglé par le client.</li>
-          <li>Montant&#8239;: ${P.rate}&nbsp;% du montant HT des travaux (${P.bonusRate}&nbsp;% à partir du 3<sup>e</sup> chantier signé dans l’année civile), minimum ${P.min}&nbsp;€, maximum ${fmt(P.max)}&nbsp;€ par chantier.</li>
-          <li>Un chantier ne donne lieu qu’à une seule récompense&#8239;: celle de la première personne mentionnée.</li>
-          <li>Il n’est pas possible de se recommander soi-même.</li>
-          <li>Versement par virement sous ${P.delai} après paiement, après signature d’un contrat d’apporteur d’affaires.</li>
-          <li>Les sommes perçues sont à déclarer par l’apporteur auprès de l’administration fiscale.</li>
-          <li>Nexora peut faire évoluer le programme&#8239;; les recommandations déjà enregistrées restent aux conditions en vigueur au moment de leur enregistrement.</li>
+          <li><strong>Qui peut participer&#8239;:</strong> toute personne majeure, après activation de son code auprès de Nexora. Les professionnels à qui la loi ou leur déontologie interdit de percevoir des commissions sur les travaux de leurs clients (syndics de copropriété, architectes, maîtres d’œuvre, etc.) ne peuvent pas participer.</li>
+          <li><strong>Client éligible&#8239;:</strong> un nouveau client, qui n’était pas déjà en contact avec Nexora, et qui contacte lui-même Nexora. Ne transmettez jamais les coordonnées d’un proche sans son accord.</li>
+          <li><strong>Pas d’auto-parrainage&#8239;:</strong> vous ne pouvez pas être récompensé pour vos propres travaux, ni pour ceux d’une personne de votre foyer.</li>
+          <li><strong>Un seul apporteur par client</strong>&#8239;: la première recommandation enregistrée est retenue, pendant ${P.dureeLien} jours. Le client confirme toujours qui l’a recommandé.</li>
+          <li><strong>Montant&#8239;:</strong> ${P.rate}&nbsp;% du montant HT effectivement réglé (${P.bonusRate}&nbsp;% à partir du 3<sup>e</sup> projet récompensé dans l’année civile), pour un projet d’au moins ${fmt(P.seuil)}&nbsp;€&nbsp;HT, plafonné à ${fmt(P.max)}&nbsp;€. Un projet découpé en plusieurs lots ou devis compte comme un seul projet.</li>
+          <li><strong>Versement&#8239;:</strong> par virement sous ${P.delai} après le paiement complet du chantier, sur un compte à votre nom, après signature d’un contrat d’apporteur d’affaires. En cas d’annulation, de remboursement ou d’impayé, la récompense n’est pas due ou est ajustée.</li>
+          <li><strong>Comportements interdits&#8239;:</strong> envois massifs non sollicités, publicités payantes au nom de Nexora, faux avis, promesses de remises ou d’engagements au nom de Nexora. Toute fraude entraîne l’exclusion et la perte des récompenses.</li>
+          <li><strong>Un seul niveau&#8239;:</strong> aucune récompense n’est versée sur les recommandations faites par les personnes que vous avez vous-même recommandées.</li>
+          <li><strong>Fiscalité&#8239;:</strong> les sommes perçues sont à déclarer par l’apporteur. Au-delà de ${P.maxParticulier} projets récompensés par an, un numéro SIRET est demandé.</li>
+          <li>Nexora peut faire évoluer ou arrêter le programme&#8239;; les recommandations déjà enregistrées restent aux conditions en vigueur au moment de leur enregistrement.</li>
         </ul>
       </details>
     </div>
@@ -667,7 +673,7 @@ function privacyPage() {
     <h2>Durée de conservation</h2>
     <p>Les échanges sont conservés le temps nécessaire au suivi de votre projet, puis supprimés au plus tard trois ans après le dernier contact.</p>
     <h2>Cookies et mesure d’audience</h2>
-    <p>Ce site n’utilise pas de cookie publicitaire ni d’outil de suivi.</p>
+    <p>Ce site n’utilise pas de cookie publicitaire ni d’outil de suivi. Seule exception, strictement liée au programme de parrainage&#8239;: lorsque vous arrivez par le lien d’une personne qui vous recommande, son code (par exemple «&#8239;SOPHIE-AB12&#8239;») est conservé dans votre navigateur pendant ${P.dureeLien} jours, afin de l’ajouter à votre demande. Il n’est transmis à personne tant que vous n’envoyez pas votre message, et vous pouvez le modifier ou l’effacer dans le formulaire.</p>
     <h2>Vos droits</h2>
     <p>Vous pouvez demander l’accès, la rectification ou la suppression de vos données en nous écrivant à <a href="mailto:${site.email}">${site.email}</a> ou en nous appelant au <a href="tel:${site.phone}">${site.phoneDisplay}</a>. Vous pouvez également introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).</p>
     <p>Responsable du traitement : ${site.name}, ${todo("nom et adresse du responsable")}</p>

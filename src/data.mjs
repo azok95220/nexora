@@ -329,7 +329,9 @@ export const zones = {
 export const parrainage = {
   rate: 3, // %
   bonusRate: 4, // % à partir du 3e chantier signé dans l’année
-  min: 50, // € minimum versé par chantier
+  seuil: 2000, // € HT minimum de travaux pour qu’un chantier ouvre droit à récompense
   max: 1500, // € maximum versé par chantier
-  delai: "30 jours", // délai de versement après paiement du chantier
+  delai: "30 jours", // délai de versement après paiement complet du chantier
+  dureeLien: 90, // jours pendant lesquels le lien reste attribué au premier apporteur
+  maxParticulier: 3, // chantiers/an au-delà desquels un SIRET est demandé à l’apporteur
 };

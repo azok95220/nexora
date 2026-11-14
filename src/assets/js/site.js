@@ -72,9 +72,14 @@
   const cleanCode = (v) => String(v || "").trim().slice(0, 40).replace(/[^\p{L}\p{N} _.-]/gu, "");
   let refCode = "";
   try {
+    // Règle « premier apporteur » : un nouveau lien ne remplace pas un code encore valide.
     const fromUrl = cleanCode(new URLSearchParams(location.search).get("ref"));
-    if (fromUrl) localStorage.setItem(REF_KEY, JSON.stringify({ code: fromUrl, t: Date.now() }));
-    const saved = JSON.parse(localStorage.getItem(REF_KEY) || "null");
+    let saved = JSON.parse(localStorage.getItem(REF_KEY) || "null");
+    const valid = saved && saved.code && Date.now() - saved.t < 90 * 864e5;
+    if (fromUrl && !valid) {
+      saved = { code: fromUrl, t: Date.now() };
+      localStorage.setItem(REF_KEY, JSON.stringify(saved));
+    }
     if (saved && Date.now() - saved.t < 90 * 864e5) refCode = saved.code;
   } catch (e) {
     refCode = cleanCode(new URLSearchParams(location.search).get("ref"));
@@ -193,11 +198,11 @@
     const bonus = sim.querySelector("[data-sim-bonus]");
     const amount = sim.querySelector("[data-sim-amount]");
     const gain = sim.querySelector("[data-sim-gain]");
-    const { rate, bonus: bRate, min, max } = sim.dataset;
+    const { rate, bonus: bRate, max, seuil } = sim.dataset;
     const update = () => {
       const v = Number(range.value);
       const r = bonus.checked ? Number(bRate) : Number(rate);
-      const g = Math.min(Number(max), Math.max(Number(min), Math.round((v * r) / 100)));
+      const g = v < Number(seuil) ? 0 : Math.min(Number(max), Math.round((v * r) / 100));
       amount.textContent = euro(v);
       gain.textContent = euro(g);
       range.style.setProperty("--p", `${((v - range.min) / (range.max - range.min)) * 100}%`);
