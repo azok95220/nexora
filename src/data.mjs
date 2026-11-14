@@ -47,6 +47,9 @@ export const icons = {
   mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
   menu: '<path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>',
   close: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  spark: '<path d="M12 3v4"/><path d="M12 17v4"/><path d="M3 12h4"/><path d="M17 12h4"/><path d="m6.3 6.3 2.1 2.1"/><path d="m15.6 15.6 2.1 2.1"/><path d="m6.3 17.7 2.1-2.1"/><path d="m15.6 8.4 2.1-2.1"/>',
+  missed: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/><path d="m16 2 6 6"/><path d="m22 2-6 6"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 };
 
 export const metiers = [
@@ -323,3 +326,13 @@ export const zones = {
     ],
   },
 };
+
+// Projets types du configurateur (accueil) : un clic sélectionne les métiers concernés.
+export const scenarios = [
+  { id: "sdb", name: "Salle de bain", metiers: ["plomberie", "carrelage", "electricite", "platrerie", "peinture"] },
+  { id: "cuisine", name: "Cuisine", metiers: ["plomberie", "electricite", "menuiserie", "carrelage", "peinture"] },
+  { id: "complete", name: "Rénovation complète", metiers: ["electricite", "plomberie", "menuiserie", "peinture", "sols", "platrerie", "carrelage", "parquet"] },
+  { id: "rafraichir", name: "Rafraîchir un logement", metiers: ["peinture", "sols", "parquet"] },
+  { id: "piece", name: "Créer une pièce", metiers: ["platrerie", "electricite", "menuiserie", "peinture"] },
+  { id: "sols", name: "Sols & parquet", metiers: ["sols", "parquet", "carrelage"] },
+];

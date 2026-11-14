@@ -1,6 +1,16 @@
 # Nexora Travaux — nexoratravaux.fr
 
-Site vitrine statique (HTML/CSS/JS, sans framework), rapide et optimisé pour le référencement local.
+Site vitrine statique et immersif (HTML/CSS/JS, sans framework ni librairie externe), rapide et optimisé pour le référencement local.
+
+## Expérience immersive (accueil)
+
+- Hero plein écran : photo en parallaxe, titre animé mot par mot, quadrillage « plan d’architecte » qui suit la souris, sceau rotatif « Devis gratuit »
+- Scène « Sans Nexora / Avec Nexora » épinglée au défilement : les artisans éparpillés convergent vers Mickaël, contact unique
+- Mot du fondateur avec conversation WhatsApp animée (exemple d’échange) et compteurs
+- Configurateur de projet : projets types (salle de bain, cuisine…) qui sélectionnent les métiers, récapitulatif en direct relié au formulaire
+- Méthode en défilement horizontal (grand écran), test de zone par code postal sur le radar
+- Barre de contact mobile, bouton WhatsApp flottant, transitions entre pages (View Transitions)
+- Tout reste lisible sans JavaScript ; les animations sont coupées si « réduire les animations » est activé
 
 ## Structure
 

@@ -8,8 +8,32 @@ export const icon = (name, cls = "icon") =>
 export const esc = (s) =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+/** Découpe un titre en mots animables (le texte reste lisible sans JS et par les lecteurs d’écran). */
+//  Syntaxe : « | » = retour à la ligne, *mots* = mots mis en couleur.
+export const split = (text) => {
+  let accent = false;
+  let i = 0;
+  return text
+    .split("|")
+    .map((line) =>
+      line
+        .trim()
+        .split(/\s+/)
+        .map((w) => {
+          if (w.startsWith("*")) { accent = true; w = w.slice(1); }
+          const end = w.endsWith("*");
+          if (end) w = w.slice(0, -1);
+          const out = `<span class="w"><span class="${accent ? "accent" : ""}" style="--i:${i++}">${w}</span></span>`;
+          if (end) accent = false;
+          return out;
+        })
+        .join(" ")
+    )
+    .join("<br>");
+};
+
 const brand = `<a class="brand" href="/" aria-label="${site.name}, accueil">
-  <span class="brand-mark" aria-hidden="true">N</span>
+  <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 24V8h3l8 10.6V8h3v16h-2.9L12 13.3V24z"/></svg></span>
   <span class="brand-text">NEXORA<span>TRAVAUX</span></span>
 </a>`;
 
@@ -17,82 +41,92 @@ function header(current) {
   const link = (href, label, key) =>
     `<a href="${href}"${current === key ? ' aria-current="page"' : ""}>${label}</a>`;
   return `<header class="site-header">
-  <div class="container header-inner">
+  <div class="header-inner">
     ${brand}
     <nav class="nav" id="nav" aria-label="Navigation principale">
-      ${link("/#metiers", "Nos métiers", "metiers")}
-      ${link("/#methode", "Comment ça marche", "methode")}
-      ${link("/zone-intervention/", "Zone d’intervention", "zone")}
+      ${link("/#metiers", "Métiers", "metiers")}
+      ${link("/#methode", "Méthode", "methode")}
+      ${link("/#mickael", "Qui suis-je", "mickael")}
+      ${link("/zone-intervention/", "Zone", "zone")}
       <a class="nav-phone" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
-      <a class="btn btn-dark btn-sm" href="/devis/">Devis gratuit</a>
+      <a class="btn btn-light btn-sm magnetic" href="/devis/" data-to-form>Devis gratuit ${icon("arrow")}</a>
     </nav>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Ouvrir le menu">
-      ${icon("menu", "icon icon-open")}${icon("close", "icon icon-close")}
+      <span></span><span></span>
     </button>
   </div>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
 </header>`;
 }
 
 function footer() {
   return `<footer class="site-footer">
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      ${brand}
-      <p>${site.tagline}. Un seul contact pour coordonner les bons professionnels de votre rénovation.</p>
-      <a class="footer-phone" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
-      <a class="footer-phone footer-mail" href="mailto:${site.email}">${icon("mail")}${site.email}</a>
+  <div class="container">
+    <div class="footer-cta reveal">
+      <p class="eyebrow eyebrow-light">Prêt à commencer ?</p>
+      <a class="footer-big" href="/devis/" data-to-form>Parlons de votre projet ${icon("arrow")}</a>
     </div>
-    <div>
-      <h2 class="footer-title">Nos métiers</h2>
-      <ul>${metiers.map((m) => `<li><a href="/metiers/${m.slug}/">${m.name}</a></li>`).join("")}</ul>
-    </div>
-    <div>
-      <h2 class="footer-title">Zone d’intervention</h2>
-      <ul>
-        <li><a href="/zone-intervention/">Paris (75)</a></li>
-        <li><a href="/zone-intervention/">Petite couronne (92, 93, 94)</a></li>
-        <li><a href="/zone-intervention/">Grande couronne (77, 78, 91, 95)</a></li>
-      </ul>
-      <h2 class="footer-title">Informations</h2>
-      <ul>
-        <li><a href="/devis/">Devis gratuit</a></li>
-        <li><a href="${waDirect}" rel="noopener">Nous écrire sur WhatsApp</a></li>
-        <li><a href="/mentions-legales/">Mentions légales</a></li>
-        <li><a href="/confidentialite/">Confidentialité</a></li>
-      </ul>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        ${brand}
+        <p>${site.tagline}. Un seul contact pour coordonner les bons professionnels de votre rénovation, à Paris et en Île-de-France.</p>
+        <a class="footer-link" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
+        <a class="footer-link" href="mailto:${site.email}">${icon("mail")}${site.email}</a>
+      </div>
+      <div>
+        <h2 class="footer-title">Métiers</h2>
+        <ul>${metiers.map((m) => `<li><a href="/metiers/${m.slug}/">${m.name}</a></li>`).join("")}</ul>
+      </div>
+      <div>
+        <h2 class="footer-title">Zone</h2>
+        <ul>
+          <li><a href="/zone-intervention/">Paris (75)</a></li>
+          <li><a href="/zone-intervention/">Petite couronne (92, 93, 94)</a></li>
+          <li><a href="/zone-intervention/">Grande couronne (77, 78, 91, 95)</a></li>
+        </ul>
+        <h2 class="footer-title">Informations</h2>
+        <ul>
+          <li><a href="/devis/">Devis gratuit</a></li>
+          <li><a href="${waDirect}" rel="noopener">WhatsApp</a></li>
+          <li><a href="/mentions-legales/">Mentions légales</a></li>
+          <li><a href="/confidentialite/">Confidentialité</a></li>
+        </ul>
+      </div>
     </div>
   </div>
+  <div class="footer-word" aria-hidden="true">NEXORA</div>
   <div class="container footer-bottom">
     <span>© ${new Date().getFullYear()} ${site.name}</span>
     <span>Paris &amp; toute l’Île-de-France</span>
   </div>
 </footer>
 <div class="mobile-bar" aria-label="Contact rapide">
-  <a class="btn btn-ghost" href="tel:${site.phone}">${icon("phone")}Appeler</a>
-  <a class="btn btn-whatsapp" href="${waDirect}" rel="noopener">${icon("whatsapp")}Devis gratuit WhatsApp</a>
+  <a class="btn btn-glass" href="tel:${site.phone}">${icon("phone")}Appeler</a>
+  <a class="btn btn-whatsapp" href="${waDirect}" rel="noopener">${icon("whatsapp")}Devis WhatsApp</a>
 </div>
-<a class="wa-float" href="${waDirect}" rel="noopener" aria-label="Nous écrire sur WhatsApp">
-  ${icon("whatsapp")}<span>Devis gratuit sur WhatsApp</span>
+<a class="wa-float magnetic" href="${waDirect}" rel="noopener" aria-label="Nous écrire sur WhatsApp">
+  ${icon("whatsapp")}<span>Devis gratuit</span>
 </a>`;
 }
 
 /**
- * @param {{path:string,title:string,description:string,body:string,current?:string,jsonld?:object[],noindex?:boolean,preloadHero?:boolean}} p
+ * @param {{path:string,title:string,description:string,body:string,current?:string,jsonld?:object[],noindex?:boolean,preloadHero?:boolean,theme?:string}} p
  */
 export function page(p) {
   const canonical = site.url + p.path;
   const ld = (p.jsonld || [])
     .map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`)
     .join("\n");
+  const cls = [p.preloadHero ? "has-hero" : "", p.theme === "dark" ? "top-dark" : ""].filter(Boolean).join(" ");
   return `<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(p.title)}</title>
 <meta name="description" content="${esc(p.description)}">
 ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${canonical}">`}
-<meta name="theme-color" content="#0B1730">
+<meta name="theme-color" content="#060912">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="${site.name}">
@@ -107,8 +141,10 @@ ${p.preloadHero ? '<link rel="preload" as="image" href="/assets/img/hero-1200.we
 <link rel="stylesheet" href="/assets/css/site.css?v=__V__">
 ${ld}
 </head>
-<body${p.preloadHero ? ' class="has-hero"' : ""}>
+<body${cls ? ` class="${cls}"` : ""}>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-glow" aria-hidden="true"></div>
 ${header(p.current)}
 <main id="contenu">
 ${p.body}
@@ -175,8 +211,8 @@ export function faqLd(pairs) {
 export function faqHtml(pairs) {
   return `<div class="faq">${pairs
     .map(
-      ([q, a]) =>
-        `<details><summary>${q}${icon("plus", "icon faq-icon")}</summary><p>${a}</p></details>`
+      ([q, a], i) =>
+        `<details class="reveal"><summary><span class="faq-n">${String(i + 1).padStart(2, "0")}</span><span class="faq-q">${q}</span><span class="faq-icon" aria-hidden="true"></span></summary><div class="faq-a"><p>${a}</p></div></details>`
     )
     .join("")}</div>`;
 }
@@ -188,7 +224,7 @@ export function quoteForm(id = "devis-form") {
     `<label class="tile"><input type="checkbox" name="metiers" value="${value}" data-metier="${slug}"><span>${icon(ic, "icon tile-icon")}${value}${icon("check", "icon tile-check")}</span></label>`;
   return `<form class="quote-form" id="${id}" novalidate data-quote-form>
   <div class="form-progress" aria-hidden="true">
-    <span class="form-progress-label">Étape <b data-step-num>1</b> sur 3</span>
+    <span class="form-progress-label">Étape <b data-step-num>1</b>/3</span>
     <span class="form-progress-bar"><span data-step-bar></span></span>
   </div>
 
@@ -224,18 +260,20 @@ export function quoteForm(id = "devis-form") {
       </div>
       <div class="field">
         <label for="${id}-cp">Code postal</label>
-        <input id="${id}-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" placeholder="Ex. 95220" pattern="[0-9]{5}" maxlength="5" required>
+        <input id="${id}-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" placeholder="Ex. 75011" pattern="[0-9]{5}" maxlength="5" required>
       </div>
     </div>
     <p class="form-error" role="alert" hidden></p>
     <div class="form-actions">
-      <button class="btn btn-primary btn-lg" type="submit" data-channel="whatsapp">${icon("whatsapp")}Envoyer sur WhatsApp</button>
-      <button class="btn btn-outline btn-lg" type="submit" data-channel="sms">${icon("sms")}Envoyer par SMS</button>
-      <button class="btn btn-outline btn-lg" type="submit" data-channel="email">${icon("mail")}Envoyer par e-mail</button>
+      <button class="btn btn-whatsapp btn-lg" type="submit" data-channel="whatsapp">${icon("whatsapp")}Envoyer sur WhatsApp</button>
+      <div class="form-alt">
+        <button class="btn btn-outline" type="submit" data-channel="sms">${icon("sms")}SMS</button>
+        <button class="btn btn-outline" type="submit" data-channel="email">${icon("mail")}E-mail</button>
+      </div>
     </div>
     <div class="step-nav step-nav-start"><button class="btn btn-text" type="button" data-prev>Retour</button></div>
   </div>
 
-  <p class="form-note"><strong>Devis gratuit et sans engagement.</strong> Vous pourrez relire votre message avant de l’envoyer. Vous pouvez aussi nous appeler au <a href="tel:${site.phone}">${site.phoneDisplay}</a> ou écrire à <a href="mailto:${site.email}">${site.email}</a>.</p>
+  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Vous relisez votre message avant de l’envoyer. Ou appelez le <a href="tel:${site.phone}">${site.phoneDisplay}</a>.</span></p>
 </form>`;
 }

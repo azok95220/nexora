@@ -4,51 +4,283 @@
   const WHATSAPP = "https://wa.me/33605572482";
   const EMAIL = "contact@nexoratravaux.fr";
   const doc = document.documentElement;
+  const body = document.body;
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
   doc.classList.add("js");
+  if (!reduced) doc.classList.add("motion");
+  else doc.classList.add("no-scroll-fx");
 
-  /* ---------- En-tête : menu mobile + ombre au défilement ---------- */
-  const header = document.querySelector(".site-header");
-  const toggle = document.querySelector(".nav-toggle");
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+
+  /* ---------- En-tête : menu mobile ---------- */
+  const header = $(".site-header");
+  const toggle = $(".nav-toggle");
   const setMenu = (open) => {
-    document.body.classList.toggle("nav-open", open);
+    body.classList.toggle("nav-open", open);
     toggle?.setAttribute("aria-expanded", String(open));
     toggle?.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
   };
-  toggle?.addEventListener("click", () => setMenu(!document.body.classList.contains("nav-open")));
-  document.querySelectorAll(".nav a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  toggle?.addEventListener("click", () => setMenu(!body.classList.contains("nav-open")));
+  $$(".nav a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
   document.addEventListener("keydown", (e) => e.key === "Escape" && setMenu(false));
-  const onScroll = () => header?.classList.toggle("scrolled", window.scrollY > 8);
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
 
-  /* ---------- Sélection des métiers (accueil) ---------- */
-  const form = document.querySelector("[data-quote-form]");
+  /* ---------- Apparition au défilement ---------- */
+  if ("IntersectionObserver" in window && !reduced) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add("in");
+            io.unobserve(en.target);
+          }
+        }),
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+    );
+    $$(".reveal").forEach((el) => io.observe(el));
+  } else {
+    $$(".reveal").forEach((el) => el.classList.add("in"));
+  }
+
+  /* ---------- Compteurs ---------- */
+  const counters = $$("[data-count]");
+  if (counters.length && "IntersectionObserver" in window && !reduced) {
+    const co = new IntersectionObserver((entries) =>
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        co.unobserve(en.target);
+        const el = en.target;
+        const end = +el.dataset.count;
+        const t0 = performance.now();
+        const tick = (t) => {
+          const k = clamp((t - t0) / 1400);
+          el.textContent = String(Math.round(end * (1 - Math.pow(1 - k, 4))));
+          if (k < 1) requestAnimationFrame(tick);
+        };
+        el.textContent = "0";
+        requestAnimationFrame(tick);
+      })
+    , { threshold: 0.6 });
+    counters.forEach((c) => co.observe(c));
+  }
+
+  /* ---------- Scènes pilotées par le défilement (une seule boucle) ---------- */
+  const hero = $("[data-hero]");
+  const story = $("[data-story]");
+  const method = $("[data-hscroll]");
+  const tickers = $$("[data-ticker]");
+  const footerWord = $(".footer-word");
+  const progress = $(".scroll-progress");
+  const wide = matchMedia("(min-width: 961px)");
+  let lastY = scrollY;
+  let methodTrack = method ? $(".method-track", method) : null;
+
+  function sizeMethod() {
+    if (!method || reduced) return;
+    const on = wide.matches;
+    doc.classList.toggle("hscroll", on);
+    if (!on) {
+      method.style.removeProperty("--h");
+      methodTrack.style.removeProperty("--x");
+      return;
+    }
+    const dist = Math.max(0, methodTrack.scrollWidth - innerWidth);
+    method.style.setProperty("--h", `${innerHeight + dist}px`);
+    method.dataset.dist = String(dist);
+  }
+
+  function sectionProgress(el) {
+    const r = el.getBoundingClientRect();
+    const span = r.height - innerHeight;
+    return span > 0 ? clamp(-r.top / span) : r.top < 0 ? 1 : 0;
+  }
+
+  function frame() {
+    ticking = false;
+    const y = scrollY;
+    const max = doc.scrollHeight - innerHeight;
+    progress?.style.setProperty("--sp", (max > 0 ? y / max : 0).toFixed(4));
+
+    // En-tête : masqué en descendant, réapparaît en remontant
+    header?.classList.toggle("scrolled", y > 10);
+    if (!body.classList.contains("nav-open")) header?.classList.toggle("hide", y > 600 && y > lastY + 2);
+    if (y < lastY - 2) header?.classList.remove("hide");
+    body.classList.toggle("show-float", y > innerHeight * 0.7);
+    lastY = y;
+
+    if (reduced) return;
+
+    if (hero) {
+      const r = hero.getBoundingClientRect();
+      hero.style.setProperty("--hp", clamp(-r.top / r.height).toFixed(4));
+    }
+    if (story) {
+      const p = sectionProgress(story);
+      const k = clamp((p - 0.18) / 0.5);
+      const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      story.style.setProperty("--p", p.toFixed(4));
+      story.style.setProperty("--k", e.toFixed(4));
+      story.classList.toggle("done", e > 0.97);
+    }
+    if (method && doc.classList.contains("hscroll")) {
+      const p = sectionProgress(method);
+      methodTrack.style.setProperty("--x", (p * +(method.dataset.dist || 0)).toFixed(1));
+      method.style.setProperty("--p", p.toFixed(4));
+    }
+    tickers.forEach((t) => {
+      const track = t.firstElementChild;
+      const third = track.scrollWidth / 3 || 1;
+      t.style.setProperty("--tx", `${((y * 0.35) % third).toFixed(1)}px`);
+    });
+    if (footerWord) {
+      const r = footerWord.getBoundingClientRect();
+      footerWord.style.setProperty("--fw", clamp(1 - (r.top - innerHeight * 0.6) / (innerHeight * 0.5)).toFixed(3));
+    }
+  }
+  let ticking = false;
+  const request = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(frame);
+    }
+  };
+  addEventListener("scroll", request, { passive: true });
+  addEventListener("resize", () => {
+    sizeMethod();
+    request();
+  });
+  wide.addEventListener?.("change", () => {
+    sizeMethod();
+    request();
+  });
+  sizeMethod();
+  frame();
+  // Les polices peuvent changer la largeur de la piste horizontale
+  document.fonts?.ready.then(() => {
+    sizeMethod();
+    request();
+  });
+
+  /* ---------- Effets au pointeur (souris uniquement) ---------- */
+  if (finePointer && !reduced) {
+    const glow = $(".cursor-glow");
+    let gx = -999, gy = -999, cx = gx, cy = gy, glowOn = false;
+    const loop = () => {
+      cx += (gx - cx) * 0.12;
+      cy += (gy - cy) * 0.12;
+      glow?.style.setProperty("--cx", `${cx.toFixed(1)}px`);
+      glow?.style.setProperty("--cy", `${cy.toFixed(1)}px`);
+      requestAnimationFrame(loop);
+    };
+    addEventListener("pointermove", (e) => {
+      gx = e.clientX;
+      gy = e.clientY;
+      if (!glowOn) {
+        glowOn = true;
+        cx = gx;
+        cy = gy;
+        body.classList.add("has-pointer");
+        requestAnimationFrame(loop);
+      }
+    }, { passive: true });
+
+    // Quadrillage du hero qui suit le pointeur
+    $$(".hero, .page-hero-dark").forEach((h) =>
+      h.addEventListener("pointermove", (e) => {
+        const r = h.getBoundingClientRect();
+        const bp = $(".hero-blueprint", h);
+        bp?.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        bp?.style.setProperty("--my", `${e.clientY - r.top}px`);
+      })
+    );
+
+    // Halo sur les cartes métiers
+    $$(".metier-card").forEach((c) =>
+      c.addEventListener("pointermove", (e) => {
+        const r = c.getBoundingClientRect();
+        c.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        c.style.setProperty("--my", `${e.clientY - r.top}px`);
+      })
+    );
+
+    // Boutons « magnétiques »
+    $$(".magnetic").forEach((b) => {
+      b.addEventListener("pointermove", (e) => {
+        const r = b.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+        const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+        b.style.transform = `translate(${(dx * 10).toFixed(1)}px, ${(dy * 8).toFixed(1)}px)`;
+      });
+      b.addEventListener("pointerleave", () => (b.style.transform = ""));
+    });
+
+    // Téléphone qui s’incline légèrement
+    const phone = $(".phone");
+    phone?.parentElement.addEventListener("pointermove", (e) => {
+      const r = phone.getBoundingClientRect();
+      phone.style.setProperty("--tilt-x", clamp((e.clientX - (r.left + r.width / 2)) / r.width, -1, 1) * 8);
+      phone.style.setProperty("--tilt-y", clamp((e.clientY - (r.top + r.height / 2)) / r.height, -1, 1) * 6);
+    });
+    phone?.parentElement.addEventListener("pointerleave", () => {
+      phone.style.setProperty("--tilt-x", 0);
+      phone.style.setProperty("--tilt-y", 0);
+    });
+  }
+
+  /* ---------- Configurateur de projet (accueil) ---------- */
+  const form = $("[data-quote-form]");
   const chip = (slug) => form?.querySelector(`input[data-metier="${slug}"]`);
-  const addButtons = document.querySelectorAll("[data-add]");
+  const addButtons = $$("[data-add]");
+  const scenarioButtons = $$("[data-scenario]");
+  const sumCount = $("[data-summary-count]");
+  const sumPlural = $("[data-summary-plural]");
+  const sumList = $("[data-summary-list]");
   let bar = null;
+  let lastCount = -1;
 
   function refreshSelection() {
-    const checked = form ? [...form.querySelectorAll('input[name="metiers"]:checked')] : [];
+    const checked = form ? $$('input[name="metiers"]:checked', form) : [];
+    const slugs = new Set(checked.map((i) => i.dataset.metier));
     addButtons.forEach((btn) => {
-      const on = !!chip(btn.dataset.add)?.checked;
+      const on = slugs.has(btn.dataset.add);
       btn.setAttribute("aria-pressed", String(on));
       btn.closest(".metier-card")?.classList.toggle("selected", on);
     });
+    scenarioButtons.forEach((b) => {
+      const list = b.dataset.scenario.split(",");
+      b.setAttribute("aria-pressed", String(list.length === slugs.size && list.every((s) => slugs.has(s))));
+    });
+    const n = checked.length;
+    if (sumCount) {
+      sumCount.textContent = String(n);
+      sumPlural.textContent = n > 1 ? "s" : "";
+      if (n !== lastCount && lastCount !== -1 && !reduced) {
+        sumCount.classList.remove("bump");
+        void sumCount.offsetWidth;
+        sumCount.classList.add("bump");
+      }
+      sumList.innerHTML = n
+        ? checked.map((i) => `<li>${i.value}</li>`).join("")
+        : '<li class="summary-empty">Aucun métier pour l’instant.</li>';
+    }
+    lastCount = n;
     if (!addButtons.length) return;
     if (!bar) {
       bar = document.createElement("div");
       bar.className = "project-bar";
       bar.setAttribute("role", "status");
-      bar.innerHTML = '<span class="project-count"></span><a class="btn btn-primary" href="#home-form">Décrire mon projet</a>';
-      document.body.appendChild(bar);
+      bar.innerHTML = '<span class="project-count"></span><a class="btn btn-whatsapp" href="#projet">Envoyer mon projet</a>';
+      body.appendChild(bar);
     }
-    const n = checked.length;
-    bar.querySelector(".project-count").innerHTML =
-      `<strong>${n}</strong> métier${n > 1 ? "s" : ""} sélectionné${n > 1 ? "s" : ""}`;
-    const formVisible = form && form.getBoundingClientRect().top < window.innerHeight * 0.8;
-    const show = n > 0 && !formVisible;
+    bar.querySelector(".project-count").innerHTML = `<strong>${n}</strong> métier${n > 1 ? "s" : ""} sélectionné${n > 1 ? "s" : ""}`;
+    const cfg = $("#metiers");
+    const cfgVisible = cfg && cfg.getBoundingClientRect().bottom > innerHeight * 0.5 && cfg.getBoundingClientRect().top < innerHeight * 0.5;
+    const formVisible = form && form.getBoundingClientRect().top < innerHeight * 0.85;
+    const show = n > 0 && !formVisible && !cfgVisible;
     bar.classList.toggle("visible", show);
-    document.body.classList.toggle("project-on", show);
+    body.classList.toggle("project-on", show);
   }
 
   addButtons.forEach((btn) =>
@@ -59,26 +291,65 @@
       refreshSelection();
     })
   );
+  scenarioButtons.forEach((b) =>
+    b.addEventListener("click", () => {
+      const list = b.dataset.scenario.split(",");
+      const alreadyOn = b.getAttribute("aria-pressed") === "true";
+      $$('input[name="metiers"]', form).forEach((i) => (i.checked = !alreadyOn && list.includes(i.dataset.metier)));
+      refreshSelection();
+    })
+  );
   form?.addEventListener("change", refreshSelection);
-  window.addEventListener("scroll", () => bar && refreshSelection(), { passive: true });
+  addEventListener("scroll", () => bar && refreshSelection(), { passive: true });
 
   // Page devis : pré-sélection via ?metier=plomberie
   const pre = new URLSearchParams(location.search).get("metier");
   if (pre && chip(pre)) chip(pre).checked = true;
   refreshSelection();
 
-  /* ---------- Formulaire en 3 étapes + envoi WhatsApp / SMS ---------- */
+  /* ---------- Test de zone par code postal ---------- */
+  const DEPTS = { 75: "Paris", 77: "Seine-et-Marne", 78: "Yvelines", 91: "Essonne", 92: "Hauts-de-Seine", 93: "Seine-Saint-Denis", 94: "Val-de-Marne", 95: "Val-d’Oise" };
+  $$("[data-zone-check]").forEach((zf) => {
+    const input = $("input", zf);
+    const out = $(".zone-result", zf);
+    const radar = zf.closest("section")?.querySelector(".radar");
+    input.addEventListener("input", () => (input.value = input.value.replace(/\D/g, "").slice(0, 5)));
+    zf.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const cp = input.value.trim();
+      $$(".hit", radar || document).forEach((h) => h.classList.remove("hit"));
+      out.className = "zone-result";
+      if (!/^\d{5}$/.test(cp)) {
+        out.textContent = "Indiquez un code postal à 5 chiffres.";
+        out.classList.add("ko");
+        return;
+      }
+      const d = cp.slice(0, 2);
+      if (DEPTS[d]) {
+        out.innerHTML = `✓ Bonne nouvelle : nous intervenons à ${cp} (${DEPTS[d]}). <a href="#projet" data-to-form>Demander mon devis</a>`;
+        out.classList.add("ok");
+        radar?.querySelector(`[data-dept="${d}"]`)?.classList.add("hit");
+        // Préremplit le code postal du formulaire
+        $$('input[name="postalCode"]').forEach((i) => !i.value && (i.value = cp));
+      } else {
+        out.innerHTML = `Ce secteur est hors de notre zone habituelle, mais <a href="${WHATSAPP}" rel="noopener">écrivez-nous</a> : on regarde ensemble.`;
+        out.classList.add("ko");
+      }
+    });
+  });
+
+  /* ---------- Formulaire en 3 étapes + envoi WhatsApp / SMS / e-mail ---------- */
   const isValidCp = (cp) => /^\d{5}$/.test(cp);
 
-  document.querySelectorAll("[data-quote-form]").forEach((f) => {
-    const steps = [...f.querySelectorAll("[data-step]")];
-    const num = f.querySelector("[data-step-num]");
-    const barFill = f.querySelector("[data-step-bar]");
+  $$("[data-quote-form]").forEach((f) => {
+    const steps = $$("[data-step]", f);
+    const num = $("[data-step-num]", f);
+    const barFill = $("[data-step-bar]", f);
     let current = 0;
     f.classList.add("is-stepped");
 
     const showError = (step, msg) => {
-      const err = step.querySelector(".form-error");
+      const err = $(".form-error", step);
       if (!err) return;
       err.textContent = msg || "";
       err.hidden = !msg;
@@ -90,11 +361,8 @@
       if (num) num.textContent = String(current + 1);
       if (barFill) barFill.style.width = `${((current + 1) / steps.length) * 100}%`;
       if (!focus) return;
-      // Garde le haut du formulaire visible, sans faire remonter toute la page
       const top = f.getBoundingClientRect().top;
-      if (top < 80 || top > window.innerHeight * 0.6) {
-        f.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      if (top < 80 || top > innerHeight * 0.6) f.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
       const target = steps[current];
       target.setAttribute("tabindex", "-1");
       target.focus({ preventScroll: true });
@@ -111,14 +379,11 @@
       return true;
     }
 
-    f.querySelectorAll("[data-next]").forEach((b) =>
-      b.addEventListener("click", () => validate(current) && go(current + 1))
-    );
-    f.querySelectorAll("[data-prev]").forEach((b) => b.addEventListener("click", () => go(current - 1)));
+    $$("[data-next]", f).forEach((b) => b.addEventListener("click", () => validate(current) && go(current + 1)));
+    $$("[data-prev]", f).forEach((b) => b.addEventListener("click", () => go(current - 1)));
     f.addEventListener("change", (e) => {
       if (e.target.name === "metiers") showError(steps[0], "");
     });
-    // « Entrée » dans un champ texte d’une étape intermédiaire = étape suivante
     f.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "checkbox" && current < steps.length - 1) {
         e.preventDefault();
@@ -161,7 +426,7 @@
         sms: `sms:${PHONE}?&body=${text}`,
         email: `mailto:${EMAIL}?subject=${subject}&body=${text}`,
       };
-      window.location.assign(urls[channel] || urls.whatsapp);
+      location.assign(urls[channel] || urls.whatsapp);
     });
 
     f.addEventListener("input", (e) => {
@@ -171,26 +436,27 @@
     go(0, { focus: false });
   });
 
-  // Masque la barre d’appel mobile tant qu’un formulaire est visible
+  // Masque les barres flottantes tant qu’un formulaire est visible
   if ("IntersectionObserver" in window) {
     const seen = new Set();
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => (en.isIntersecting ? seen.add(en.target) : seen.delete(en.target)));
-      document.body.classList.toggle("form-in-view", seen.size > 0);
+      body.classList.toggle("form-in-view", seen.size > 0);
     }, { threshold: 0.15 });
-    document.querySelectorAll("[data-quote-form]").forEach((f) => io.observe(f));
+    $$("[data-quote-form]").forEach((f) => io.observe(f));
   }
 
-  // Accueil : les métiers ajoutés depuis les cartes mènent directement à l’étape 2,
-  // et tous les boutons « devis » de la page amènent directement au formulaire.
-  const homeForm = document.querySelector("#projet [data-quote-form]");
+  // Tous les boutons « devis » de la page mènent directement au formulaire,
+  // à l’étape 2 si des métiers sont déjà choisis.
+  const homeForm = $("#projet [data-quote-form]");
   if (homeForm) {
     document.addEventListener("click", (e) => {
-      const link = e.target.closest('.project-bar a, [data-to-form], a[href="#home-form"]');
+      const link = e.target.closest('.project-bar a, [data-to-form], a[href="#projet"]');
       if (!link) return;
       e.preventDefault();
+      setMenu(false);
       const hasMetier = !!homeForm.querySelector('input[name="metiers"]:checked');
-      homeForm.scrollIntoView({ behavior: "smooth", block: "start" });
+      $("#projet").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
       homeForm.goStep(hasMetier ? 1 : 0, { focus: false });
     });
   }
