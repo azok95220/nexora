@@ -1,0 +1,10 @@
+{
+  "name": "nexora-travaux",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "preview": "node build.mjs && npx --yes serve@14.2.4 dist -l 4321"
+  },
+  "engines": { "node": ">=18" }
+}
