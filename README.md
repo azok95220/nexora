@@ -32,12 +32,12 @@ npm run preview      # génère puis sert le site sur http://localhost:4321
 Aucune donnée n’est stockée : le formulaire ouvre WhatsApp (ou les SMS sur mobile) avec un message
 pré-rempli que le visiteur relit avant envoi. `/devis/?metier=plomberie` pré-sélectionne un métier.
 
-## Mise en ligne (Netlify, domaine chez OVH)
+## Mise en ligne (Netlify, domaine chez IONOS)
 
 1. Netlify → « Add new site » → « Import from Git » → dépôt `azok95220/nexora`.
 2. Build command : `node build.mjs` — Publish directory : `dist`.
 3. Domain management → ajouter `nexoratravaux.fr` (et `www`).
-4. Chez OVH (Zone DNS) : remplacer l’enregistrement A de `nexoratravaux.fr` par l’IP indiquée par Netlify,
+4. Chez IONOS (Domaines & SSL → nexoratravaux.fr → DNS) : remplacer l’enregistrement A de `nexoratravaux.fr` par l’IP indiquée par Netlify,
    et faire pointer `www` (CNAME) vers l’adresse `xxx.netlify.app`. **Ne pas toucher aux enregistrements MX**
    (ils gèrent la boîte contact@nexoratravaux.fr).
 5. Netlify active le HTTPS automatiquement.

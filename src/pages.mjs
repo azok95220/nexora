@@ -425,7 +425,7 @@ function legalPage() {
     Téléphone : <a href="tel:${site.phone}">${site.phoneDisplay}</a><br>
     E-mail : <a href="mailto:${site.email}">${site.email}</a></p>
     <h2>Hébergement</h2>
-    <p>Netlify, Inc. — 101 2nd Street, San Francisco, CA 94105, États-Unis — <a href="https://www.netlify.com" rel="noopener">netlify.com</a><br>Nom de domaine et messagerie : OVH SAS — 2 rue Kellermann, 59100 Roubaix, France</p>
+    <p>Netlify, Inc. — 101 2nd Street, San Francisco, CA 94105, États-Unis — <a href="https://www.netlify.com" rel="noopener">netlify.com</a><br>Nom de domaine et messagerie : IONOS SARL — 7 place de la Gare, BP 70109, 57201 Sarreguemines Cedex, France</p>
     <h2>Activité</h2>
     <p>${site.name} accompagne les particuliers dans la préparation de leurs projets de travaux et les met en relation avec des professionnels. Les travaux sont chiffrés et réalisés par l’entreprise réalisatrice, qui transmet directement sa proposition au client.</p>
     <h2>Propriété intellectuelle</h2>
