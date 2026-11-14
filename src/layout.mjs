@@ -49,9 +49,9 @@ function footer() {
     <div>
       <h2 class="footer-title">Zone d’intervention</h2>
       <ul>
-        <li><a href="/zone-intervention/">Île-de-France</a></li>
-        <li><a href="/zone-intervention/#limitrophes">Oise (60)</a></li>
-        <li><a href="/zone-intervention/#limitrophes">Eure (27)</a></li>
+        <li><a href="/zone-intervention/">Paris (75)</a></li>
+        <li><a href="/zone-intervention/">Petite couronne (92, 93, 94)</a></li>
+        <li><a href="/zone-intervention/">Grande couronne (77, 78, 91, 95)</a></li>
       </ul>
       <h2 class="footer-title">Informations</h2>
       <ul>
@@ -64,7 +64,7 @@ function footer() {
   </div>
   <div class="container footer-bottom">
     <span>© ${new Date().getFullYear()} ${site.name}</span>
-    <span>Île-de-France · Oise · Eure</span>
+    <span>Paris &amp; toute l’Île-de-France</span>
   </div>
 </footer>
 <div class="mobile-bar" aria-label="Contact rapide">
@@ -154,8 +154,7 @@ export const businessLd = {
   description: site.description,
   areaServed: [
     { "@type": "AdministrativeArea", name: "Île-de-France" },
-    { "@type": "AdministrativeArea", name: "Oise" },
-    { "@type": "AdministrativeArea", name: "Eure" },
+    { "@type": "City", name: "Paris" },
   ],
   knowsAbout: metiers.map((m) => m.name),
 };

@@ -351,10 +351,15 @@ p { margin: 0; text-wrap: pretty; }
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .radar-tag i { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-300); box-shadow: 0 0 0 0 rgba(143, 177, 255, .7); }
-.t-eure { left: 10%; top: 26%; }
-.t-oise { right: 12%; top: 13%; }
-.t-idf { right: 9%; bottom: 20%; background: var(--blue); border-color: var(--blue); }
-.t-idf i { background: #fff; }
+/* Départements placés à peu près selon la géographie autour de Paris */
+.t-95 { left: 38%; top: 9%; }
+.t-93 { left: 63%; top: 22%; }
+.t-77 { left: 82%; top: 47%; }
+.t-94 { left: 62%; top: 69%; }
+.t-91 { left: 40%; top: 83%; }
+.t-78 { left: 8%; top: 47%; }
+.t-92 { left: 20%; top: 26%; }
+.radar-tag { padding: 6px 10px; }
 @media (max-width: 960px) { .zone-grid { grid-template-columns: 1fr; } }
 
 /* ---------- FAQ ---------- */
@@ -614,12 +619,13 @@ fieldset.form-step > .step-hint { margin-top: 4px; }
   .radar-sweep { animation: sweep 6s linear infinite; }
   @keyframes sweep { to { transform: translate(-50%, -50%) rotate(360deg); } }
   .radar-tag i { animation: ping 2.4s ease-out infinite; }
-  .t-oise i { animation-delay: .8s; }
-  .t-idf i { animation-delay: 1.6s; }
+  .t-93 i, .t-91 i { animation-delay: .6s; }
+  .t-77 i, .t-92 i { animation-delay: 1.2s; }
+  .t-94 i { animation-delay: 1.8s; }
   @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(143, 177, 255, .7); } 100% { box-shadow: 0 0 0 12px rgba(143, 177, 255, 0); } }
   .radar-tag { animation: float 6s ease-in-out infinite; }
-  .t-oise { animation-delay: -2s; }
-  .t-idf { animation-delay: -4s; }
+  .t-93, .t-91 { animation-delay: -2s; }
+  .t-77, .t-92 { animation-delay: -4s; }
   @keyframes float { 50% { transform: translateY(-6px); } }
 
   /* Pulsation du bouton WhatsApp */

@@ -10,7 +10,7 @@ export const site = {
   whatsapp: "https://wa.me/33605572482",
   email: "contact@nexoratravaux.fr",
   description:
-    "Nexora Travaux cadre votre projet de rénovation, organise la visite et vous met en relation avec les professionnels adaptés : électricité, plomberie, peinture, sols… en Île-de-France, dans l’Oise et dans l’Eure.",
+    "Nexora Travaux cadre votre projet de rénovation, organise la visite et vous met en relation avec les professionnels adaptés : électricité, plomberie, peinture, sols… à Paris et dans toute l’Île-de-France.",
 };
 
 export const icons = {
@@ -322,8 +322,4 @@ export const zones = {
       ["95", "Val-d’Oise"],
     ],
   },
-  limitrophes: [
-    ["60", "Oise"],
-    ["27", "Eure"],
-  ],
 };

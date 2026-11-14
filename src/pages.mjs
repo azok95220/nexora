@@ -20,7 +20,7 @@ const homeFaq = [
   ],
   [
     "Dans quelles zones intervenez-vous ?",
-    "Nous étudions les projets dans toute l’Île-de-France (Paris et les sept départements franciliens), ainsi que dans l’Oise (60) et l’Eure (27).",
+    "Nous intervenons à Paris et dans toute l’Île-de-France : Hauts-de-Seine (92), Seine-Saint-Denis (93), Val-de-Marne (94), Seine-et-Marne (77), Yvelines (78), Essonne (91) et Val-d’Oise (95).",
   ],
 ];
 
@@ -55,10 +55,11 @@ const methodSection = () => `<section class="section section-ink method" id="met
 const zoneRadar = `<div class="radar reveal" aria-hidden="true">
   <span class="radar-ring r1"></span><span class="radar-ring r2"></span><span class="radar-ring r3"></span>
   <span class="radar-sweep"></span>
-  <span class="radar-tag t-eure"><i></i>Eure</span>
-  <span class="radar-tag t-oise"><i></i>Oise</span>
-  <span class="radar-tag t-idf"><i></i>Île-de-France</span>
-  <div class="radar-center">${icon("pin")}<strong>NEXORA</strong><span>Votre projet</span></div>
+  ${zones.idf.departements
+    .filter(([n]) => n !== "75")
+    .map(([n, name]) => `<span class="radar-tag t-${n}" title="${name}"><i></i>${n}</span>`)
+    .join("")}
+  <div class="radar-center">${icon("pin")}<strong>NEXORA</strong><span>Paris &amp; Île-de-France</span></div>
 </div>`;
 
 const ctaBand = (title = "Un projet en tête ? Parlons-en.") => `<section class="cta-band">
@@ -100,7 +101,7 @@ function home() {
         <li>${icon("check")}Devis gratuit</li>
         <li>${icon("user")}Interlocuteur dédié</li>
         <li>${icon("shield")}Demande sans engagement</li>
-        <li>${icon("pin")}3 zones couvertes</li>
+        <li>${icon("pin")}Toute l’Île-de-France</li>
       </ul>
     </div>
     <a class="hero-badge enter" style="--d:5" href="#home-form" data-to-form>
@@ -149,11 +150,9 @@ ${methodSection()}
     <div class="reveal">
       <p class="eyebrow">Zone d’intervention</p>
       <h2 id="zone-title" class="h2">Près de vous, sur un large secteur.</h2>
-      <p class="section-intro">Nous étudions les projets dans toute l’Île-de-France ainsi que dans les départements limitrophes de l’Oise et de l’Eure.</p>
+      <p class="section-intro">Nous intervenons à Paris et dans les sept autres départements d’Île-de-France, en petite comme en grande couronne.</p>
       <ul class="zone-pills">
-        <li>${icon("pin")}Île-de-France</li>
-        <li>${icon("pin")}Oise (60)</li>
-        <li>${icon("pin")}Eure (27)</li>
+        ${zones.idf.departements.map(([n, name]) => `<li>${icon("pin")}${n === "75" ? "Paris" : name} (${n})</li>`).join("")}
       </ul>
       <a class="link-arrow" href="/zone-intervention/">Voir les départements couverts ${icon("arrow")}</a>
     </div>
@@ -191,7 +190,7 @@ ${methodSection()}
     path: "/",
     title: "Nexora Travaux | Devis travaux gratuit en Île-de-France : les bons pros, un seul contact",
     description:
-      "Électricité, plomberie, peinture, sols, carrelage… Nexora Travaux cadre votre projet, organise la visite et vous met en relation avec les bons professionnels en Île-de-France, Oise et Eure. Devis gratuit, échange simple sur WhatsApp.",
+      "Électricité, plomberie, peinture, sols, carrelage… Nexora Travaux cadre votre projet, organise la visite et vous met en relation avec les bons professionnels à Paris et en Île-de-France. Devis gratuit, échange simple sur WhatsApp.",
     body,
     preloadHero: true,
     jsonld: [
@@ -286,7 +285,7 @@ ${ctaBand(`Votre projet de ${m.name.toLowerCase()} : devis gratuit.`)}`;
         serviceType: m.name,
         description: m.intro,
         provider: { "@id": site.url + "/#entreprise" },
-        areaServed: ["Île-de-France", "Oise", "Eure"].map((n) => ({ "@type": "AdministrativeArea", name: n })),
+        areaServed: { "@type": "AdministrativeArea", name: "Île-de-France" },
       },
       faqLd(m.faq),
     ],
@@ -305,8 +304,8 @@ function zonePage() {
   <div class="container">
     ${bc.html}
     <div class="page-hero-narrow">
-      <h1 class="h1">Zone d’intervention : Île-de-France, Oise et Eure</h1>
-      <p class="lead">Nous étudions les projets de rénovation dans toute l’Île-de-France, ainsi que dans les départements limitrophes de l’Oise et de l’Eure.</p>
+      <h1 class="h1">Zone d’intervention : Paris et toute l’Île-de-France</h1>
+      <p class="lead">Nous intervenons sur vos projets de rénovation à Paris et dans les huit départements franciliens. Indiquez simplement votre code postal dans votre demande.</p>
     </div>
   </div>
 </section>
@@ -314,24 +313,9 @@ function zonePage() {
 <section class="section">
   <div class="container">
     <h2 class="h2">Île-de-France</h2>
-    <p class="section-intro">Notre zone principale : Paris et l’ensemble des départements franciliens.</p>
+    <p class="section-intro">Paris, la petite couronne et la grande couronne : un seul contact pour toute la région.</p>
     <ul class="dept-grid">
       ${zones.idf.departements
-        .map(
-          ([n, name]) =>
-            `<li class="dept-card"><span class="dept-num">${n}</span><span class="dept-name">${name}</span></li>`
-        )
-        .join("")}
-    </ul>
-  </div>
-</section>
-
-<section class="section section-paper" id="limitrophes">
-  <div class="container">
-    <h2 class="h2">Départements limitrophes</h2>
-    <p class="section-intro">Nous étudions également les projets dans l’Oise et dans l’Eure. Indiquez votre code postal dans votre demande : nous vous confirmons rapidement la prise en charge.</p>
-    <ul class="dept-grid dept-grid-2">
-      ${zones.limitrophes
         .map(
           ([n, name]) =>
             `<li class="dept-card"><span class="dept-num">${n}</span><span class="dept-name">${name}</span></li>`
@@ -358,9 +342,9 @@ function zonePage() {
 ${ctaBand()}`;
   return page({
     path: "/zone-intervention/",
-    title: "Zone d’intervention : Paris, Île-de-France, Oise et Eure | Nexora Travaux",
+    title: "Zone d’intervention : Paris et toute l’Île-de-France | Nexora Travaux",
     description:
-      "Nexora Travaux étudie vos projets de rénovation à Paris et dans toute l’Île-de-France (77, 78, 91, 92, 93, 94, 95), ainsi que dans l’Oise (60) et l’Eure (27).",
+      "Nexora Travaux intervient sur vos projets de rénovation à Paris (75) et dans toute l’Île-de-France : 77, 78, 91, 92, 93, 94 et 95. Devis gratuit.",
     current: "zone",
     body,
     jsonld: [bc.ld, businessLd],
