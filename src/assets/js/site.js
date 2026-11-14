@@ -46,7 +46,9 @@
     bar.querySelector(".project-count").innerHTML =
       `<strong>${n}</strong> métier${n > 1 ? "s" : ""} sélectionné${n > 1 ? "s" : ""}`;
     const formVisible = form && form.getBoundingClientRect().top < window.innerHeight * 0.8;
-    bar.classList.toggle("visible", n > 0 && !formVisible);
+    const show = n > 0 && !formVisible;
+    bar.classList.toggle("visible", show);
+    document.body.classList.toggle("project-on", show);
   }
 
   addButtons.forEach((btn) =>
@@ -180,11 +182,11 @@
   }
 
   // Accueil : les métiers ajoutés depuis les cartes mènent directement à l’étape 2,
-  // et le bouton « Demander un devis » de la barre mobile reste sur la page.
+  // et tous les boutons « devis » de la page amènent directement au formulaire.
   const homeForm = document.querySelector("#projet [data-quote-form]");
   if (homeForm) {
     document.addEventListener("click", (e) => {
-      const link = e.target.closest('.project-bar a, .mobile-bar a[href="/devis/"], a[href="#home-form"]');
+      const link = e.target.closest('.project-bar a, [data-to-form], a[href="#home-form"]');
       if (!link) return;
       e.preventDefault();
       const hasMetier = !!homeForm.querySelector('input[name="metiers"]:checked');

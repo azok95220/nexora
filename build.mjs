@@ -23,7 +23,13 @@ const pages = allPages();
 for (const [file, html] of pages) {
   const dest = join(out, file);
   await mkdir(dirname(dest), { recursive: true });
-  await writeFile(dest, html.replaceAll("__V__", hash));
+  // Typographie française : espaces insécables avant ? ! ; : et à l’intérieur des « guillemets »
+  const typo = html
+    .replace(/ ([?!;])/g, "\u202f$1")
+    .replace(/ :(\s)/g, "\u00a0:$1")
+    .replace(/« /g, "«\u00a0")
+    .replace(/ »/g, "\u00a0»");
+  await writeFile(dest, typo.replaceAll("__V__", hash));
 }
 
 const today = new Date().toISOString().slice(0, 10);

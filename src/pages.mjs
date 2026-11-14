@@ -3,12 +3,16 @@ import { page, icon, breadcrumb, businessLd, faqLd, faqHtml, quoteForm } from ".
 
 const homeFaq = [
   [
-    "Qui réalise les travaux ?",
-    "L’entreprise réalisatrice, choisie selon la nature de votre chantier. Elle chiffre les travaux et vous transmet directement une proposition détaillée. Nexora Travaux reste votre interlocuteur pour cadrer le besoin et organiser la visite.",
+    "Le devis est-il gratuit ?",
+    "Oui. L’étude de votre demande, la visite et le devis sont gratuits et sans engagement : vous décidez ensuite librement de donner suite ou non.",
   ],
   [
-    "Ma demande m’engage-t-elle à quelque chose ?",
-    "Non. La demande est sans engagement : vos informations servent uniquement à étudier votre projet.",
+    "Comment vous contacter le plus simplement ?",
+    "Par WhatsApp : remplissez le formulaire en trois étapes, votre message est préparé automatiquement et vous n’avez plus qu’à l’envoyer, avec des photos si vous le souhaitez. Vous pouvez aussi nous appeler ou nous écrire par e-mail.",
+  ],
+  [
+    "Qui réalise les travaux ?",
+    "L’entreprise réalisatrice, choisie selon la nature de votre chantier. Elle chiffre les travaux et vous transmet directement une proposition détaillée. Nexora Travaux reste votre interlocuteur pour cadrer le besoin et organiser la visite.",
   ],
   [
     "Puis-je regrouper plusieurs métiers dans une seule demande ?",
@@ -21,22 +25,24 @@ const homeFaq = [
 ];
 
 const steps = [
-  ["chat", "Vous nous expliquez", "Type de travaux, adresse, photos et disponibilités : nous réunissons les informations utiles."],
+  ["whatsapp", "Vous nous expliquez", "Type de travaux, adresse, photos et disponibilités : nous réunissons les informations utiles, simplement par WhatsApp."],
   ["calendar", "Nous organisons la visite", "Un rendez-vous est fixé avec l’interlocuteur capable d’évaluer précisément votre chantier."],
-  ["file", "Vous recevez votre devis", "L’entreprise réalisatrice chiffre les travaux et vous transmet une proposition détaillée."],
+  ["file", "Vous recevez votre devis gratuit", "L’entreprise réalisatrice chiffre les travaux et vous transmet une proposition détaillée, sans engagement."],
 ];
 
-const methodSection = (headingTag = "h2") => `<section class="section section-ink" id="methode" aria-labelledby="methode-title">
-  <div class="container">
-    <div class="section-head">
+const methodSection = () => `<section class="section section-ink method" id="methode" aria-labelledby="methode-title">
+  <div class="container method-grid">
+    <div class="method-head reveal">
       <p class="eyebrow eyebrow-light">Notre méthode</p>
-      <${headingTag} id="methode-title" class="h2">Simple du premier message jusqu’au démarrage.</${headingTag}>
+      <h2 id="methode-title" class="h2">Simple du premier message jusqu’au démarrage.</h2>
+      <a class="btn btn-whatsapp" href="/devis/" data-to-form>${icon("whatsapp")}Commencer sur WhatsApp</a>
     </div>
-    <ol class="steps">
+    <ol class="method-list">
       ${steps
         .map(
-          ([ic, t, d], i) => `<li class="step">
-        <div class="step-top"><span class="step-num">0${i + 1}</span><span class="step-icon">${icon(ic)}</span></div>
+          ([ic, t, d], i) => `<li class="method-row reveal">
+        <span class="method-num">0${i + 1}</span>
+        <span class="method-icon">${icon(ic)}</span>
         <h3>${t}</h3>
         <p>${d}</p>
       </li>`
@@ -46,74 +52,71 @@ const methodSection = (headingTag = "h2") => `<section class="section section-in
   </div>
 </section>`;
 
-const zoneSummary = `<div class="zone-card">
-  <div class="zone-main">
-    <span class="zone-badge">Zone principale</span>
-    <h3>Île-de-France</h3>
-    <ul class="dept-list">
-      ${zones.idf.departements.map(([n, name]) => `<li><span>${n}</span>${name}</li>`).join("")}
-    </ul>
-  </div>
-  <div class="zone-side">
-    <span class="zone-badge zone-badge-muted">Départements limitrophes</span>
-    <ul class="dept-list dept-list-lg">
-      ${zones.limitrophes.map(([n, name]) => `<li><span>${n}</span>${name}</li>`).join("")}
-    </ul>
-  </div>
+const zoneRadar = `<div class="radar reveal" aria-hidden="true">
+  <span class="radar-ring r1"></span><span class="radar-ring r2"></span><span class="radar-ring r3"></span>
+  <span class="radar-sweep"></span>
+  <span class="radar-tag t-eure"><i></i>Eure</span>
+  <span class="radar-tag t-oise"><i></i>Oise</span>
+  <span class="radar-tag t-idf"><i></i>Île-de-France</span>
+  <div class="radar-center">${icon("pin")}<strong>NEXORA</strong><span>Votre projet</span></div>
 </div>`;
 
 const ctaBand = (title = "Un projet en tête ? Parlons-en.") => `<section class="cta-band">
   <div class="container cta-inner">
     <div>
       <h2 class="h3">${title}</h2>
-      <p>Quelques informations suffisent pour préparer un premier échange efficace. Demande sans engagement.</p>
+      <p>Devis gratuit et sans engagement. Quelques informations suffisent pour préparer un premier échange efficace.</p>
     </div>
     <div class="cta-actions">
-      <a class="btn btn-primary btn-lg" href="/devis/">Demander un devis ${icon("arrow")}</a>
-      <a class="btn btn-light btn-lg" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
+      <a class="btn btn-whatsapp btn-lg" href="/devis/">${icon("whatsapp")}Devis gratuit sur WhatsApp</a>
+      <a class="btn btn-glass btn-lg" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
     </div>
   </div>
 </section>`;
+
+const marquee = () => {
+  const items = metiers.map((m) => `<span>${icon(m.slug)}${m.name}</span>`).join("");
+  return `<div class="marquee" aria-hidden="true"><div class="marquee-track">${items}${items}</div></div>`;
+};
 
 /* ------------------------------------------------------------------ */
 
 function home() {
   const body = `
 <section class="hero" id="top">
-  <div class="container hero-grid">
+  <div class="hero-media">
+    <img src="/assets/img/hero-1600.webp" srcset="/assets/img/hero-800.webp 800w, /assets/img/hero-1200.webp 1200w, /assets/img/hero-1600.webp 1600w" sizes="100vw" width="1600" height="900" alt="Professionnel étudiant les plans d’une rénovation dans un appartement parisien" fetchpriority="high">
+  </div>
+  <div class="container hero-inner">
     <div class="hero-copy">
-      <p class="eyebrow">${site.tagline}</p>
-      <h1 class="display">Les bons professionnels. <span class="accent">Un seul contact.</span></h1>
-      <p class="lead">Nous cadrons votre besoin, organisons la visite et vous mettons en relation avec les professionnels adaptés à votre chantier.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary btn-lg" href="#home-form">Parler de mon projet ${icon("arrow")}</a>
-        <a class="btn btn-outline btn-lg" href="#metiers">Découvrir nos métiers</a>
+      <p class="eyebrow eyebrow-light enter" style="--d:0">${site.tagline}</p>
+      <h1 class="display enter" style="--d:1">Les bons professionnels.<br><span class="accent">Un seul contact.</span></h1>
+      <p class="lead enter" style="--d:2">Nous cadrons votre besoin, organisons la visite et vous mettons en relation avec les professionnels adaptés à votre chantier.</p>
+      <div class="hero-actions enter" style="--d:3">
+        <a class="btn btn-primary btn-lg" href="#home-form" data-to-form>Parler de mon projet ${icon("arrow")}</a>
+        <a class="link-light" href="#metiers">Découvrir nos métiers ${icon("arrow")}</a>
       </div>
-      <ul class="trust">
+      <ul class="trust enter" style="--d:4">
+        <li>${icon("check")}Devis gratuit</li>
         <li>${icon("user")}Interlocuteur dédié</li>
         <li>${icon("shield")}Demande sans engagement</li>
         <li>${icon("pin")}3 zones couvertes</li>
       </ul>
     </div>
-    <div class="hero-visual">
-      <picture>
-        <img src="/assets/img/hero-1200.webp" srcset="/assets/img/hero-800.webp 800w, /assets/img/hero-1200.webp 1200w, /assets/img/hero-1600.webp 1600w" sizes="(min-width: 960px) 50vw, 100vw" width="1600" height="900" alt="Professionnel étudiant les plans d’une rénovation dans un appartement lumineux" fetchpriority="high">
-      </picture>
-      <div class="hero-card" aria-hidden="true">
-        <p class="hero-card-title">Votre projet</p>
-        <ol>
-          <li class="done">${icon("check")}Demande reçue</li>
-          <li class="done">${icon("check")}Visite organisée</li>
-          <li>${icon("file")}Devis détaillé</li>
-        </ol>
-      </div>
-    </div>
+    <a class="hero-badge enter" style="--d:5" href="#home-form" data-to-form>
+      <span class="hero-badge-icon">${icon("whatsapp")}</span>
+      <span><strong>Devis gratuit</strong>Échangez avec nous sur WhatsApp</span>
+      ${icon("arrow", "icon hero-badge-arrow")}
+    </a>
   </div>
+  <a class="scroll-hint" href="#metiers" aria-label="Faire défiler vers nos métiers"><span></span></a>
 </section>
+
+${marquee()}
 
 <section class="section" id="metiers" aria-labelledby="metiers-title">
   <div class="container">
-    <div class="section-head section-head-split">
+    <div class="section-head section-head-split reveal">
       <div>
         <p class="eyebrow">Nos métiers</p>
         <h2 id="metiers-title" class="h2">Un réseau pour chaque étape de votre rénovation.</h2>
@@ -123,12 +126,13 @@ function home() {
     <ul class="metier-grid">
       ${metiers
         .map(
-          (m, i) => `<li class="metier-card" data-card="${m.slug}">
-        <div class="metier-top"><span class="metier-icon">${icon(m.slug)}</span><span class="metier-num">0${i + 1}</span></div>
+          (m, i) => `<li class="metier-card reveal" data-card="${m.slug}">
+        <span class="metier-num">0${i + 1}</span>
+        <span class="metier-icon">${icon(m.slug)}</span>
         <h3><a href="/metiers/${m.slug}/">${m.name}</a></h3>
         <p>${m.short}</p>
         <button type="button" class="metier-add" data-add="${m.slug}" aria-pressed="false">
-          <span class="when-off">${icon("plus")}Ajouter au projet</span>
+          <span class="when-off">Ajouter au projet ${icon("arrow")}</span>
           <span class="when-on">${icon("check")}Ajouté au projet</span>
         </button>
       </li>`
@@ -142,19 +146,24 @@ ${methodSection()}
 
 <section class="section section-paper" id="zone" aria-labelledby="zone-title">
   <div class="container zone-grid">
-    <div>
+    <div class="reveal">
       <p class="eyebrow">Zone d’intervention</p>
       <h2 id="zone-title" class="h2">Près de vous, sur un large secteur.</h2>
       <p class="section-intro">Nous étudions les projets dans toute l’Île-de-France ainsi que dans les départements limitrophes de l’Oise et de l’Eure.</p>
-      <a class="link-arrow" href="/zone-intervention/">Voir la zone d’intervention ${icon("arrow")}</a>
+      <ul class="zone-pills">
+        <li>${icon("pin")}Île-de-France</li>
+        <li>${icon("pin")}Oise (60)</li>
+        <li>${icon("pin")}Eure (27)</li>
+      </ul>
+      <a class="link-arrow" href="/zone-intervention/">Voir les départements couverts ${icon("arrow")}</a>
     </div>
-    ${zoneSummary}
+    ${zoneRadar}
   </div>
 </section>
 
 <section class="section" id="faq" aria-labelledby="faq-title">
   <div class="container faq-grid">
-    <div>
+    <div class="reveal">
       <p class="eyebrow">Questions fréquentes</p>
       <h2 id="faq-title" class="h2">Ce que l’on nous demande souvent.</h2>
     </div>
@@ -164,14 +173,14 @@ ${methodSection()}
 
 <section class="section section-ink section-contact" id="projet" aria-labelledby="projet-title">
   <div class="container contact-grid">
-    <div class="contact-copy">
+    <div class="contact-copy reveal">
       <p class="eyebrow eyebrow-light">Votre projet</p>
       <h2 id="projet-title" class="h2">Parlons de ce que vous voulez transformer.</h2>
       <p>Quelques informations suffisent pour préparer un premier échange efficace.</p>
       <ul class="contact-points">
-        <li>${icon("shield")}<span><strong>Demande sans engagement</strong>Vos informations servent uniquement à étudier votre projet.</span></li>
+        <li>${icon("check")}<span><strong>Devis gratuit et sans engagement</strong>Vos informations servent uniquement à étudier votre projet.</span></li>
+        <li>${icon("whatsapp")}<span><strong>Réponse par WhatsApp</strong>Votre message est prêt : il ne reste qu’à l’envoyer, photos comprises.</span></li>
         <li>${icon("phone")}<span><strong>Plutôt par téléphone ?</strong><a href="tel:${site.phone}">${site.phoneDisplay}</a></span></li>
-        <li>${icon("mail")}<span><strong>Par e-mail</strong><a href="mailto:${site.email}">${site.email}</a></span></li>
       </ul>
     </div>
     <div class="form-card">${quoteForm("home-form")}</div>
@@ -180,9 +189,9 @@ ${methodSection()}
 
   return page({
     path: "/",
-    title: "Nexora Travaux | Rénovation en Île-de-France : les bons pros, un seul contact",
+    title: "Nexora Travaux | Devis travaux gratuit en Île-de-France : les bons pros, un seul contact",
     description:
-      "Électricité, plomberie, peinture, sols, carrelage… Nexora Travaux cadre votre projet, organise la visite et vous met en relation avec les bons professionnels en Île-de-France, Oise et Eure. Demande sans engagement.",
+      "Électricité, plomberie, peinture, sols, carrelage… Nexora Travaux cadre votre projet, organise la visite et vous met en relation avec les bons professionnels en Île-de-France, Oise et Eure. Devis gratuit, échange simple sur WhatsApp.",
     body,
     preloadHero: true,
     jsonld: [
@@ -212,7 +221,7 @@ function metierPage(m) {
         <h1 class="h1">${m.title}</h1>
         <p class="lead">${m.intro}</p>
         <div class="hero-actions">
-          <a class="btn btn-primary btn-lg" href="/devis/?metier=${m.slug}">Demander un devis ${icon("arrow")}</a>
+          <a class="btn btn-whatsapp btn-lg" href="/devis/?metier=${m.slug}">${icon("whatsapp")}Devis gratuit sur WhatsApp</a>
           <a class="btn btn-outline btn-lg" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
         </div>
       </div>
@@ -260,12 +269,12 @@ ${methodSection()}
   </div>
 </section>
 
-${ctaBand(`Votre projet de ${m.name.toLowerCase()}, sans engagement.`)}`;
+${ctaBand(`Votre projet de ${m.name.toLowerCase()} : devis gratuit.`)}`;
 
   return page({
     path: `/metiers/${m.slug}/`,
     title: `${m.metaTitle} | Nexora Travaux`,
-    description: `${m.title} : ${m.short.toLowerCase()}. Nous cadrons votre besoin, organisons la visite et vous mettons en relation avec un professionnel adapté. Demande sans engagement.`,
+    description: `${m.title} : ${m.short.toLowerCase()}. Nous organisons la visite et vous mettons en relation avec un professionnel adapté. Devis gratuit et sans engagement.`,
     current: "metiers",
     body,
     jsonld: [
@@ -363,36 +372,35 @@ ${ctaBand()}`;
 function devisPage() {
   const bc = breadcrumb([
     ["Accueil", "/"],
-    ["Demander un devis", "/devis/"],
+    ["Devis gratuit", "/devis/"],
   ]);
   const body = `
-<section class="page-hero page-hero-tight">
+<section class="section section-ink section-contact devis-hero">
   <div class="container">
     ${bc.html}
-  </div>
-</section>
-<section class="section section-tight">
-  <div class="container contact-grid contact-grid-light">
-    <div class="contact-copy">
-      <h1 class="h1">Parlons de ce que vous voulez transformer.</h1>
-      <p class="lead">Quelques informations suffisent pour préparer un premier échange efficace.</p>
-      <ol class="mini-steps">
-        ${steps.map(([ic, t, d], i) => `<li><span class="step-num">0${i + 1}</span><span><strong>${t}</strong>${d}</span></li>`).join("")}
-      </ol>
-      <ul class="contact-points">
-        <li>${icon("shield")}<span><strong>Demande sans engagement</strong>Vos informations servent uniquement à étudier votre projet.</span></li>
-        <li>${icon("phone")}<span><strong>Plutôt par téléphone ?</strong><a href="tel:${site.phone}">${site.phoneDisplay}</a></span></li>
-        <li>${icon("mail")}<span><strong>Par e-mail</strong><a href="mailto:${site.email}">${site.email}</a></span></li>
-      </ul>
+    <div class="contact-grid">
+      <div class="contact-copy">
+        <p class="eyebrow eyebrow-light">Devis gratuit</p>
+        <h1 class="h1">Parlons de ce que vous voulez transformer.</h1>
+        <p class="lead">Trois étapes, moins d’une minute : votre message est prêt à envoyer sur WhatsApp.</p>
+        <ol class="mini-steps">
+          ${steps.map(([ic, t, d], i) => `<li><span class="mini-num">0${i + 1}</span><span><strong>${t}</strong>${d}</span></li>`).join("")}
+        </ol>
+        <ul class="contact-points">
+          <li>${icon("check")}<span><strong>Gratuit et sans engagement</strong>Vos informations servent uniquement à étudier votre projet.</span></li>
+          <li>${icon("phone")}<span><strong>Plutôt par téléphone ?</strong><a href="tel:${site.phone}">${site.phoneDisplay}</a></span></li>
+          <li>${icon("mail")}<span><strong>Par e-mail</strong><a href="mailto:${site.email}">${site.email}</a></span></li>
+        </ul>
+      </div>
+      <div class="form-card">${quoteForm("devis-form")}</div>
     </div>
-    <div class="form-card form-card-raised">${quoteForm("devis-form")}</div>
   </div>
 </section>`;
   return page({
     path: "/devis/",
-    title: "Demander un devis travaux sans engagement | Nexora Travaux",
+    title: "Devis travaux gratuit et sans engagement | Nexora Travaux",
     description:
-      "Décrivez votre projet de rénovation en quelques lignes : nous organisons la visite et l’entreprise réalisatrice vous transmet un devis détaillé. Sans engagement.",
+      "Décrivez votre projet en 3 étapes et envoyez-le sur WhatsApp : nous organisons la visite et l’entreprise réalisatrice vous transmet un devis détaillé. Gratuit et sans engagement.",
     body,
     jsonld: [bc.ld],
   });
@@ -417,7 +425,7 @@ function legalPage() {
     Téléphone : <a href="tel:${site.phone}">${site.phoneDisplay}</a><br>
     E-mail : <a href="mailto:${site.email}">${site.email}</a></p>
     <h2>Hébergement</h2>
-    <p>Cloudflare, Inc. — 101 Townsend St, San Francisco, CA 94107, États-Unis — <a href="https://www.cloudflare.com" rel="noopener">cloudflare.com</a></p>
+    <p>Netlify, Inc. — 101 2nd Street, San Francisco, CA 94105, États-Unis — <a href="https://www.netlify.com" rel="noopener">netlify.com</a><br>Nom de domaine et messagerie : OVH SAS — 2 rue Kellermann, 59100 Roubaix, France</p>
     <h2>Activité</h2>
     <p>${site.name} accompagne les particuliers dans la préparation de leurs projets de travaux et les met en relation avec des professionnels. Les travaux sont chiffrés et réalisés par l’entreprise réalisatrice, qui transmet directement sa proposition au client.</p>
     <h2>Propriété intellectuelle</h2>
@@ -469,7 +477,7 @@ function notFound() {
     <p class="lead">Pas de panique : retrouvez nos métiers ou décrivez-nous directement votre projet.</p>
     <div class="hero-actions center">
       <a class="btn btn-primary btn-lg" href="/">Retour à l’accueil</a>
-      <a class="btn btn-outline btn-lg" href="/devis/">Demander un devis</a>
+      <a class="btn btn-outline btn-lg" href="/devis/">Devis gratuit</a>
     </div>
   </div>
 </section>`;

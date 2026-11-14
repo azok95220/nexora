@@ -1,5 +1,7 @@
 import { site, icons, metiers } from "./data.mjs";
 
+export const waDirect = `${site.whatsapp}?text=${encodeURIComponent("Bonjour Nexora Travaux, je souhaite un devis gratuit pour mon projet.")}`;
+
 export const icon = (name, cls = "icon") =>
   `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]}</svg>`;
 
@@ -22,7 +24,7 @@ function header(current) {
       ${link("/#methode", "Comment ça marche", "methode")}
       ${link("/zone-intervention/", "Zone d’intervention", "zone")}
       <a class="nav-phone" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
-      <a class="btn btn-primary btn-sm" href="/devis/">Demander un devis</a>
+      <a class="btn btn-dark btn-sm" href="/devis/">Devis gratuit</a>
     </nav>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Ouvrir le menu">
       ${icon("menu", "icon icon-open")}${icon("close", "icon icon-close")}
@@ -53,7 +55,8 @@ function footer() {
       </ul>
       <h2 class="footer-title">Informations</h2>
       <ul>
-        <li><a href="/devis/">Demander un devis</a></li>
+        <li><a href="/devis/">Devis gratuit</a></li>
+        <li><a href="${waDirect}" rel="noopener">Nous écrire sur WhatsApp</a></li>
         <li><a href="/mentions-legales/">Mentions légales</a></li>
         <li><a href="/confidentialite/">Confidentialité</a></li>
       </ul>
@@ -66,8 +69,11 @@ function footer() {
 </footer>
 <div class="mobile-bar" aria-label="Contact rapide">
   <a class="btn btn-ghost" href="tel:${site.phone}">${icon("phone")}Appeler</a>
-  <a class="btn btn-primary" href="/devis/">${icon("file")}Demander un devis</a>
-</div>`;
+  <a class="btn btn-whatsapp" href="${waDirect}" rel="noopener">${icon("whatsapp")}Devis gratuit WhatsApp</a>
+</div>
+<a class="wa-float" href="${waDirect}" rel="noopener" aria-label="Nous écrire sur WhatsApp">
+  ${icon("whatsapp")}<span>Devis gratuit sur WhatsApp</span>
+</a>`;
 }
 
 /**
@@ -86,7 +92,7 @@ export function page(p) {
 <title>${esc(p.title)}</title>
 <meta name="description" content="${esc(p.description)}">
 ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${canonical}">`}
-<meta name="theme-color" content="#0E1A2B">
+<meta name="theme-color" content="#0B1730">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="${site.name}">
@@ -96,13 +102,12 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <meta property="og:image" content="${site.url}/assets/img/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/assets/fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-${p.preloadHero ? '<link rel="preload" as="image" href="/assets/img/hero-1200.webp" imagesrcset="/assets/img/hero-800.webp 800w, /assets/img/hero-1200.webp 1200w, /assets/img/hero-1600.webp 1600w" imagesizes="(min-width: 960px) 50vw, 100vw" fetchpriority="high">' : ""}
+${p.preloadHero ? '<link rel="preload" as="image" href="/assets/img/hero-1200.webp" imagesrcset="/assets/img/hero-800.webp 800w, /assets/img/hero-1200.webp 1200w, /assets/img/hero-1600.webp 1600w" imagesizes="100vw" fetchpriority="high">' : ""}
 <link rel="stylesheet" href="/assets/css/site.css?v=__V__">
 ${ld}
 </head>
-<body>
+<body${p.preloadHero ? ' class="has-hero"' : ""}>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 ${header(p.current)}
 <main id="contenu">
@@ -231,6 +236,6 @@ export function quoteForm(id = "devis-form") {
     <div class="step-nav step-nav-start"><button class="btn btn-text" type="button" data-prev>Retour</button></div>
   </div>
 
-  <p class="form-note">Demande sans engagement. Vous pourrez relire votre message avant de l’envoyer. Vous pouvez aussi nous appeler au <a href="tel:${site.phone}">${site.phoneDisplay}</a> ou écrire à <a href="mailto:${site.email}">${site.email}</a>.</p>
+  <p class="form-note"><strong>Devis gratuit et sans engagement.</strong> Vous pourrez relire votre message avant de l’envoyer. Vous pouvez aussi nous appeler au <a href="tel:${site.phone}">${site.phoneDisplay}</a> ou écrire à <a href="mailto:${site.email}">${site.email}</a>.</p>
 </form>`;
 }
