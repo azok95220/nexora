@@ -157,6 +157,7 @@ export const businessLd = {
     { "@type": "City", name: "Paris" },
   ],
   knowsAbout: metiers.map((m) => m.name),
+  founder: { "@type": "Person", name: "Mickaël" },
 };
 
 export function faqLd(pairs) {

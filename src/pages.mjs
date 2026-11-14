@@ -3,6 +3,10 @@ import { page, icon, breadcrumb, businessLd, faqLd, faqHtml, quoteForm } from ".
 
 const homeFaq = [
   [
+    "Pourquoi passer par Nexora plutôt que d’appeler des artisans moi-même ?",
+    "Pour gagner du temps et de la tranquillité : au lieu d’appeler des dizaines d’entreprises, vous envoyez un seul message. Mickaël, fort de plus de 10 ans dans le BTP, sélectionne les bons professionnels de son réseau, négocie les prix pour vous et suit vos travaux jusqu’au bout.",
+  ],
+  [
     "Le devis est-il gratuit ?",
     "Oui. L’étude de votre demande, la visite et le devis sont gratuits et sans engagement : vous décidez ensuite librement de donner suite ou non.",
   ],
@@ -12,7 +16,7 @@ const homeFaq = [
   ],
   [
     "Qui réalise les travaux ?",
-    "L’entreprise réalisatrice, choisie selon la nature de votre chantier. Elle chiffre les travaux et vous transmet directement une proposition détaillée. Nexora Travaux reste votre interlocuteur pour cadrer le besoin et organiser la visite.",
+    "Des entreprises et artisans de notre réseau, sélectionnés selon la nature de votre chantier. Nexora négocie les prix pour vous, reste votre interlocuteur unique et suit les travaux du début à la fin."
   ],
   [
     "Puis-je regrouper plusieurs métiers dans une seule demande ?",
@@ -27,14 +31,15 @@ const homeFaq = [
 const steps = [
   ["whatsapp", "Vous nous expliquez", "Type de travaux, adresse, photos et disponibilités : nous réunissons les informations utiles, simplement par WhatsApp."],
   ["calendar", "Nous organisons la visite", "Un rendez-vous est fixé avec l’interlocuteur capable d’évaluer précisément votre chantier."],
-  ["file", "Vous recevez votre devis gratuit", "L’entreprise réalisatrice chiffre les travaux et vous transmet une proposition détaillée, sans engagement."],
+  ["file", "Vous recevez votre devis gratuit", "Nous négocions pour vous et l’entreprise retenue vous transmet une proposition détaillée, sans engagement."],
+  ["check", "Nous suivons vos travaux", "Du démarrage à la dernière finition, Nexora reste votre interlocuteur unique et suit le chantier pour vous."],
 ];
 
 const methodSection = () => `<section class="section section-ink method" id="methode" aria-labelledby="methode-title">
   <div class="container method-grid">
     <div class="method-head reveal">
       <p class="eyebrow eyebrow-light">Notre méthode</p>
-      <h2 id="methode-title" class="h2">Simple du premier message jusqu’au démarrage.</h2>
+      <h2 id="methode-title" class="h2">Simple du premier message jusqu’à la fin des travaux.</h2>
       <a class="btn btn-whatsapp" href="/devis/" data-to-form>${icon("whatsapp")}Commencer sur WhatsApp</a>
     </div>
     <ol class="method-list">
@@ -114,6 +119,58 @@ function home() {
 </section>
 
 ${marquee()}
+
+<section class="section founder" id="mickael" aria-labelledby="founder-title">
+  <div class="container founder-grid">
+    <div class="founder-card reveal">
+      <div class="founder-avatar" aria-hidden="true"><span>M</span></div>
+      <p class="founder-name">Mickaël</p>
+      <p class="founder-role">Fondateur de Nexora Travaux</p>
+      <ul class="founder-stats">
+        <li><strong>10<sup>+</sup></strong><span>ans dans le BTP</span></li>
+        <li><strong>1</strong><span>seul interlocuteur</span></li>
+        <li><strong>0&nbsp;€</strong><span>pour le devis</span></li>
+      </ul>
+    </div>
+    <div class="founder-copy reveal">
+      <p class="eyebrow">Le mot du fondateur</p>
+      <h2 id="founder-title" class="h2">Bonjour, je m’appelle Mickaël.</h2>
+      <div class="founder-text">
+        <p>Je travaille dans le <strong>BTP depuis plus de 10 ans</strong>. Au fil des chantiers, je me suis constitué un solide réseau d’entreprises et d’artisans de confiance.</p>
+        <p>Mon rôle&#8239;: <strong>trouver les bons professionnels pour votre projet, négocier pour vous les meilleurs prix et suivre vos travaux</strong> jusqu’à la dernière finition.</p>
+        <p class="founder-punch">Vous n’avez qu’une seule chose à faire&#8239;: <span>me contacter.</span><br>Nexora s’occupe de tout, du début à la fin.</p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-whatsapp btn-lg" href="#home-form" data-to-form>${icon("whatsapp")}Contacter Mickaël sur WhatsApp</a>
+        <a class="link-arrow link-dark" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="versus reveal">
+      <div class="versus-col versus-without">
+        <p class="versus-title">Sans Nexora</p>
+        <ul>
+          <li>${icon("close")}Appeler des dizaines d’entreprises</li>
+          <li>${icon("close")}Attendre des rappels qui n’arrivent pas</li>
+          <li>${icon("close")}Comparer seul des devis incomparables</li>
+          <li>${icon("close")}Coordonner chaque artisan vous-même</li>
+        </ul>
+      </div>
+      <div class="versus-vs" aria-hidden="true">VS</div>
+      <div class="versus-col versus-with">
+        <p class="versus-title">Avec Nexora</p>
+        <ul>
+          <li>${icon("check")}Un seul message sur WhatsApp</li>
+          <li>${icon("check")}Les bons professionnels, sélectionnés pour vous</li>
+          <li>${icon("check")}Des prix négociés et un devis gratuit</li>
+          <li>${icon("check")}Un suivi des travaux du début à la fin</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="section" id="metiers" aria-labelledby="metiers-title">
   <div class="container">

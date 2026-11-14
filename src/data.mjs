@@ -10,7 +10,7 @@ export const site = {
   whatsapp: "https://wa.me/33605572482",
   email: "contact@nexoratravaux.fr",
   description:
-    "Nexora Travaux cadre votre projet de rénovation, organise la visite et vous met en relation avec les professionnels adaptés : électricité, plomberie, peinture, sols… à Paris et dans toute l’Île-de-France.",
+    "Un seul contact pour vos travaux : Nexora Travaux sélectionne les bons professionnels, négocie les prix et suit votre chantier du début à la fin. Électricité, plomberie, peinture, sols… à Paris et dans toute l’Île-de-France.",
 };
 
 export const icons = {
