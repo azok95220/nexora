@@ -23,6 +23,7 @@ function header(current) {
       ${link("/#metiers", "Nos métiers", "metiers")}
       ${link("/#methode", "Comment ça marche", "methode")}
       ${link("/zone-intervention/", "Zone d’intervention", "zone")}
+      ${link("/parrainage/", "Parrainage", "parrainage")}
       <a class="nav-phone" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
       <a class="btn btn-dark btn-sm" href="/devis/">Devis gratuit</a>
     </nav>
@@ -56,6 +57,7 @@ function footer() {
       <h2 class="footer-title">Informations</h2>
       <ul>
         <li><a href="/devis/">Devis gratuit</a></li>
+        <li><a href="/parrainage/">Recommander Nexora</a></li>
         <li><a href="${waDirect}" rel="noopener">Nous écrire sur WhatsApp</a></li>
         <li><a href="/mentions-legales/">Mentions légales</a></li>
         <li><a href="/confidentialite/">Confidentialité</a></li>
@@ -226,6 +228,10 @@ export function quoteForm(id = "devis-form") {
         <label for="${id}-cp">Code postal</label>
         <input id="${id}-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" placeholder="Ex. 95220" pattern="[0-9]{5}" maxlength="5" required>
       </div>
+    </div>
+    <div class="field field-ref">
+      <label for="${id}-ref">Recommandé par <span class="optional">facultatif</span></label>
+      <input id="${id}-ref" name="ref" autocomplete="off" placeholder="Code ou nom de la personne" data-ref-input>
     </div>
     <p class="form-error" role="alert" hidden></p>
     <div class="form-actions">

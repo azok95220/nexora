@@ -27,6 +27,13 @@ npm run preview      # génère puis sert le site sur http://localhost:4321
 - `/zone-intervention/`, `/devis/`, `/mentions-legales/`, `/confidentialite/`, `404.html`
 - `sitemap.xml` et `robots.txt` générés automatiquement
 
+## Parrainage
+
+Page `/parrainage/` : simulateur de gains, création d’un lien personnel (`/?ref=CODE`), conditions.
+Le taux, le plafond et le délai se règlent dans `src/data.mjs` (objet `parrainage`).
+Le code d’un visiteur arrivé par un lien est mémorisé 90 jours et ajouté au message WhatsApp
+(« Recommandé par : CODE »). Un apporteur active son code en l’envoyant à Mickaël sur WhatsApp.
+
 ## Formulaire de devis
 
 Aucune donnée n’est stockée : le formulaire ouvre WhatsApp (ou les SMS sur mobile) avec un message

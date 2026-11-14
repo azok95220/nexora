@@ -1,4 +1,4 @@
-import { site, metiers, zones } from "./data.mjs";
+import { site, metiers, zones, parrainage as P } from "./data.mjs";
 import { page, icon, breadcrumb, businessLd, faqLd, faqHtml, quoteForm } from "./layout.mjs";
 
 const homeFaq = [
@@ -227,6 +227,18 @@ ${methodSection()}
   </div>
 </section>
 
+<section class="referral-band">
+  <div class="container referral-band-inner reveal">
+    <div class="referral-band-badge" aria-hidden="true">${P.rate}&nbsp;%</div>
+    <div>
+      <p class="eyebrow eyebrow-light">Parrainage</p>
+      <h2 class="h3">Vous connaissez quelqu’un qui a un projet de travaux&#8239;?</h2>
+      <p>Recommandez Nexora et touchez ${P.rate}&nbsp;% du montant de son chantier, jusqu’à ${P.max.toLocaleString("fr-FR")}&nbsp;€. Sans rien coûter à votre proche.</p>
+    </div>
+    <a class="btn btn-whatsapp btn-lg" href="/parrainage/">Je recommande Nexora ${icon("arrow")}</a>
+  </div>
+</section>
+
 <section class="section section-ink section-contact" id="projet" aria-labelledby="projet-title">
   <div class="container contact-grid">
     <div class="contact-copy reveal">
@@ -449,6 +461,165 @@ function devisPage() {
 
 /* ------------------------------------------------------------------ */
 
+const fmt = (n) => n.toLocaleString("fr-FR");
+const referralFaq = [
+  [
+    "Combien puis-je gagner ?",
+    `${P.rate} % du montant HT des travaux signés par la personne que vous avez recommandée (${P.bonusRate} % à partir de votre 3e chantier signé dans l’année), avec un minimum de ${P.min} € et un maximum de ${fmt(P.max)} € par chantier. Exemple : une rénovation de salle de bain à 12 000 € HT vous rapporte ${fmt(Math.round(12000 * P.rate / 100))} €.`,
+  ],
+  [
+    "Quand suis-je payé ?",
+    `Par virement, dans les ${P.delai} qui suivent le paiement du chantier par le client. Vous êtes tenu informé de l’avancement sur WhatsApp.`,
+  ],
+  [
+    "La personne que je recommande paie-t-elle plus cher ?",
+    "Non. Votre récompense est prise sur la rémunération de Nexora, jamais ajoutée à la facture de votre proche. Il bénéficie du même devis gratuit, des mêmes prix négociés et du même suivi.",
+  ],
+  [
+    "Comment Nexora sait-il que le client vient de moi ?",
+    "Partagez votre lien personnel : votre code est automatiquement ajouté au message de votre proche. Il peut aussi simplement donner votre nom ou votre code lors de sa demande.",
+  ],
+  [
+    "Dois-je avoir un statut d’entreprise ?",
+    "Pas pour recommander occasionnellement. Les sommes perçues sont toutefois des revenus à déclarer aux impôts. Si vous recommandez régulièrement, un statut de micro-entrepreneur est conseillé. Un contrat d’apporteur d’affaires simple est signé avant votre premier versement.",
+  ],
+];
+
+function referralPage() {
+  const bc = breadcrumb([
+    ["Accueil", "/"],
+    ["Parrainage", "/parrainage/"],
+  ]);
+  const ex = [5000, 12000, 25000, 50000].map((v) => [v, Math.min(P.max, Math.max(P.min, Math.round((v * P.rate) / 100)))]);
+  const body = `
+<section class="page-hero referral-hero">
+  <div class="container">
+    ${bc.html}
+    <div class="page-hero-grid">
+      <div>
+        <p class="eyebrow eyebrow-light">Programme apporteurs Nexora</p>
+        <h1 class="h1">Recommandez Nexora. <span class="accent">Gagnez jusqu’à ${fmt(P.max)}&nbsp;€ par chantier.</span></h1>
+        <p class="lead">Un proche, un voisin, un client a un projet de travaux&#8239;? Mettez-le en relation avec Nexora&#8239;: dès que son chantier est signé et réglé, vous touchez <strong>${P.rate}&nbsp;% du montant des travaux</strong>.</p>
+        <div class="hero-actions">
+          <a class="btn btn-whatsapp btn-lg" href="#lien">${icon("arrow")}Créer mon lien de parrainage</a>
+          <a class="link-light" href="#simulateur">Calculer mes gains ${icon("arrow")}</a>
+        </div>
+      </div>
+      <aside class="aside-card referral-examples">
+        <h2 class="h4">Exemples de gains</h2>
+        <ul>
+          ${ex.map(([v, g]) => `<li><span>Chantier de ${fmt(v)}&nbsp;€</span><strong>${fmt(g)}&nbsp;€</strong></li>`).join("")}
+        </ul>
+        <p>Calculés à ${P.rate}&nbsp;% du montant HT, plafonnés à ${fmt(P.max)}&nbsp;€.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Comment ça marche</p>
+      <h2 class="h2">Trois étapes, aucune démarche compliquée.</h2>
+    </div>
+    <ol class="ref-steps">
+      <li class="reveal"><span class="ref-num">01</span>${icon("user")}<h3>Créez votre lien</h3><p>Indiquez votre prénom ci-dessous&#8239;: votre code personnel est créé en un instant. Activez-le en un message WhatsApp.</p></li>
+      <li class="reveal"><span class="ref-num">02</span>${icon("whatsapp")}<h3>Partagez-le</h3><p>Envoyez votre lien à vos proches, voisins ou clients qui ont un projet. Ils peuvent aussi simplement donner votre nom.</p></li>
+      <li class="reveal"><span class="ref-num">03</span>${icon("check")}<h3>Soyez payé</h3><p>Chantier signé et réglé&#8239;? Vous recevez ${P.rate}&nbsp;% du montant HT par virement, sous ${P.delai}.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section section-paper" id="simulateur">
+  <div class="container sim-grid">
+    <div class="reveal">
+      <p class="eyebrow">Simulateur</p>
+      <h2 class="h2">Combien pouvez-vous gagner&#8239;?</h2>
+      <p class="section-intro">Faites glisser le curseur selon le montant estimé des travaux de la personne que vous recommandez.</p>
+      <ul class="win-list">
+        <li>${icon("check")}<span><strong>Vous</strong> êtes récompensé pour un simple conseil.</span></li>
+        <li>${icon("check")}<span><strong>Votre proche</strong> profite du devis gratuit, de prix négociés et d’un suivi complet, <em>sans payer plus cher</em>.</span></li>
+        <li>${icon("check")}<span><strong>Les artisans</strong> reçoivent des chantiers sérieux et bien préparés.</span></li>
+      </ul>
+    </div>
+    <div class="sim-card reveal" data-sim data-rate="${P.rate}" data-bonus="${P.bonusRate}" data-min="${P.min}" data-max="${P.max}">
+      <label class="sim-label" for="sim-range">Montant des travaux</label>
+      <output class="sim-amount" for="sim-range" data-sim-amount>12&nbsp;000&nbsp;€</output>
+      <input id="sim-range" type="range" min="2000" max="80000" step="1000" value="12000" data-sim-range>
+      <div class="sim-scale"><span>2&nbsp;000&nbsp;€</span><span>80&nbsp;000&nbsp;€</span></div>
+      <label class="sim-toggle"><input type="checkbox" data-sim-bonus><span class="switch"></span><span class="sim-toggle-text">À partir de mon 3<sup>e</sup> chantier dans l’année (${P.bonusRate}&nbsp;%)</span></label>
+      <div class="sim-result">
+        <span>Vous gagnez</span>
+        <strong data-sim-gain>${fmt(Math.round(12000 * P.rate / 100))}&nbsp;€</strong>
+      </div>
+      <p class="sim-note">Estimation indicative, calculée sur le montant HT signé. Minimum ${P.min}&nbsp;€, maximum ${fmt(P.max)}&nbsp;€ par chantier.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-ink section-contact" id="lien">
+  <div class="container contact-grid">
+    <div class="contact-copy reveal">
+      <p class="eyebrow eyebrow-light">Votre lien personnel</p>
+      <h2 class="h2">Créez votre lien en 10 secondes.</h2>
+      <p>Gratuit et sans engagement. Votre code est ajouté automatiquement aux demandes de vos proches.</p>
+      <h3 class="h4 who-title">Idéal pour</h3>
+      <ul class="who-list">
+        <li>Famille, amis, voisins</li><li>Agents immobiliers</li><li>Gardiens et syndics</li><li>Architectes et décorateurs</li><li>Artisans (autres métiers)</li><li>Commerçants du quartier</li>
+      </ul>
+    </div>
+    <div class="form-card ref-card" data-ref-gen>
+      <div class="field">
+        <label for="ref-name">Votre prénom</label>
+        <input id="ref-name" autocomplete="given-name" placeholder="Ex. Sophie" maxlength="30">
+      </div>
+      <button class="btn btn-primary btn-lg" type="button" data-ref-create>Créer mon lien</button>
+      <div class="ref-out" data-ref-out hidden>
+        <p class="ref-out-label">Votre code&#8239;: <strong data-ref-code></strong></p>
+        <div class="ref-link"><input readonly data-ref-link aria-label="Votre lien de parrainage"><button class="btn btn-outline" type="button" data-ref-copy>${icon("copy")}Copier</button></div>
+        <a class="btn btn-whatsapp btn-lg" data-ref-activate href="#" rel="noopener">${icon("whatsapp")}1. Activer mon code auprès de Mickaël</a>
+        <a class="btn btn-outline btn-lg" data-ref-share href="#" rel="noopener">${icon("chat")}2. Partager mon lien sur WhatsApp</a>
+        <p class="form-note">Votre code devient actif dès que Mickaël l’a enregistré (étape 1).</p>
+      </div>
+      <p class="form-error" role="alert" hidden></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container faq-grid">
+    <div class="reveal">
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2 class="h2">Tout savoir sur le parrainage.</h2>
+      <details class="conditions">
+        <summary>Conditions du programme</summary>
+        <ul>
+          <li>La personne recommandée est un nouveau client, qui n’était pas déjà en contact avec Nexora.</li>
+          <li>La récompense est due une fois le chantier signé <strong>et</strong> réglé par le client.</li>
+          <li>Montant&#8239;: ${P.rate}&nbsp;% du montant HT des travaux (${P.bonusRate}&nbsp;% à partir du 3<sup>e</sup> chantier signé dans l’année civile), minimum ${P.min}&nbsp;€, maximum ${fmt(P.max)}&nbsp;€ par chantier.</li>
+          <li>Un chantier ne donne lieu qu’à une seule récompense&#8239;: celle de la première personne mentionnée.</li>
+          <li>Il n’est pas possible de se recommander soi-même.</li>
+          <li>Versement par virement sous ${P.delai} après paiement, après signature d’un contrat d’apporteur d’affaires.</li>
+          <li>Les sommes perçues sont à déclarer par l’apporteur auprès de l’administration fiscale.</li>
+          <li>Nexora peut faire évoluer le programme&#8239;; les recommandations déjà enregistrées restent aux conditions en vigueur au moment de leur enregistrement.</li>
+        </ul>
+      </details>
+    </div>
+    ${faqHtml(referralFaq)}
+  </div>
+</section>`;
+  return page({
+    path: "/parrainage/",
+    title: `Parrainage : gagnez ${P.rate} % en recommandant Nexora Travaux`,
+    description: `Recommandez Nexora Travaux à un proche qui a un projet de travaux en Île-de-France et touchez ${P.rate} % du montant de son chantier, jusqu’à ${fmt(P.max)} €. Sans frais pour lui.`,
+    current: "parrainage",
+    body,
+    jsonld: [bc.ld, faqLd(referralFaq)],
+  });
+}
+
+/* ------------------------------------------------------------------ */
+
 const todo = (t) => `<mark class="todo">[À compléter : ${t}]</mark>`;
 
 function legalPage() {
@@ -531,6 +702,7 @@ export function allPages() {
     ...metiers.map((m) => [`metiers/${m.slug}/index.html`, metierPage(m), `/metiers/${m.slug}/`, "0.8"]),
     ["zone-intervention/index.html", zonePage(), "/zone-intervention/", "0.7"],
     ["devis/index.html", devisPage(), "/devis/", "0.9"],
+    ["parrainage/index.html", referralPage(), "/parrainage/", "0.7"],
     ["mentions-legales/index.html", legalPage(), "/mentions-legales/", "0.2"],
     ["confidentialite/index.html", privacyPage(), "/confidentialite/", "0.2"],
     ["404.html", notFound(), null, null],

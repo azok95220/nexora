@@ -323,3 +323,13 @@ export const zones = {
     ],
   },
 };
+
+// Programme « Recommandez Nexora » : modifiez ces valeurs puis relancez `node build.mjs`.
+// rate = part du montant HT des travaux reversée à l’apporteur.
+export const parrainage = {
+  rate: 3, // %
+  bonusRate: 4, // % à partir du 3e chantier signé dans l’année
+  min: 50, // € minimum versé par chantier
+  max: 1500, // € maximum versé par chantier
+  delai: "30 jours", // délai de versement après paiement du chantier
+};

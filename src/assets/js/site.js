@@ -67,6 +67,20 @@
   if (pre && chip(pre)) chip(pre).checked = true;
   refreshSelection();
 
+  /* ---------- Parrainage : mémorise le code ?ref=… pendant 90 jours ---------- */
+  const REF_KEY = "nexora_ref";
+  const cleanCode = (v) => String(v || "").trim().slice(0, 40).replace(/[^\p{L}\p{N} _.-]/gu, "");
+  let refCode = "";
+  try {
+    const fromUrl = cleanCode(new URLSearchParams(location.search).get("ref"));
+    if (fromUrl) localStorage.setItem(REF_KEY, JSON.stringify({ code: fromUrl, t: Date.now() }));
+    const saved = JSON.parse(localStorage.getItem(REF_KEY) || "null");
+    if (saved && Date.now() - saved.t < 90 * 864e5) refCode = saved.code;
+  } catch (e) {
+    refCode = cleanCode(new URLSearchParams(location.search).get("ref"));
+  }
+  if (refCode) document.querySelectorAll("[data-ref-input]").forEach((i) => (i.value = refCode));
+
   /* ---------- Formulaire en 3 étapes + envoi WhatsApp / SMS ---------- */
   const isValidCp = (cp) => /^\d{5}$/.test(cp);
 
@@ -134,6 +148,7 @@
       const cp = String(data.get("postalCode") || "").trim();
       const project = String(data.get("project") || "").trim();
       const metiers = data.getAll("metiers");
+      const ref = cleanCode(data.get("ref"));
 
       if (!validate(0)) return go(0);
       const last = steps[steps.length - 1];
@@ -151,7 +166,7 @@
       showError(last, "");
 
       const lines = ["Bonjour Nexora Travaux, je souhaite vous parler de mon projet."];
-      [["Nom", name], ["Code postal", cp], ["Travaux", metiers.join(", ")], ["Mon projet", project]].forEach(
+      [["Nom", name], ["Code postal", cp], ["Travaux", metiers.join(", ")], ["Mon projet", project], ["Recommandé par", ref]].forEach(
         ([k, v]) => v && lines.push(`${k} : ${v}`)
       );
       const text = encodeURIComponent(lines.join("\n"));
@@ -169,6 +184,70 @@
     });
 
     go(0, { focus: false });
+  });
+
+  /* ---------- Simulateur de gains ---------- */
+  const euro = (n) => n.toLocaleString("fr-FR") + "\u00a0€";
+  document.querySelectorAll("[data-sim]").forEach((sim) => {
+    const range = sim.querySelector("[data-sim-range]");
+    const bonus = sim.querySelector("[data-sim-bonus]");
+    const amount = sim.querySelector("[data-sim-amount]");
+    const gain = sim.querySelector("[data-sim-gain]");
+    const { rate, bonus: bRate, min, max } = sim.dataset;
+    const update = () => {
+      const v = Number(range.value);
+      const r = bonus.checked ? Number(bRate) : Number(rate);
+      const g = Math.min(Number(max), Math.max(Number(min), Math.round((v * r) / 100)));
+      amount.textContent = euro(v);
+      gain.textContent = euro(g);
+      range.style.setProperty("--p", `${((v - range.min) / (range.max - range.min)) * 100}%`);
+    };
+    range.addEventListener("input", update);
+    bonus.addEventListener("change", update);
+    update();
+  });
+
+  /* ---------- Création du lien de parrainage ---------- */
+  document.querySelectorAll("[data-ref-gen]").forEach((box) => {
+    const nameInput = box.querySelector("#ref-name");
+    const out = box.querySelector("[data-ref-out]");
+    const err = box.querySelector(".form-error");
+    const linkInput = box.querySelector("[data-ref-link]");
+    const show = (code, prenom) => {
+      const link = `${location.origin}/?ref=${encodeURIComponent(code)}`;
+      box.querySelector("[data-ref-code]").textContent = code;
+      linkInput.value = link;
+      box.querySelector("[data-ref-activate]").href =
+        `${WHATSAPP}?text=${encodeURIComponent(`Bonjour Mickaël, je souhaite devenir apporteur Nexora.\nPrénom : ${prenom}\nMon code : ${code}`)}`;
+      box.querySelector("[data-ref-share]").href =
+        `https://wa.me/?text=${encodeURIComponent(`Tu as un projet de travaux ? Je te recommande Nexora Travaux : un seul contact, devis gratuit, ils s’occupent de tout. ${link}`)}`;
+      out.hidden = false;
+    };
+    try {
+      const mine = JSON.parse(localStorage.getItem("nexora_my_ref") || "null");
+      if (mine) { nameInput.value = mine.prenom; show(mine.code, mine.prenom); }
+    } catch (e) {}
+    box.querySelector("[data-ref-create]").addEventListener("click", () => {
+      const prenom = nameInput.value.trim();
+      if (!prenom) { err.textContent = "Indiquez votre prénom."; err.hidden = false; nameInput.focus(); return; }
+      err.hidden = true;
+      const base = prenom.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z]/g, "").slice(0, 8) || "AMI";
+      const alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+      let suffix = "";
+      const rnd = new Uint32Array(4);
+      (window.crypto || window.msCrypto).getRandomValues(rnd);
+      rnd.forEach((n) => (suffix += alphabet[n % alphabet.length]));
+      const code = `${base}-${suffix}`;
+      try { localStorage.setItem("nexora_my_ref", JSON.stringify({ code, prenom })); } catch (e) {}
+      show(code, prenom);
+    });
+    box.querySelector("[data-ref-copy]").addEventListener("click", async (e) => {
+      const btn = e.currentTarget;
+      try { await navigator.clipboard.writeText(linkInput.value); } catch (er) { linkInput.select(); document.execCommand && document.execCommand("copy"); }
+      const old = btn.innerHTML;
+      btn.textContent = "Copié !";
+      setTimeout(() => (btn.innerHTML = old), 1600);
+    });
   });
 
   // Masque la barre d’appel mobile tant qu’un formulaire est visible
