@@ -410,6 +410,48 @@
     });
   });
 
+  /* ---------- Simulateur de commission (parrainage) ---------- */
+  $$("[data-simu]").forEach((sim) => {
+    const d = sim.dataset;
+    const C = { forfait: +d.forfait, seuil: +d.seuil, taux: +d.taux, tauxPro: +d.tauxPro, apres: +d.apres, plafond: +d.plafond };
+    const fmt = (n) => `${Math.round(n).toLocaleString("fr-FR")} €`;
+    const gainOf = (m, rank) => (m < C.seuil ? C.forfait : Math.min(C.plafond, (m * (rank > C.apres ? C.tauxPro : C.taux)) / 100));
+    const range = $('input[type="range"]', sim);
+    const out = $("[data-simu-amount]", sim);
+    const res = $("[data-simu-gain]", sim);
+    const rule = $("[data-simu-rule]", sim);
+    const total = $("[data-simu-total]", sim);
+    const ranks = $$("[data-rank]", sim);
+    let rank = 1;
+    let last = "";
+    const update = () => {
+      const m = +range.value;
+      const g = gainOf(m, rank);
+      out.textContent = `${fmt(m)} HT`;
+      const txt = fmt(g);
+      if (txt !== last && last && !reduced) {
+        res.classList.remove("bump");
+        void res.offsetWidth;
+        res.classList.add("bump");
+      }
+      res.textContent = last = txt;
+      rule.textContent =
+        m < C.seuil ? `Forfait petit chantier` : g >= C.plafond ? `Plafond par chantier atteint` : `${rank > C.apres ? C.tauxPro : C.taux} % du montant HT`;
+      // Cumul : 4 chantiers de ce montant recommandés
+      const four = [1, 2, 3, 4].reduce((s, r) => s + gainOf(m, r), 0);
+      total.innerHTML = `4 chantiers comme celui-ci = <strong>${fmt(four)}</strong> pour vous`;
+    };
+    range.addEventListener("input", update);
+    ranks.forEach((b) =>
+      b.addEventListener("click", () => {
+        rank = +b.dataset.rank;
+        ranks.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+        update();
+      })
+    );
+    update();
+  });
+
   /* ---------- Test de zone par code postal ---------- */
   const DEPTS = { 75: "Paris", 77: "Seine-et-Marne", 78: "Yvelines", 91: "Essonne", 92: "Hauts-de-Seine", 93: "Seine-Saint-Denis", 94: "Val-de-Marne", 95: "Val-d’Oise" };
   $$("[data-zone-check]").forEach((zf) => {
