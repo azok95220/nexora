@@ -840,3 +840,13 @@ html:not(.js) .step-nav, html:not(.js) .step-nav-start { display: none; }
 @media (max-width: 960px) { .parrain-grid { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .referral-form .field-row { grid-template-columns: 1fr; } }
 @media (max-width: 1240px) and (min-width: 961px) { .nav a[href="/#methode"] { display: none; } }
+
+/* Paliers de commission */
+.tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 32px 0 0; max-width: 560px; }
+.tiers > div { padding: 16px; border-radius: 14px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); }
+.tiers dt { font-size: .8rem; color: rgba(255,255,255,.78); line-height: 1.3; }
+.tiers dd { margin: 6px 0 0; font-size: clamp(1.6rem, 2.6vw, 2.2rem); font-weight: 600; letter-spacing: -0.04em; color: #b8ffd2; }
+.tiers-note { grid-column: 1 / -1; margin-top: 4px; font-family: var(--mono); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.section-ink .tiers > div { background: rgba(255,255,255,.05); border-color: var(--line-dark-2); }
+.section-ink .tiers dd { color: var(--wa); }
+@media (max-width: 640px) { .tiers > div { padding: 12px 10px; } .tiers dt { font-size: .72rem; } }

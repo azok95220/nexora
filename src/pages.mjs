@@ -571,23 +571,33 @@ function devisPage() {
 const parrainSteps = [
   ["user", "Vous nous recommandez quelqu’un", "Un ami, un voisin, un collègue, un client… qui a un projet de travaux. Avec son accord, vous nous transmettez son contact."],
   ["chat", "Nous nous occupons de son projet", "Mikhael l’appelle, organise la visite et lui trouve les bons professionnels, comme pour n’importe quel client."],
-  ["check", "Vous touchez votre commission", "Dès que le chantier est signé et réglé, vous recevez votre commission. Sans limite : un chantier signé, une commission."],
+  ["check", "Vous touchez jusqu’à 500 €", "Dès que le chantier est réglé, vous recevez votre commission : 100 €, 250 € ou 500 € selon le montant des travaux. Sans limite de chantiers."],
 ];
 
 const parrainFaq = [
   ["Qui peut parrainer ?", "Tout le monde : anciens clients, amis, voisins, gardiens d’immeuble, agents immobiliers, artisans… Il suffit de connaître quelqu’un qui a un projet de travaux à Paris ou en Île-de-France."],
-  ["Combien vais-je toucher ?", "Le montant de la commission dépend du chantier. Il vous est confirmé par écrit avant le début des travaux : aucune surprise."],
-  ["Quand la commission est-elle versée ?", "Une fois le chantier signé et réglé par le client que vous avez recommandé."],
+  ["Combien vais-je toucher ?", "100 € pour un chantier jusqu’à 5 000 € HT, 250 € de 5 000 € à 15 000 € HT, et 500 € au-delà de 15 000 € HT. Le montant vous est confirmé par écrit dès la signature du devis."],
+  ["Quand la commission est-elle versée ?", "Une fois le chantier terminé et entièrement réglé par le client que vous avez recommandé, par virement."],
+  ["Dois-je déclarer cette somme ?", "Oui : comme tout revenu, les commissions perçues sont à déclarer aux impôts. Nous vous remettons un justificatif."],
   ["Y a-t-il une limite ?", "Non. Chaque chantier signé grâce à vous donne droit à une commission."],
   ["Dois-je prévenir la personne ?", "Oui. Transmettez-nous uniquement le contact d’une personne d’accord pour être appelée au sujet de son projet."],
 ];
+
+
+const commissionTiers = [
+  ["Jusqu’à 5&nbsp;000&nbsp;€&nbsp;HT", "100&nbsp;€"],
+  ["De 5&nbsp;000 à 15&nbsp;000&nbsp;€&nbsp;HT", "250&nbsp;€"],
+  ["Plus de 15&nbsp;000&nbsp;€&nbsp;HT", "500&nbsp;€"],
+];
+const tiersTable = () => `<dl class="tiers">${commissionTiers.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}<p class="tiers-note">Montant des travaux · commission versée au parrain</p></dl>`;
 
 const parrainTeaser = () => `<section class="section parrain-band" id="parrainage" aria-labelledby="parrain-title">
   <div class="container parrain-grid">
     <div class="reveal">
       <p class="eyebrow eyebrow-light">Parrainage</p>
-      <h2 id="parrain-title" class="h1">Vous connaissez quelqu’un qui a un projet ?<br><span class="accent-wa">Touchez une commission.</span></h2>
-      <p class="parrain-lead">Recommandez Nexora à un proche : s’il fait ses travaux avec nous, vous êtes récompensé.</p>
+      <h2 id="parrain-title" class="h1">Vous connaissez quelqu’un qui a un projet ?<br><span class="accent-wa">Touchez jusqu’à 500 €.</span></h2>
+      <p class="parrain-lead">Recommandez Nexora à un proche : s’il fait ses travaux avec nous, vous touchez 100 €, 250 € ou 500 € selon le chantier.</p>
+      ${tiersTable()}
       <div class="hero-actions">
         <a class="btn btn-light btn-lg magnetic" href="/parrainage/">Recommander quelqu’un ${icon("arrow")}</a>
       </div>
@@ -628,7 +638,7 @@ const referralForm = () => `<form class="quote-form referral-form" novalidate da
       <button class="btn btn-outline" type="submit" data-channel="email">${icon("mail")}E-mail</button>
     </div>
   </div>
-  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Le montant de votre commission vous est confirmé par écrit avant le début des travaux.</span></p>
+  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Votre commission (100 €, 250 € ou 500 €) vous est confirmée par écrit dès la signature du devis.</span></p>
 </form>`;
 
 function parrainagePage() {
@@ -644,8 +654,9 @@ function parrainagePage() {
     <div class="contact-grid">
       <div class="contact-copy">
         <p class="eyebrow eyebrow-light">Parrainage</p>
-        <h1 class="h1">${split("Recommandez Nexora. *Touchez une commission.*")}</h1>
+        <h1 class="h1">${split("Recommandez Nexora. *Touchez jusqu’à 500 €.*")}</h1>
         <p class="lead">Vous connaissez quelqu’un qui a un projet de travaux ? Mettez-le en relation avec Mikhael : si le chantier se fait, vous êtes récompensé.</p>
+        ${tiersTable()}
         <ol class="mini-steps">
           ${parrainSteps.map(([, t, d], i) => `<li><span class="mini-num">${pad(i + 1)}</span><span><strong>${t}</strong>${d}</span></li>`).join("")}
         </ol>
@@ -669,9 +680,9 @@ function parrainagePage() {
 ${ctaBand("Vous avez vous-même un projet ?")}`;
   return page({
     path: "/parrainage/",
-    title: "Parrainage : recommandez Nexora Travaux et touchez une commission",
+    title: "Parrainage : recommandez Nexora Travaux et touchez jusqu’à 500 €",
     description:
-      "Vous connaissez quelqu’un qui a un projet de travaux à Paris ou en Île-de-France ? Recommandez Nexora Travaux : chaque chantier signé grâce à vous donne droit à une commission.",
+      "Vous connaissez quelqu’un qui a un projet de travaux à Paris ou en Île-de-France ? Recommandez Nexora Travaux et touchez 100 €, 250 € ou 500 € par chantier signé grâce à vous.",
     current: "parrainage",
     theme: "dark",
     body,
