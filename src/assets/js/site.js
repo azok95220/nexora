@@ -436,7 +436,7 @@
       }
       res.textContent = last = txt;
       rule.textContent =
-        m < C.seuil ? `Forfait petit chantier` : g >= C.plafond ? `Plafond par chantier atteint` : `${rank > C.apres ? C.tauxPro : C.taux} % du montant HT`;
+        m < C.seuil ? `À partir de 2 000 € HT` : g >= C.plafond ? `Plafond par chantier atteint` : `${rank > C.apres ? C.tauxPro : C.taux} % du montant HT`;
       // Cumul : 4 chantiers de ce montant recommandés
       const four = [1, 2, 3, 4].reduce((s, r) => s + gainOf(m, r), 0);
       total.innerHTML = `4 chantiers comme celui-ci = <strong>${fmt(four)}</strong> pour vous`;

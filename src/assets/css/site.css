@@ -910,3 +910,8 @@ html:not(.js) .simu { display: none; }
   .level { padding: 14px; }
 }
 .simu-foot { margin-top: 10px; text-align: center; font-size: .8rem; color: var(--muted-light); }
+.levels-rules { display: grid; gap: 6px; margin-top: 16px; font-size: .9rem; color: rgba(255,255,255,.85); }
+.levels-rules li { display: flex; align-items: center; gap: 8px; }
+.levels-rules .icon { width: 16px; height: 16px; color: #b8ffd2; flex: none; }
+.section-ink .levels-rules { color: var(--muted-light); }
+.section-ink .levels-rules .icon { color: var(--wa); }

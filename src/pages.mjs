@@ -569,12 +569,12 @@ function devisPage() {
 /* Parrainage : recommander un proche et toucher une commission       */
 
 // Règles de commission (à modifier ici, le simulateur en JS utilise les mêmes valeurs via data-*)
-const COMMISSION = { forfait: 100, seuil: 2000, taux: 5, tauxPro: 6, apresN: 3, plafond: 3000 };
+const COMMISSION = { forfait: 0, seuil: 2000, taux: 5, tauxPro: 6, apresN: 3, plafond: 3000 };
 const eur = (n) => `${Math.round(n).toLocaleString("fr-FR").replace(/\s/g, "&nbsp;")}&nbsp;€`;
 const gain = (montant, rang) =>
   montant < COMMISSION.seuil ? COMMISSION.forfait : Math.min(COMMISSION.plafond, (montant * (rang > COMMISSION.apresN ? COMMISSION.tauxPro : COMMISSION.taux)) / 100);
 const exemples = [
-  ["Rafraîchir une chambre", 1500],
+  ["Peinture d’un appartement", 3000],
   ["Salle de bain", 8000],
   ["Cuisine", 12000],
   ["Rénovation complète", 30000],
@@ -588,7 +588,7 @@ const parrainSteps = [
 
 const parrainFaq = [
   ["Qui peut parrainer ?", "Tout le monde : anciens clients, amis, voisins, gardiens d’immeuble, agents immobiliers, artisans… Il suffit de connaître quelqu’un qui a un projet de travaux à Paris ou en Île-de-France."],
-  ["Combien vais-je toucher ?", "5 % du montant HT des travaux pour vos 3 premiers chantiers recommandés, puis 6 % à partir du 4ᵉ. Pour un petit chantier de moins de 2 000 € HT, vous touchez un forfait de 100 €. La commission est plafonnée à 3 000 € par chantier. Le montant exact vous est confirmé par écrit dès la signature du devis."],
+  ["Combien vais-je toucher ?", "5 % du montant HT des travaux pour vos 3 premiers chantiers recommandés, puis 6 % à partir du 4ᵉ. La commission s’applique aux chantiers d’au moins 2 000 € HT et elle est plafonnée à 3 000 € par chantier. Le montant exact vous est confirmé par écrit à la signature du devis."],
   ["Un exemple concret ?", "Votre voisine refait sa cuisine pour 12 000 € HT : vous touchez 600 €. Si c’est votre 4ᵉ recommandation (ou plus), vous touchez 720 €."],
   ["Comment sont comptés les chantiers ?", "Chaque chantier signé et réglé grâce à vous compte, sans limite de durée. Dès votre 4ᵉ chantier, le taux de 6 % s’applique à tous les chantiers suivants."],
   ["Quand la commission est-elle versée ?", "Une fois le chantier terminé et entièrement réglé par le client que vous avez recommandé, par virement."],
@@ -601,7 +601,11 @@ const levels = () => `<div class="levels">
   <div class="level"><span class="level-k">Chantiers 1 à 3</span><strong>5&nbsp;%</strong><span>du montant HT</span></div>
   <div class="level level-pro"><span class="level-k">Dès le 4ᵉ chantier</span><strong>6&nbsp;%</strong><span>du montant HT</span></div>
 </div>
-<p class="levels-note">Versée par virement une fois le chantier terminé et payé · moins de 2&nbsp;000&nbsp;€ HT : forfait de 100&nbsp;€ · plafond 3&nbsp;000&nbsp;€ par chantier</p>`;
+<ul class="levels-rules">
+  <li>${icon("check")}Pour les chantiers à partir de 2&nbsp;000&nbsp;€ HT</li>
+  <li>${icon("check")}Jusqu’à 3&nbsp;000&nbsp;€ maximum par chantier</li>
+  <li>${icon("check")}Versée par virement, une fois le chantier terminé et payé</li>
+</ul>`;
 
 const examplesList = () => `<ul class="gain-list">
   ${exemples.map(([t, m]) => `<li><span>${t}<small>${eur(m)} HT</small></span><strong>${eur(gain(m, 1))}</strong></li>`).join("")}
@@ -613,7 +617,7 @@ const simulator = () => `<div class="simu" data-simu data-forfait="${COMMISSION.
     <label for="simu-amount">Montant du chantier recommandé</label>
     <output for="simu-amount" data-simu-amount>12&nbsp;000&nbsp;€ HT</output>
   </div>
-  <input id="simu-amount" type="range" min="500" max="60000" step="500" value="12000">
+  <input id="simu-amount" type="range" min="2000" max="60000" step="500" value="12000">
   <p class="simu-label" id="simu-rank-label">C’est votre…</p>
   <div class="simu-rank" role="group" aria-labelledby="simu-rank-label">
     <button type="button" data-rank="1" aria-pressed="true">1ᵉʳ chantier</button>
