@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Illustration : cuisine après rénovation (façades bleu nuit, plan clair, suspensions, parquet)">
+<title>Illustration : cuisine après rénovation (façades bleu nuit, plan clair, suspensions, parquet)</title>
+<defs><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .07 0"/><feComposite in2="SourceGraphic" operator="in"/></filter><radialGradient id="warm" cx=".5" cy=".25" r=".8"><stop offset="0" stop-color="#fff4dc" stop-opacity=".55"/><stop offset="1" stop-color="#fff4dc" stop-opacity="0"/></radialGradient><pattern id="sub" width="40" height="20" patternUnits="userSpaceOnUse"><rect width="40" height="20" fill="#f5f3ee"/><path d="M0 0H40M0 10H40M20 0V10M0 10V20M40 10V20" stroke="#d8d3c8" stroke-width="1.2"/></pattern></defs>
+
+  <rect width="800" height="500" fill="#f4f2ed"/>
+  <polygon points="0,0 150,70 150,350 0,500" fill="#e7e3da"/>
+  <polygon points="800,0 650,70 650,350 800,500" fill="#e7e3da"/>
+  <polygon points="0,0 800,0 650,70 150,70" fill="#f4f2ed"/>
+  <rect x="150" y="70" width="500" height="280" fill="#efece5"/>
+  <polygon points="150,350 650,350 800,500 0,500" fill="#c39a6b"/>
+  <line x1="150" y1="350" x2="0" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="185.71428571428572" y1="350" x2="57.142857142857146" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="221.42857142857144" y1="350" x2="114.28571428571429" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="257.1428571428571" y1="350" x2="171.42857142857142" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="292.8571428571429" y1="350" x2="228.57142857142858" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="328.57142857142856" y1="350" x2="285.7142857142857" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="364.2857142857143" y1="350" x2="342.85714285714283" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="400" y1="350" x2="400" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="435.7142857142857" y1="350" x2="457.14285714285717" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="471.42857142857144" y1="350" x2="514.2857142857143" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="507.14285714285717" y1="350" x2="571.4285714285714" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="542.8571428571429" y1="350" x2="628.5714285714286" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="578.5714285714286" y1="350" x2="685.7142857142857" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="614.2857142857142" y1="350" x2="742.8571428571429" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/><line x1="650" y1="350" x2="800" y2="500" stroke="#8a6640" stroke-opacity="0.45" stroke-width="1.2"/>
+  <!-- étagère ouverte -->
+  <rect x="200" y="120" width="160" height="8" fill="#a87a4f"/>
+  <rect x="215" y="98" width="16" height="22" rx="3" fill="#e9e2d2"/><rect x="236" y="92" width="16" height="28" rx="3" fill="#d6cbb4"/><rect x="262" y="104" width="30" height="16" rx="8" fill="#ffffff"/>
+  <g transform="translate(330 120) scale(0.45)">
+  <path d="M-14 0h28l-4 34h-20z" fill="#c9b8a0"/>
+  <path d="M0 0C-4-30-30-40-38-30C-26-26-12-18 0 0zM0 0C4-34 26-48 36-38C24-32 10-22 0 0zM0 0C-2-40 6-62 14-66C14-50 6-26 0 0z" fill="#4f7a55"/>
+  <path d="M0 0C-18-22-34-22-40-14C-28-14-14-8 0 0z" fill="#6a9a6c"/></g>
+  <!-- meubles hauts bleu nuit -->
+  <rect x="420" y="96" width="210" height="88" fill="#16295a"/>
+  <path d="M490 96v88M560 96v88" stroke="#0f1f40" stroke-width="3"/>
+  <!-- crédence métro -->
+  <rect x="170" y="184" width="460" height="66" fill="url(#sub)"/>
+  <!-- plan quartz + meubles bas -->
+  <rect x="160" y="250" width="480" height="12" fill="#f7f6f2" stroke="#d9d4c8"/>
+  <rect x="170" y="262" width="460" height="88" fill="#16295a"/>
+  <path d="M285 262v88" stroke="#0f1f40" stroke-width="3"/><rect x="208" y="274" width="40" height="3" rx="1.5" fill="#c9a86a"/><path d="M400 262v88" stroke="#0f1f40" stroke-width="3"/><rect x="323" y="274" width="40" height="3" rx="1.5" fill="#c9a86a"/><path d="M515 262v88" stroke="#0f1f40" stroke-width="3"/><rect x="438" y="274" width="40" height="3" rx="1.5" fill="#c9a86a"/><path d="M630 262v88" stroke="#0f1f40" stroke-width="3"/><rect x="553" y="274" width="40" height="3" rx="1.5" fill="#c9a86a"/>
+  <rect x="310" y="245" width="80" height="6" rx="3" fill="#cfd3d8"/>
+  <path d="M350 245v-26q0-8 10-8h6" stroke="#2b2b2b" stroke-width="4" fill="none"/>
+  <!-- suspensions -->
+  <line x1="300" y1="0" x2="300" y2="40" stroke="#2b2b2b" stroke-width="2"/><path d="M282 58q18-26 36 0z" fill="#2b2b2b"/><ellipse cx="300" cy="60" rx="20" ry="6" fill="#fff1c9"/><line x1="400" y1="0" x2="400" y2="40" stroke="#2b2b2b" stroke-width="2"/><path d="M382 58q18-26 36 0z" fill="#2b2b2b"/><ellipse cx="400" cy="60" rx="20" ry="6" fill="#fff1c9"/><line x1="500" y1="0" x2="500" y2="40" stroke="#2b2b2b" stroke-width="2"/><path d="M482 58q18-26 36 0z" fill="#2b2b2b"/><ellipse cx="500" cy="60" rx="20" ry="6" fill="#fff1c9"/>
+<rect width="800" height="500" fill="url(#warm)"/>
+<rect width="800" height="500" filter="url(#g)" opacity=".9"/>
+</svg>

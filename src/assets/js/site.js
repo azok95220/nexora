@@ -307,6 +307,63 @@
   if (pre && chip(pre)) chip(pre).checked = true;
   refreshSelection();
 
+  /* ---------- Avant / après : onglets + curseur ---------- */
+  $$("[data-transfo]").forEach((sec) => {
+    const tabs = $$('[role="tab"]', sec);
+    const panels = $$('[role="tabpanel"]', sec);
+    // Petit balayage automatique pour montrer que l’image se compare
+    const hint = (panel) => {
+      const ba = panel && $(".ba", panel);
+      if (!ba || reduced || ba.dataset.touched || ba.dataset.hinted) return;
+      ba.dataset.hinted = "1";
+      const range = $(".ba-range", ba);
+      const t0 = performance.now();
+      const step = (t) => {
+        if (ba.dataset.touched) return;
+        const k = clamp((t - t0) / 2600);
+        const pos = k < 1 ? 50 + Math.sin(k * Math.PI * 2) * 32 * (1 - k * 0.3) : 50;
+        ba.style.setProperty("--pos", `${pos}%`);
+        range.value = String(Math.round(pos));
+        if (k < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const select = (i) => {
+      tabs.forEach((t, k) => {
+        t.setAttribute("aria-selected", String(k === i));
+        t.tabIndex = k === i ? 0 : -1;
+      });
+      panels.forEach((p, k) => p.toggleAttribute("data-hidden", k !== i));
+      panels[i].querySelectorAll(".reveal").forEach((r) => r.classList.add("in"));
+      hint(panels[i]);
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", (e) => {
+        const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        const n = (i + d + tabs.length) % tabs.length;
+        select(n);
+        tabs[n].focus();
+      });
+    });
+    $$(".ba", sec).forEach((ba) => {
+      const range = $(".ba-range", ba);
+      range.addEventListener("input", () => {
+        ba.dataset.touched = "1";
+        ba.style.setProperty("--pos", `${range.value}%`);
+      });
+    });
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((en) => {
+        if (!en[0].isIntersecting) return;
+        io.disconnect();
+        setTimeout(() => hint(panels.find((p) => !p.hasAttribute("data-hidden"))), 500);
+      }, { threshold: 0.5 });
+      io.observe($(".ba", sec));
+    }
+  });
+
   /* ---------- Test de zone par code postal ---------- */
   const DEPTS = { 75: "Paris", 77: "Seine-et-Marne", 78: "Yvelines", 91: "Essonne", 92: "Hauts-de-Seine", 93: "Seine-Saint-Denis", 94: "Val-de-Marne", 95: "Val-d’Oise" };
   $$("[data-zone-check]").forEach((zf) => {
@@ -455,6 +512,12 @@
       if (!link) return;
       e.preventDefault();
       setMenu(false);
+      // Bouton « Je veux ce projet » : présélectionne les métiers du projet
+      if (link.dataset.project) {
+        const list = link.dataset.project.split(',');
+        $$('input[name="metiers"]', homeForm).forEach((i) => (i.checked = list.includes(i.dataset.metier)));
+        refreshSelection();
+      }
       const hasMetier = !!homeForm.querySelector('input[name="metiers"]:checked');
       $("#projet").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
       homeForm.goStep(hasMetier ? 1 : 0, { focus: false });

@@ -1,4 +1,4 @@
-import { site, metiers, zones, scenarios } from "./data.mjs";
+import { site, metiers, zones, scenarios, transformations } from "./data.mjs";
 import { page, icon, split, breadcrumb, businessLd, faqLd, faqHtml, quoteForm, waDirect } from "./layout.mjs";
 
 const homeFaq = [
@@ -162,6 +162,45 @@ const chat = `<div class="phone reveal" aria-label="Exemple d’échange sur Wha
   </div>
 </div>`;
 
+
+const beforeAfter = () => {
+  const name = (slug) => metiers.find((m) => m.slug === slug).name;
+  return `<section class="section section-ink transfo" id="avant-apres" aria-labelledby="transfo-title" data-transfo>
+  <div class="container">
+    <div class="transfo-head">
+      <div class="reveal">
+        <p class="eyebrow eyebrow-light">Avant / après</p>
+        <h2 id="transfo-title" class="h1">Ce que nous pouvons<br>transformer pour vous.</h2>
+      </div>
+      <div class="transfo-tabs reveal" role="tablist" aria-label="Exemples de projets">
+        ${transformations.map((t, i) => `<button type="button" role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${t.name}</button>`).join("")}
+      </div>
+    </div>
+    ${transformations
+      .map(
+        (t, i) => `<div class="transfo-panel" role="tabpanel" id="panel-${t.id}" aria-labelledby="tab-${t.id}"${i === 0 ? "" : " data-hidden"}>
+      <div class="ba reveal" style="--pos:50%">
+        <img src="/assets/img/illus/${t.id}-avant.svg" width="800" height="500" alt="Illustration : ${t.name.toLowerCase()} avant travaux" loading="lazy">
+        <div class="ba-after"><img src="/assets/img/illus/${t.id}-apres.svg" width="800" height="500" alt="Illustration : ${t.name.toLowerCase()} après travaux" loading="lazy"></div>
+        <span class="ba-tag ba-tag-before" aria-hidden="true">Avant</span>
+        <span class="ba-tag ba-tag-after" aria-hidden="true">Après</span>
+        <span class="ba-handle" aria-hidden="true"><span>${icon("arrow", "icon ba-l")}${icon("arrow")}</span></span>
+        <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparer avant et après : ${t.name.toLowerCase()}">
+      </div>
+      <div class="transfo-info reveal">
+        <h3>${t.title}</h3>
+        <p>${t.text}</p>
+        <ul class="transfo-metiers">${t.metiers.map((m) => `<li>${icon(m)}${name(m)}</li>`).join("")}</ul>
+        <a class="btn btn-whatsapp btn-lg magnetic" href="#projet" data-to-form data-project="${t.metiers.join(",")}">${icon("whatsapp")}Je veux ce projet</a>
+      </div>
+    </div>`
+      )
+      .join("")}
+    <p class="transfo-note">${icon("spark")}Illustrations : exemples de transformations que nous pouvons organiser, et non des photos de chantiers réalisés.</p>
+  </div>
+</section>`;
+};
+
 /* ------------------------------------------------------------------ */
 
 function home() {
@@ -224,6 +263,8 @@ ${story()}
     ${chat}
   </div>
 </section>
+
+${beforeAfter()}
 
 <section class="section section-paper configurator" id="metiers" aria-labelledby="metiers-title">
   <div class="container">

@@ -336,3 +336,28 @@ export const scenarios = [
   { id: "piece", name: "Créer une pièce", metiers: ["platrerie", "electricite", "menuiserie", "peinture"] },
   { id: "sols", name: "Sols & parquet", metiers: ["sols", "parquet", "carrelage"] },
 ];
+
+// Exemples « avant / après » (illustrations dessinées, pas des photos de chantiers réels)
+export const transformations = [
+  {
+    id: "sdb",
+    name: "Salle de bain",
+    title: "Une salle de bain des années 80 devient une douche à l’italienne.",
+    text: "Dépose de la baignoire, réseaux d’eau repris, grands carreaux, meuble vasque et miroir éclairé.",
+    metiers: ["plomberie", "carrelage", "electricite", "platrerie", "peinture"],
+  },
+  {
+    id: "cuisine",
+    name: "Cuisine",
+    title: "Une cuisine datée devient une pièce de vie lumineuse.",
+    text: "Nouvelles façades, plan de travail clair, crédence, suspensions et sol en bois.",
+    metiers: ["menuiserie", "plomberie", "electricite", "carrelage", "parquet"],
+  },
+  {
+    id: "sejour",
+    name: "Séjour",
+    title: "Un séjour défraîchi retrouve du caractère.",
+    text: "Murs repris et peints, parquet en chevrons, spots encastrés et installation électrique remise au propre.",
+    metiers: ["peinture", "platrerie", "parquet", "electricite"],
+  },
+];
