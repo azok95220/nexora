@@ -4,7 +4,7 @@ import { page, icon, split, breadcrumb, businessLd, faqLd, faqHtml, quoteForm, w
 const homeFaq = [
   [
     "Pourquoi passer par Nexora plutôt que d’appeler des artisans moi-même ?",
-    "Pour gagner du temps et de la tranquillité : au lieu d’appeler des dizaines d’entreprises, vous envoyez un seul message. Mickaël, fort de plus de 10 ans dans le BTP, sélectionne les bons professionnels de son réseau, négocie les prix pour vous et suit vos travaux jusqu’au bout.",
+    "Pour gagner du temps et de la tranquillité : au lieu d’appeler des dizaines d’entreprises, vous envoyez un seul message. Mikhael, fort de plus de 10 ans dans le BTP, sélectionne les bons professionnels de son réseau, négocie les prix pour vous et suit vos travaux jusqu’au bout.",
   ],
   [
     "Le devis est-il gratuit ?",
@@ -131,14 +131,14 @@ const story = () => {
         <p class="eyebrow eyebrow-light">Pourquoi Nexora</p>
         <h2 id="story-title" class="visually-hidden">Sans Nexora, avec Nexora</h2>
         <p class="story-line story-before"><span class="story-tag">Sans Nexora</span>Rénover, c’est souvent <em>des dizaines d’appels</em>, des rappels qui n’arrivent pas et des artisans à coordonner seul.</p>
-        <p class="story-line story-after"><span class="story-tag">Avec Nexora</span>Un <em>seul message</em>. Mickaël sélectionne les bons pros, négocie les prix et suit votre chantier.</p>
+        <p class="story-line story-after"><span class="story-tag">Avec Nexora</span>Un <em>seul message</em>. Mikhael sélectionne les bons pros, négocie les prix et suit votre chantier.</p>
         <a class="btn btn-whatsapp btn-lg magnetic story-cta" href="/devis/" data-to-form>${icon("whatsapp")}Envoyer mon message</a>
       </div>
       <div class="story-stage" aria-hidden="true">
         <svg class="story-lines" viewBox="0 0 100 100" preserveAspectRatio="none">${lines}</svg>
         ${notes.map(([ic, t, x, y]) => `<span class="notif" style="--x:${x}%;--y:${y}%">${icon(ic)}${t}</span>`).join("")}
         ${nodes}
-        <span class="hub"><span class="hub-core">${icon("user")}</span><b>Mickaël</b><small>Votre contact unique</small></span>
+        <span class="hub"><span class="hub-core">${icon("user")}</span><b>Mikhael</b><small>Votre contact unique</small></span>
       </div>
     </div>
     <div class="story-progress" aria-hidden="true"><span></span></div>
@@ -149,7 +149,7 @@ const story = () => {
 const chat = `<div class="phone reveal" aria-label="Exemple d’échange sur WhatsApp" role="img">
   <div class="phone-top">
     <span class="phone-avatar">M</span>
-    <span><strong>Mickaël · Nexora</strong><small>en ligne</small></span>
+    <span><strong>Mikhael · Nexora</strong><small>en ligne</small></span>
   </div>
   <div class="phone-body">
     <p class="phone-label">Exemple d’échange</p>
@@ -216,7 +216,7 @@ function home() {
     <div class="hero-copy">
       <p class="pill enter" style="--d:0"><span class="live"></span>Devis gratuit · Réponse sur WhatsApp</p>
       <h1 class="display">${split("Vos travaux.|*Un seul contact.*")}</h1>
-      <p class="lead enter" style="--d:4">Électricité, plomberie, peinture, sols… Mickaël sélectionne les bons professionnels, négocie les prix et suit votre chantier, à Paris et dans toute l’Île-de-France.</p>
+      <p class="lead enter" style="--d:4">Électricité, plomberie, peinture, sols… Mikhael sélectionne les bons professionnels, négocie les prix et suit votre chantier, à Paris et dans toute l’Île-de-France.</p>
       <div class="hero-actions enter" style="--d:5">
         <a class="btn btn-whatsapp btn-lg magnetic" href="#projet" data-to-form>${icon("whatsapp")}Devis gratuit sur WhatsApp</a>
         <a class="btn btn-glass btn-lg" href="#pourquoi">Comment ça marche</a>
@@ -243,7 +243,7 @@ ${story()}
   <div class="container founder-grid">
     <div class="founder-copy">
       <p class="eyebrow reveal">Le mot du fondateur</p>
-      <h2 id="founder-title" class="h1 reveal">Bonjour,<br>je m’appelle <span class="accent-blue">Mickaël.</span></h2>
+      <h2 id="founder-title" class="h1 reveal">Bonjour,<br>je m’appelle <span class="accent-blue">Mikhael.</span></h2>
       <div class="founder-text reveal">
         <p>Je travaille dans le <strong>BTP depuis plus de 10 ans</strong>. Au fil des chantiers, je me suis constitué un solide réseau d’entreprises et d’artisans de confiance.</p>
         <p>Mon rôle : <strong>trouver les bons professionnels pour votre projet, négocier pour vous les meilleurs prix et suivre vos travaux</strong> jusqu’à la dernière finition.</p>
@@ -256,7 +256,7 @@ ${story()}
         <li><strong>0 €</strong><span>pour le devis</span></li>
       </ul>
       <div class="hero-actions reveal">
-        <a class="btn btn-whatsapp btn-lg magnetic" href="#projet" data-to-form>${icon("whatsapp")}Écrire à Mickaël</a>
+        <a class="btn btn-whatsapp btn-lg magnetic" href="#projet" data-to-form>${icon("whatsapp")}Écrire à Mikhael</a>
         <a class="btn btn-outline btn-lg" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
       </div>
     </div>
@@ -304,6 +304,8 @@ ${beforeAfter()}
 </section>
 
 ${methodSection()}
+
+${parrainTeaser()}
 
 <section class="section zone" id="zone" aria-labelledby="zone-title">
   <div class="container zone-grid">
@@ -562,6 +564,121 @@ function devisPage() {
   });
 }
 
+
+/* ------------------------------------------------------------------ */
+/* Parrainage : recommander un proche et toucher une commission       */
+
+const parrainSteps = [
+  ["user", "Vous nous recommandez quelqu’un", "Un ami, un voisin, un collègue, un client… qui a un projet de travaux. Avec son accord, vous nous transmettez son contact."],
+  ["chat", "Nous nous occupons de son projet", "Mikhael l’appelle, organise la visite et lui trouve les bons professionnels, comme pour n’importe quel client."],
+  ["check", "Vous touchez votre commission", "Dès que le chantier est signé et réglé, vous recevez votre commission. Sans limite : un chantier signé, une commission."],
+];
+
+const parrainFaq = [
+  ["Qui peut parrainer ?", "Tout le monde : anciens clients, amis, voisins, gardiens d’immeuble, agents immobiliers, artisans… Il suffit de connaître quelqu’un qui a un projet de travaux à Paris ou en Île-de-France."],
+  ["Combien vais-je toucher ?", "Le montant de la commission dépend du chantier. Il vous est confirmé par écrit avant le début des travaux : aucune surprise."],
+  ["Quand la commission est-elle versée ?", "Une fois le chantier signé et réglé par le client que vous avez recommandé."],
+  ["Y a-t-il une limite ?", "Non. Chaque chantier signé grâce à vous donne droit à une commission."],
+  ["Dois-je prévenir la personne ?", "Oui. Transmettez-nous uniquement le contact d’une personne d’accord pour être appelée au sujet de son projet."],
+];
+
+const parrainTeaser = () => `<section class="section parrain-band" id="parrainage" aria-labelledby="parrain-title">
+  <div class="container parrain-grid">
+    <div class="reveal">
+      <p class="eyebrow eyebrow-light">Parrainage</p>
+      <h2 id="parrain-title" class="h1">Vous connaissez quelqu’un qui a un projet ?<br><span class="accent-wa">Touchez une commission.</span></h2>
+      <p class="parrain-lead">Recommandez Nexora à un proche : s’il fait ses travaux avec nous, vous êtes récompensé.</p>
+      <div class="hero-actions">
+        <a class="btn btn-light btn-lg magnetic" href="/parrainage/">Recommander quelqu’un ${icon("arrow")}</a>
+      </div>
+    </div>
+    <ol class="parrain-steps">
+      ${parrainSteps.map(([ic, t, d], i) => `<li class="reveal" style="--i:${i}"><span class="parrain-num">${pad(i + 1)}</span><span class="parrain-ic">${icon(ic)}</span><span><strong>${t}</strong>${d}</span></li>`).join("")}
+    </ol>
+  </div>
+</section>`;
+
+const referralForm = () => `<form class="quote-form referral-form" novalidate data-referral-form>
+  <p class="step-title">Votre recommandation</p>
+  <p class="step-hint">Une minute suffit. Votre message est prêt à partir sur WhatsApp, vous le relisez avant l’envoi.</p>
+  <fieldset class="ref-group">
+    <legend>Vous</legend>
+    <div class="field-row">
+      <div class="field"><label for="ref-name">Votre nom</label><input id="ref-name" name="refName" autocomplete="name" placeholder="Prénom et nom" required></div>
+      <div class="field"><label for="ref-phone">Votre téléphone</label><input id="ref-phone" name="refPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="06 12 34 56 78" required></div>
+    </div>
+  </fieldset>
+  <fieldset class="ref-group">
+    <legend>La personne que vous recommandez</legend>
+    <div class="field-row">
+      <div class="field"><label for="ref-friend">Son nom</label><input id="ref-friend" name="friendName" placeholder="Prénom et nom" required></div>
+      <div class="field"><label for="ref-friend-phone">Son téléphone <span class="optional">facultatif</span></label><input id="ref-friend-phone" name="friendPhone" type="tel" inputmode="tel" placeholder="06 12 34 56 78"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label for="ref-cp">Code postal du chantier <span class="optional">facultatif</span></label><input id="ref-cp" name="cp" inputmode="numeric" maxlength="5" placeholder="Ex. 75011"></div>
+      <div class="field"><label for="ref-works">Type de travaux <span class="optional">facultatif</span></label><input id="ref-works" name="works" placeholder="Ex. salle de bain, peinture…"></div>
+    </div>
+  </fieldset>
+  <label class="consent"><input type="checkbox" name="consent" required><span>La personne recommandée est d’accord pour être contactée par Nexora Travaux.</span></label>
+  <p class="form-error" role="alert" hidden></p>
+  <div class="form-actions">
+    <button class="btn btn-whatsapp btn-lg" type="submit" data-channel="whatsapp">${icon("whatsapp")}Envoyer sur WhatsApp</button>
+    <div class="form-alt">
+      <button class="btn btn-outline" type="submit" data-channel="sms">${icon("sms")}SMS</button>
+      <button class="btn btn-outline" type="submit" data-channel="email">${icon("mail")}E-mail</button>
+    </div>
+  </div>
+  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Le montant de votre commission vous est confirmé par écrit avant le début des travaux.</span></p>
+</form>`;
+
+function parrainagePage() {
+  const bc = breadcrumb([
+    ["Accueil", "/"],
+    ["Parrainage", "/parrainage/"],
+  ]);
+  const body = `
+<section class="section section-ink section-contact devis-hero">
+  <div class="contact-glow" aria-hidden="true"></div>
+  <div class="container">
+    ${bc.html}
+    <div class="contact-grid">
+      <div class="contact-copy">
+        <p class="eyebrow eyebrow-light">Parrainage</p>
+        <h1 class="h1">${split("Recommandez Nexora. *Touchez une commission.*")}</h1>
+        <p class="lead">Vous connaissez quelqu’un qui a un projet de travaux ? Mettez-le en relation avec Mikhael : si le chantier se fait, vous êtes récompensé.</p>
+        <ol class="mini-steps">
+          ${parrainSteps.map(([, t, d], i) => `<li><span class="mini-num">${pad(i + 1)}</span><span><strong>${t}</strong>${d}</span></li>`).join("")}
+        </ol>
+      </div>
+      <div class="form-card">${referralForm()}</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container faq-grid">
+    <div class="faq-head reveal">
+      <p class="eyebrow">Questions fréquentes</p>
+      <h2 class="h1">Le parrainage en clair.</h2>
+      <a class="btn btn-outline" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
+    </div>
+    ${faqHtml(parrainFaq)}
+  </div>
+</section>
+
+${ctaBand("Vous avez vous-même un projet ?")}`;
+  return page({
+    path: "/parrainage/",
+    title: "Parrainage : recommandez Nexora Travaux et touchez une commission",
+    description:
+      "Vous connaissez quelqu’un qui a un projet de travaux à Paris ou en Île-de-France ? Recommandez Nexora Travaux : chaque chantier signé grâce à vous donne droit à une commission.",
+    current: "parrainage",
+    theme: "dark",
+    body,
+    jsonld: [bc.ld, faqLd(parrainFaq)],
+  });
+}
+
 /* ------------------------------------------------------------------ */
 
 const todo = (t) => `<mark class="todo">[À compléter : ${t}]</mark>`;
@@ -646,6 +763,7 @@ export function allPages() {
     ...metiers.map((m) => [`metiers/${m.slug}/index.html`, metierPage(m), `/metiers/${m.slug}/`, "0.8"]),
     ["zone-intervention/index.html", zonePage(), "/zone-intervention/", "0.7"],
     ["devis/index.html", devisPage(), "/devis/", "0.9"],
+    ["parrainage/index.html", parrainagePage(), "/parrainage/", "0.8"],
     ["mentions-legales/index.html", legalPage(), "/mentions-legales/", "0.2"],
     ["confidentialite/index.html", privacyPage(), "/confidentialite/", "0.2"],
     ["404.html", notFound(), null, null],

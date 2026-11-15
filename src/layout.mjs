@@ -48,6 +48,7 @@ function header(current) {
       ${link("/#methode", "Méthode", "methode")}
       ${link("/#mickael", "Qui suis-je", "mickael")}
       ${link("/zone-intervention/", "Zone", "zone")}
+      ${link("/parrainage/", "Parrainage", "parrainage")}
       <a class="nav-phone" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
       <a class="btn btn-light btn-sm magnetic" href="/devis/" data-to-form>Devis gratuit ${icon("arrow")}</a>
     </nav>
@@ -87,6 +88,7 @@ function footer() {
         <h2 class="footer-title">Informations</h2>
         <ul>
           <li><a href="/devis/">Devis gratuit</a></li>
+          <li><a href="/parrainage/">Parrainage</a></li>
           <li><a href="${waDirect}" rel="noopener">WhatsApp</a></li>
           <li><a href="/mentions-legales/">Mentions légales</a></li>
           <li><a href="/confidentialite/">Confidentialité</a></li>
@@ -193,7 +195,7 @@ export const businessLd = {
     { "@type": "City", name: "Paris" },
   ],
   knowsAbout: metiers.map((m) => m.name),
-  founder: { "@type": "Person", name: "Mickaël" },
+  founder: { "@type": "Person", name: "Mikhael" },
 };
 
 export function faqLd(pairs) {

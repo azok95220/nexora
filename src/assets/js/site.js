@@ -364,6 +364,52 @@
     }
   });
 
+  /* ---------- Formulaire de parrainage ---------- */
+  $$("[data-referral-form]").forEach((f) => {
+    const err = $(".form-error", f);
+    f.addEventListener("input", (e) => e.target.getAttribute("aria-invalid") === "true" && e.target.setAttribute("aria-invalid", "false"));
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const channel = e.submitter?.dataset.channel || "whatsapp";
+      const v = (n) => String(f.elements[n].value || "").trim();
+      const checks = [
+        ["refName", !!v("refName"), "votre nom"],
+        ["refPhone", v("refPhone").replace(/\D/g, "").length >= 9, "votre téléphone"],
+        ["friendName", !!v("friendName"), "le nom de la personne recommandée"],
+      ];
+      checks.forEach(([n, ok]) => f.elements[n].setAttribute("aria-invalid", String(!ok)));
+      const missing = checks.filter((c) => !c[1]).map((c) => c[2]);
+      const consent = f.elements.consent.checked;
+      f.elements.consent.setAttribute("aria-invalid", String(!consent));
+      if (missing.length || !consent) {
+        err.textContent = missing.length
+          ? "Merci d’indiquer " + missing.join(", ") + "."
+          : "Merci de confirmer que la personne est d’accord pour être contactée.";
+        err.hidden = false;
+        f.querySelector('[aria-invalid="true"]')?.focus();
+        return;
+      }
+      err.hidden = true;
+      const lines = ["Bonjour Nexora Travaux, je souhaite vous recommander quelqu’un (parrainage)."];
+      [
+        ["Mon nom", v("refName")],
+        ["Mon téléphone", v("refPhone")],
+        ["Personne recommandée", v("friendName")],
+        ["Son téléphone", v("friendPhone")],
+        ["Code postal du chantier", v("cp")],
+        ["Travaux", v("works")],
+      ].forEach(([k, val]) => val && lines.push(`${k} : ${val}`));
+      lines.push("La personne est d’accord pour être contactée.");
+      const text = encodeURIComponent(lines.join("\n"));
+      const urls = {
+        whatsapp: `${WHATSAPP}?text=${text}`,
+        sms: `sms:${PHONE}?&body=${text}`,
+        email: `mailto:${EMAIL}?subject=${encodeURIComponent("Parrainage – " + v("friendName"))}&body=${text}`,
+      };
+      location.assign(urls[channel] || urls.whatsapp);
+    });
+  });
+
   /* ---------- Test de zone par code postal ---------- */
   const DEPTS = { 75: "Paris", 77: "Seine-et-Marne", 78: "Yvelines", 91: "Essonne", 92: "Hauts-de-Seine", 93: "Seine-Saint-Denis", 94: "Val-de-Marne", 95: "Val-d’Oise" };
   $$("[data-zone-check]").forEach((zf) => {
@@ -500,7 +546,7 @@
       entries.forEach((en) => (en.isIntersecting ? seen.add(en.target) : seen.delete(en.target)));
       body.classList.toggle("form-in-view", seen.size > 0);
     }, { threshold: 0.15 });
-    $$("[data-quote-form]").forEach((f) => io.observe(f));
+    $$("[data-quote-form], [data-referral-form]").forEach((f) => io.observe(f));
   }
 
   // Tous les boutons « devis » de la page mènent directement au formulaire,
