@@ -909,3 +909,4 @@ html:not(.js) .simu { display: none; }
   .levels { gap: 8px; }
   .level { padding: 14px; }
 }
+.simu-foot { margin-top: 10px; text-align: center; font-size: .8rem; color: var(--muted-light); }

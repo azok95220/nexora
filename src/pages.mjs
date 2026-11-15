@@ -583,7 +583,7 @@ const exemples = [
 const parrainSteps = [
   ["user", "Vous nous recommandez quelqu’un", "Un ami, un voisin, un collègue, un client… qui a un projet de travaux. Avec son accord, vous nous transmettez son contact."],
   ["chat", "Nous nous occupons de son projet", "Mikhael l’appelle, organise la visite et lui trouve les bons professionnels, comme pour n’importe quel client."],
-  ["check", "Vous touchez 5 %, puis 6 %", `Dès que le chantier est réglé, vous recevez 5 % du montant HT. À partir de votre 4ᵉ chantier recommandé, vous passez à 6 %.`],
+  ["check", "Vous touchez 5 %, puis 6 %", `Une fois le chantier terminé et entièrement payé par le client, vous recevez 5 % du montant HT par virement. Dès votre 4ᵉ chantier recommandé : 6 %.`],
 ];
 
 const parrainFaq = [
@@ -601,7 +601,7 @@ const levels = () => `<div class="levels">
   <div class="level"><span class="level-k">Chantiers 1 à 3</span><strong>5&nbsp;%</strong><span>du montant HT</span></div>
   <div class="level level-pro"><span class="level-k">Dès le 4ᵉ chantier</span><strong>6&nbsp;%</strong><span>du montant HT</span></div>
 </div>
-<p class="levels-note">Moins de 2&nbsp;000&nbsp;€ HT : forfait de 100&nbsp;€ · plafond 3&nbsp;000&nbsp;€ par chantier</p>`;
+<p class="levels-note">Versée par virement une fois le chantier terminé et payé · moins de 2&nbsp;000&nbsp;€ HT : forfait de 100&nbsp;€ · plafond 3&nbsp;000&nbsp;€ par chantier</p>`;
 
 const examplesList = () => `<ul class="gain-list">
   ${exemples.map(([t, m]) => `<li><span>${t}<small>${eur(m)} HT</small></span><strong>${eur(gain(m, 1))}</strong></li>`).join("")}
@@ -627,6 +627,7 @@ const simulator = () => `<div class="simu" data-simu data-forfait="${COMMISSION.
     <small data-simu-rule>5 % du montant HT</small>
   </div>
   <p class="simu-total" data-simu-total></p>
+  <p class="simu-foot">Versée par virement une fois le chantier terminé et entièrement payé par le client.</p>
 </div>`;
 
 const parrainTeaser = () => `<section class="section parrain-band" id="parrainage" aria-labelledby="parrain-title">
@@ -644,7 +645,7 @@ const parrainTeaser = () => `<section class="section parrain-band" id="parrainag
     <div class="reveal">
       <p class="gain-title">Ce que vous pouvez gagner</p>
       ${examplesList()}
-      <p class="gain-foot">Exemples pour un 1ᵉʳ chantier recommandé. Dès le 4ᵉ : 6 %.</p>
+      <p class="gain-foot">Exemples pour un 1ᵉʳ chantier recommandé (dès le 4ᵉ : 6 %). Commission versée une fois le chantier terminé et payé.</p>
     </div>
   </div>
 </section>`;
@@ -679,7 +680,7 @@ const referralForm = () => `<form class="quote-form referral-form" novalidate da
       <button class="btn btn-outline" type="submit" data-channel="email">${icon("mail")}E-mail</button>
     </div>
   </div>
-  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Votre commission (5 %, puis 6 % dès le 4ᵉ chantier) vous est confirmée par écrit dès la signature du devis.</span></p>
+  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Votre commission (5 %, puis 6 % dès le 4ᵉ chantier) vous est confirmée par écrit à la signature du devis, et versée une fois le chantier terminé et payé.</span></p>
 </form>`;
 
 function parrainagePage() {
