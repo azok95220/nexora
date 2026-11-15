@@ -915,3 +915,4 @@ html:not(.js) .simu { display: none; }
 .levels-rules .icon { width: 16px; height: 16px; color: #b8ffd2; flex: none; }
 .section-ink .levels-rules { color: var(--muted-light); }
 .section-ink .levels-rules .icon { color: var(--wa); }
+@media (max-width: 640px) { .hub small { display: none; } }

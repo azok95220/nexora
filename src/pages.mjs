@@ -141,7 +141,6 @@ const story = () => {
         <span class="hub"><span class="hub-core">${icon("user")}</span><b>Mikhael</b><small>Votre contact unique</small></span>
       </div>
     </div>
-    <div class="story-progress" aria-hidden="true"><span></span></div>
   </div>
 </section>`;
 };
