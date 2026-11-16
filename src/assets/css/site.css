@@ -1082,3 +1082,16 @@ html.sheet-open { overflow: hidden; }
   .parrain-actions .btn { flex: 1; }
   .hero .pill-link { font-size: .82rem; }
 }
+
+/* ---------- Avant / après : photos (formats portrait et panoramique) ---------- */
+.ba-wide { aspect-ratio: 2.4 / 1; }
+.ba-portrait { aspect-ratio: var(--ar); width: 100%; max-width: 500px; justify-self: center; }
+.transfo-tabs { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.transfo-tabs::-webkit-scrollbar { display: none; }
+.transfo-tabs button { white-space: nowrap; }
+@media (max-width: 960px) { .ba-wide { aspect-ratio: 16 / 9; } }
+@media (max-width: 640px) {
+  .ba-wide { aspect-ratio: 4 / 3; }
+  .ba-portrait { max-width: none; aspect-ratio: 1 / 1; }
+  .transfo-tabs button { padding: 10px 12px; font-size: .86rem; flex: 1 0 auto; }
+}

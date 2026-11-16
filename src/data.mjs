@@ -339,27 +339,43 @@ export const scenarios = [
   { id: "sols", name: "Sols & parquet", metiers: ["sols", "parquet", "carrelage"] },
 ];
 
-// Exemples « avant / après » (illustrations dessinées, pas des photos de chantiers réels)
+// Exemples « avant / après » : photos dans src/assets/img/chantiers/<id>-avant.webp et <id>-apres.webp
+// (les deux images d'une paire doivent avoir exactement la même taille). shape : "portrait" ou "wide".
 export const transformations = [
   {
     id: "sdb",
     name: "Salle de bain",
-    title: "Une salle de bain des années 80 devient une douche à l’italienne.",
-    text: "Dépose de la baignoire, réseaux d’eau repris, grands carreaux, meuble vasque et miroir éclairé.",
-    metiers: ["plomberie", "carrelage", "electricite", "platrerie", "peinture"],
+    shape: "portrait",
+    size: [762, 864],
+    title: "Une salle de bain entièrement reprise.",
+    text: "Carrelage des murs et du sol remplacé, meuble vasque, pare-baignoire et colonne de douche, éclairage encastré.",
+    metiers: ["plomberie", "carrelage", "electricite", "peinture"],
   },
   {
     id: "cuisine",
     name: "Cuisine",
-    title: "Une cuisine datée devient une pièce de vie lumineuse.",
-    text: "Nouvelles façades, plan de travail clair, crédence, suspensions et sol en bois.",
-    metiers: ["menuiserie", "plomberie", "electricite", "carrelage", "parquet"],
+    shape: "wide",
+    size: [1536, 429],
+    title: "Une cuisine remise à neuf.",
+    text: "Nouveaux meubles, plan de travail et crédence en bois, évier noir, chaudière intégrée et murs repeints.",
+    metiers: ["menuiserie", "plomberie", "electricite", "peinture"],
   },
   {
-    id: "sejour",
+    id: "salon",
     name: "Séjour",
-    title: "Un séjour défraîchi retrouve du caractère.",
-    text: "Murs repris et peints, parquet en chevrons, spots encastrés et installation électrique remise au propre.",
-    metiers: ["peinture", "platrerie", "parquet", "electricite"],
+    shape: "wide",
+    size: [1536, 429],
+    title: "Un séjour modernisé.",
+    text: "Papier peint déposé, murs et plafond repeints, nouveau sol et éclairage revu.",
+    metiers: ["peinture", "platrerie", "sols", "electricite"],
+  },
+  {
+    id: "chambre",
+    name: "Chambre",
+    shape: "portrait",
+    size: [762, 864],
+    title: "Une chambre remise en état.",
+    text: "Murs repris et repeints, parquet en chevrons rénové.",
+    metiers: ["peinture", "platrerie", "parquet"],
   },
 ];

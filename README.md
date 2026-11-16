@@ -6,6 +6,7 @@ Site vitrine statique et immersif (HTML/CSS/JS, sans framework ni librairie exte
 
 - Hero plein écran : photo en parallaxe, titre animé mot par mot, quadrillage « plan d’architecte » qui suit la souris, sceau rotatif « Devis gratuit »
 - Scène « Sans Nexora / Avec Nexora » épinglée au défilement : les artisans éparpillés convergent vers Mikhael, contact unique
+- Avant / après avec de vraies photos (curseur, défilement automatique) dans `src/assets/img/chantiers/`
 - Mot du fondateur avec conversation WhatsApp animée (exemple d’échange) et compteurs
 - Configurateur de projet : projets types (salle de bain, cuisine…) qui sélectionnent les métiers, récapitulatif en direct relié au formulaire
 - Méthode en défilement horizontal (grand écran), test de zone par code postal sur le radar

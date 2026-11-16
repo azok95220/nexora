@@ -173,9 +173,9 @@ const beforeAfter = () => {
     ${transformations
       .map(
         (t, i) => `<div class="transfo-panel" role="tabpanel" id="panel-${t.id}" aria-labelledby="tab-${t.id}"${i === 0 ? "" : " data-hidden"}>
-      <div class="ba reveal" style="--pos:50%">
-        <img src="/assets/img/illus/${t.id}-avant.svg" width="800" height="500" alt="Illustration : ${t.name.toLowerCase()} avant travaux" loading="lazy">
-        <div class="ba-after"><img src="/assets/img/illus/${t.id}-apres.svg" width="800" height="500" alt="Illustration : ${t.name.toLowerCase()} après travaux" loading="lazy"></div>
+      <div class="ba ba-${t.shape} reveal" style="--pos:50%;--ar:${t.size[0]} / ${t.size[1]}">
+        <img src="/assets/img/chantiers/${t.id}-avant.webp" width="${t.size[0]}" height="${t.size[1]}" alt="${t.name} avant travaux" loading="lazy" decoding="async">
+        <div class="ba-after"><img src="/assets/img/chantiers/${t.id}-apres.webp" width="${t.size[0]}" height="${t.size[1]}" alt="${t.name} après travaux" loading="lazy" decoding="async"></div>
         <span class="ba-tag ba-tag-before" aria-hidden="true">Avant</span>
         <span class="ba-tag ba-tag-after" aria-hidden="true">Après</span>
         <span class="ba-handle" aria-hidden="true"><span>${icon("arrow", "icon ba-l")}${icon("arrow")}</span></span>
@@ -190,7 +190,7 @@ const beforeAfter = () => {
     </div>`
       )
       .join("")}
-    <p class="transfo-note">${icon("spark")}Illustrations : exemples de transformations que nous pouvons organiser, et non des photos de chantiers réalisés.</p>
+    <p class="transfo-note">${icon("spark")}Avant : photos des lieux. Après : aperçu du résultat.</p>
   </div>
 </section>`;
 };
