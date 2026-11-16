@@ -468,6 +468,13 @@
       steps.forEach((st, k) => (st.hidden = k !== current));
       if (num) num.textContent = String(current + 1);
       if (barFill) barFill.style.width = `${((current + 1) / steps.length) * 100}%`;
+      // Rappel des travaux choisis en haut de la dernière étape
+      const recap = $("[data-selection]", f);
+      if (recap) {
+        const chosen = $$('input[name="metiers"]:checked', f).map((i) => i.value);
+        recap.textContent = chosen.length ? `Travaux : ${chosen.join(", ")}` : "";
+        recap.hidden = !chosen.length;
+      }
       if (!focus) return;
       const top = f.getBoundingClientRect().top;
       if (top < 80 || top > innerHeight * 0.6) f.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
@@ -489,8 +496,30 @@
 
     $$("[data-next]", f).forEach((b) => b.addEventListener("click", () => validate(current) && go(current + 1)));
     $$("[data-prev]", f).forEach((b) => b.addEventListener("click", () => go(current - 1)));
+    // Projets types : un bouton coche les métiers correspondants
+    const picks = $$("[data-pick]", f);
+    const boxes = $$('input[name="metiers"]', f);
+    const syncPicks = () => {
+      const on = new Set(boxes.filter((i) => i.checked).map((i) => i.dataset.metier));
+      picks.forEach((b) => {
+        const list = b.dataset.pick.split(",");
+        b.setAttribute("aria-pressed", String(list.length === on.size && list.every((s) => on.has(s))));
+      });
+    };
+    f.syncPicks = syncPicks;
+    picks.forEach((b) =>
+      b.addEventListener("click", () => {
+        const list = b.dataset.pick.split(",");
+        const wasOn = b.getAttribute("aria-pressed") === "true";
+        boxes.forEach((i) => (i.checked = !wasOn && list.includes(i.dataset.metier)));
+        f.dispatchEvent(new Event("change", { bubbles: true }));
+      })
+    );
     f.addEventListener("change", (e) => {
-      if (e.target.name === "metiers") showError(steps[0], "");
+      if (e.target === f || e.target.name === "metiers") {
+        showError(steps[0], "");
+        syncPicks();
+      }
     });
     f.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "checkbox" && current < steps.length - 1) {
@@ -554,24 +583,59 @@
     $$("[data-quote-form], [data-referral-form]").forEach((f) => io.observe(f));
   }
 
-  // Tous les boutons « devis » de la page mènent directement au formulaire,
-  // à l’étape 2 si des métiers sont déjà choisis.
-  const homeForm = $("#projet [data-quote-form]");
-  if (homeForm) {
-    document.addEventListener("click", (e) => {
-      const link = e.target.closest('.project-bar a, [data-to-form], a[href="#projet"]');
-      if (!link) return;
+  /* ---------- Panneau de devis : s’ouvre par-dessus la page depuis tous les boutons « devis » ---------- */
+  const sheet = $("#quote-sheet");
+  const sheetForm = sheet && $("[data-quote-form]", sheet);
+  const onDevisPage = location.pathname.startsWith("/devis");
+  if (sheet && sheetForm && typeof sheet.showModal === "function") {
+    const sheetBoxes = $$('input[name="metiers"]', sheetForm);
+    const closeSheet = () => {
+      if (!sheet.open) return;
+      sheet.classList.add("closing");
+      setTimeout(() => {
+        sheet.classList.remove("closing");
+        sheet.close();
+      }, reduced ? 0 : 220);
+    };
+    sheet.addEventListener("close", () => doc.classList.remove("sheet-open"));
+    sheet.addEventListener("cancel", (e) => {
       e.preventDefault();
+      closeSheet();
+    });
+    // Clic sur le fond assombri = fermer
+    sheet.addEventListener("click", (e) => e.target === sheet && closeSheet());
+    $$("[data-sheet-close]", sheet).forEach((b) => b.addEventListener("click", closeSheet));
+
+    function openSheet(preset) {
       setMenu(false);
-      // Bouton « Je veux ce projet » : présélectionne les métiers du projet
-      if (link.dataset.project) {
-        const list = link.dataset.project.split(',');
-        $$('input[name="metiers"]', homeForm).forEach((i) => (i.checked = list.includes(i.dataset.metier)));
-        refreshSelection();
+      if (preset) sheetBoxes.forEach((i) => (i.checked = preset.includes(i.dataset.metier)));
+      sheetForm.syncPicks?.();
+      const has = sheetBoxes.some((i) => i.checked);
+      // Métiers déjà choisis : on passe directement aux coordonnées
+      sheetForm.goStep(preset && has ? 1 : 0, { focus: false });
+      if (!sheet.open) sheet.showModal();
+      doc.classList.add("sheet-open");
+      $(".sheet-body", sheet).scrollTop = 0;
+    }
+
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest('.project-bar a, [data-to-form], a[href="#projet"], a[href^="/devis/"]');
+      if (!link || sheet.contains(link)) return;
+      // Sur la page devis, le formulaire est déjà à l’écran
+      if (onDevisPage && !link.matches("[data-to-form]")) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      let preset = null;
+      const href = link.getAttribute("href") || "";
+      const one = href.includes("?metier=") ? new URLSearchParams(href.split("?")[1]).get("metier") : null;
+      if (link.dataset.project) preset = link.dataset.project.split(",");
+      else if (one) preset = [one];
+      else if (form && form !== sheetForm) {
+        // Reprend ce qui a été choisi dans le configurateur de la page
+        const chosen = $$('input[name="metiers"]:checked', form).map((i) => i.dataset.metier);
+        if (chosen.length) preset = chosen;
       }
-      const hasMetier = !!homeForm.querySelector('input[name="metiers"]:checked');
-      $("#projet").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
-      homeForm.goStep(hasMetier ? 1 : 0, { focus: false });
+      openSheet(preset);
     });
   }
 })();

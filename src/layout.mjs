@@ -1,4 +1,4 @@
-import { site, icons, metiers } from "./data.mjs";
+import { site, icons, metiers, scenarios } from "./data.mjs";
 
 export const waDirect = `${site.whatsapp}?text=${encodeURIComponent("Bonjour Nexora Travaux, je souhaite un devis gratuit pour mon projet.")}`;
 
@@ -155,6 +155,7 @@ ${header(p.current)}
 ${p.body}
 </main>
 ${footer()}
+${quoteSheet()}
 <script src="/assets/js/site.js?v=__V__" defer></script>
 </body>
 </html>
@@ -229,13 +230,16 @@ export function quoteForm(id = "devis-form") {
     `<label class="tile"><input type="checkbox" name="metiers" value="${value}" data-metier="${slug}"><span>${icon(ic, "icon tile-icon")}${value}${icon("check", "icon tile-check")}</span></label>`;
   return `<form class="quote-form" id="${id}" novalidate data-quote-form>
   <div class="form-progress" aria-hidden="true">
-    <span class="form-progress-label">Étape <b data-step-num>1</b>/3</span>
+    <span class="form-progress-label">Étape <b data-step-num>1</b>/2</span>
     <span class="form-progress-bar"><span data-step-bar></span></span>
   </div>
 
   <fieldset class="form-step" data-step="1">
     <legend class="step-title">Quels travaux envisagez-vous ?</legend>
-    <p class="step-hint">Touchez un ou plusieurs métiers.</p>
+    <div class="picks" role="group" aria-label="Projets types">
+      ${scenarios.map((sc) => `<button type="button" class="pick" data-pick="${sc.metiers.join(",")}" aria-pressed="false">${sc.name}</button>`).join("")}
+    </div>
+    <p class="step-hint">Choisissez un projet type ci-dessus, ou touchez un ou plusieurs métiers.</p>
     <div class="tiles">
       ${metiers.map((m) => tile(m.name, m.slug, m.slug)).join("")}
       ${tile("Autre / je ne sais pas encore", "autre", "chat")}
@@ -245,19 +249,8 @@ export function quoteForm(id = "devis-form") {
   </fieldset>
 
   <div class="form-step" data-step="2">
-    <label class="step-title" for="${id}-project">Décrivez votre projet <span class="optional">facultatif</span></label>
-    <p class="step-hint">Pièces concernées, surfaces, délais… Vous pourrez ajouter des photos directement dans WhatsApp.</p>
-    <div class="field">
-      <textarea id="${id}-project" name="project" rows="5" placeholder="Ex. : rénovation de la salle de bain, environ 6 m², pour le printemps."></textarea>
-    </div>
-    <div class="step-nav">
-      <button class="btn btn-text" type="button" data-prev>Retour</button>
-      <button class="btn btn-primary btn-lg" type="button" data-next>Suivant ${icon("arrow")}</button>
-    </div>
-  </div>
-
-  <div class="form-step" data-step="3">
-    <p class="step-title">Pour vous recontacter</p>
+    <p class="step-title">Presque fini : vos coordonnées</p>
+    <p class="step-selection" data-selection hidden></p>
     <div class="field-row">
       <div class="field">
         <label for="${id}-name">Votre nom</label>
@@ -268,6 +261,10 @@ export function quoteForm(id = "devis-form") {
         <input id="${id}-cp" name="postalCode" inputmode="numeric" autocomplete="postal-code" placeholder="Ex. 75011" pattern="[0-9]{5}" maxlength="5" required>
       </div>
     </div>
+    <div class="field">
+      <label for="${id}-project">Votre projet en quelques mots <span class="optional">facultatif</span></label>
+      <textarea id="${id}-project" name="project" rows="3" placeholder="Ex. : salle de bain d’environ 6 m², pour le printemps. Vous pourrez ajouter des photos dans WhatsApp."></textarea>
+    </div>
     <p class="form-error" role="alert" hidden></p>
     <div class="form-actions">
       <button class="btn btn-whatsapp btn-lg" type="submit" data-channel="whatsapp">${icon("whatsapp")}Envoyer sur WhatsApp</button>
@@ -276,9 +273,18 @@ export function quoteForm(id = "devis-form") {
         <button class="btn btn-outline" type="submit" data-channel="email">${icon("mail")}E-mail</button>
       </div>
     </div>
-    <div class="step-nav step-nav-start"><button class="btn btn-text" type="button" data-prev>Retour</button></div>
+    <div class="step-nav step-nav-start"><button class="btn btn-text" type="button" data-prev>${icon("arrow", "icon ba-l")}Modifier les travaux</button></div>
   </div>
 
   <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Vous relisez votre message avant de l’envoyer. Ou appelez le <a href="tel:${site.phone}">${site.phoneDisplay}</a>.</span></p>
 </form>`;
 }
+
+/** Panneau de devis ouvert par-dessus la page (présent sur toutes les pages) */
+export const quoteSheet = () => `<dialog class="sheet" id="quote-sheet" aria-labelledby="sheet-title">
+  <div class="sheet-head">
+    <p id="sheet-title" class="sheet-title">${icon("spark")}Devis gratuit</p>
+    <button class="sheet-close" type="button" data-sheet-close aria-label="Fermer">${icon("close")}</button>
+  </div>
+  <div class="sheet-body">${quoteForm("sheet-form")}</div>
+</dialog>`;

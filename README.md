@@ -39,8 +39,12 @@ npm run preview      # génère puis sert le site sur http://localhost:4321
 
 ## Formulaire de devis
 
-Aucune donnée n’est stockée : le formulaire ouvre WhatsApp (ou les SMS sur mobile) avec un message
-pré-rempli que le visiteur relit avant envoi. `/devis/?metier=plomberie` pré-sélectionne un métier.
+Aucune donnée n’est stockée : le formulaire ouvre WhatsApp (ou les SMS, ou l’e-mail) avec un message
+pré-rempli que le visiteur relit avant envoi. Il tient en 2 étapes : métiers (ou projet type), puis coordonnées.
+
+Sur toutes les pages, les boutons « devis » ouvrent ce formulaire dans un panneau par-dessus la page
+(`<dialog id="quote-sheet">`), sans défilement. Les raccourcis du haut de l’accueil et les liens
+`/devis/?metier=plomberie` pré-cochent les métiers. Sans JavaScript, les liens mènent à la page `/devis/`.
 
 ## Mise en ligne (Netlify, domaine chez IONOS)
 

@@ -210,19 +210,26 @@ function home() {
       <p class="pill enter" style="--d:0"><span class="live"></span>Devis gratuit · Réponse sur WhatsApp</p>
       <h1 class="display">${split("Vos travaux.|*Un seul contact.*")}</h1>
       <p class="lead enter" style="--d:4">Électricité, plomberie, peinture, sols… Mikhael sélectionne les bons professionnels, négocie les prix et suit votre chantier, à Paris et dans toute l’Île-de-France.</p>
-      <div class="hero-actions enter" style="--d:5">
-        <a class="btn btn-whatsapp btn-lg magnetic" href="${waDirect}" rel="noopener">${icon("whatsapp")}Devis gratuit sur WhatsApp</a>
-        <a class="btn btn-glass btn-lg" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
-        <a class="link-light hero-form-link" href="#projet" data-to-form>ou décrire mon projet ${icon("arrow")}</a>
+      <div class="hero-quick enter" style="--d:5">
+        <p class="hero-quick-label">Quel est votre projet ?</p>
+        <div class="hero-picks">
+          ${scenarios.map((sc) => `<a class="hero-pick" href="/devis/" data-to-form data-project="${sc.metiers.join(",")}">${sc.name}</a>`).join("")}
+          <a class="hero-pick" href="/devis/" data-to-form>Autre projet</a>
+        </div>
       </div>
-      <ul class="trust enter" style="--d:6">
+      <div class="hero-actions enter" style="--d:6">
+        <a class="btn btn-whatsapp btn-lg magnetic hero-main" href="/devis/" data-to-form>Faire mon devis gratuit ${icon("arrow")}</a>
+        <a class="btn btn-glass btn-lg hero-alt" href="${waDirect}" rel="noopener">${icon("whatsapp")}WhatsApp</a>
+        <a class="btn btn-glass btn-lg hero-alt" href="tel:${site.phone}">${icon("phone")}<span class="hero-tel-num">${site.phoneDisplay}</span><span class="hero-tel-word">Appeler</span></a>
+      </div>
+      <ul class="trust enter" style="--d:7">
         <li>${icon("check")}10+ ans dans le BTP</li>
         <li>${icon("user")}Un interlocuteur dédié</li>
         <li>${icon("shield")}Sans engagement</li>
       </ul>
     </div>
   </div>
-  <a class="seal enter" style="--d:7" href="#projet" data-to-form aria-label="Devis gratuit et sans engagement">
+  <a class="seal enter" style="--d:8" href="/devis/" data-to-form aria-label="Devis gratuit et sans engagement">
     <svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="seal-path" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs><text><textPath href="#seal-path" textLength="286" lengthAdjust="spacing">DEVIS GRATUIT • SANS ENGAGEMENT • NEXORA • </textPath></text></svg>
     ${icon("arrow", "icon seal-arrow")}
   </a>
