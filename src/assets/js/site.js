@@ -66,77 +66,51 @@
     counters.forEach((c) => co.observe(c));
   }
 
-  /* ---------- Scènes pilotées par le défilement (une seule boucle) ---------- */
+  /* ---------- Scènes pilotées par le défilement (une seule boucle, sans relecture de la mise en page) ---------- */
   const hero = $("[data-hero]");
   const story = $("[data-story]");
-  const method = $("[data-hscroll]");
-  const tickers = $$("[data-ticker]");
-  const footerWord = $(".footer-word");
   const progress = $(".scroll-progress");
-  const wide = matchMedia("(min-width: 961px)");
   let lastY = scrollY;
-  let methodTrack = method ? $(".method-track", method) : null;
+  let L = {}; // positions mises en cache, recalculées seulement au redimensionnement
 
-  function sizeMethod() {
-    if (!method || reduced) return;
-    const on = wide.matches;
-    doc.classList.toggle("hscroll", on);
-    if (!on) {
-      method.style.removeProperty("--h");
-      methodTrack.style.removeProperty("--x");
-      return;
-    }
-    const dist = Math.max(0, methodTrack.scrollWidth - innerWidth);
-    method.style.setProperty("--h", `${innerHeight + dist}px`);
-    method.dataset.dist = String(dist);
+  function measure() {
+    const top = (el) => el.getBoundingClientRect().top + scrollY;
+    L = {
+      max: doc.scrollHeight - innerHeight,
+      vh: innerHeight,
+      heroH: hero ? hero.offsetHeight : 0,
+      storyTop: story ? top(story) : 0,
+      storySpan: story ? story.offsetHeight - innerHeight : 0,
+    };
   }
 
-  function sectionProgress(el) {
-    const r = el.getBoundingClientRect();
-    const span = r.height - innerHeight;
-    return span > 0 ? clamp(-r.top / span) : r.top < 0 ? 1 : 0;
-  }
-
+  let lastHp = -1, lastK = -1, lastSp = -1;
   function frame() {
     ticking = false;
     const y = scrollY;
-    const max = doc.scrollHeight - innerHeight;
-    progress?.style.setProperty("--sp", (max > 0 ? y / max : 0).toFixed(4));
+    const sp = L.max > 0 ? Math.round((y / L.max) * 500) / 500 : 0;
+    if (sp !== lastSp) progress?.style.setProperty("--sp", (lastSp = sp));
 
     // En-tête : masqué en descendant, réapparaît en remontant
     header?.classList.toggle("scrolled", y > 10);
     if (!body.classList.contains("nav-open")) header?.classList.toggle("hide", y > 600 && y > lastY + 2);
     if (y < lastY - 2) header?.classList.remove("hide");
-    body.classList.toggle("show-float", y > innerHeight * 0.7);
+    body.classList.toggle("show-float", y > L.vh * 0.7);
     lastY = y;
 
     if (reduced) return;
-
-    if (hero) {
-      const r = hero.getBoundingClientRect();
-      hero.style.setProperty("--hp", clamp(-r.top / r.height).toFixed(4));
+    if (hero && y < L.heroH + 50) {
+      const hp = Math.round(clamp(y / L.heroH) * 200) / 200;
+      if (hp !== lastHp) hero.style.setProperty("--hp", (lastHp = hp));
     }
-    if (story) {
-      const p = sectionProgress(story);
-      const k = clamp((p - 0.18) / 0.5);
-      const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
-      story.style.setProperty("--p", p.toFixed(4));
-      story.style.setProperty("--k", e.toFixed(4));
-      story.classList.toggle("done", e > 0.97);
-    }
-    if (method && doc.classList.contains("hscroll")) {
-      const p = sectionProgress(method);
-      methodTrack.style.setProperty("--x", (p * +(method.dataset.dist || 0)).toFixed(1));
-      method.style.setProperty("--p", p.toFixed(4));
-    }
-    tickers.forEach((t) => {
-      const track = t.firstElementChild;
-      const third = track.scrollWidth / 3 || 1;
-      t.style.setProperty("--tx", `${((y * 0.35) % third).toFixed(1)}px`);
-    });
-    if (footerWord) {
-      const r = footerWord.getBoundingClientRect();
-      footerWord.style.setProperty("--fw", clamp(1 - (r.top - innerHeight * 0.6) / (innerHeight * 0.5)).toFixed(3));
+    if (story && L.storySpan > 0) {
+      const p = clamp((y - L.storyTop) / L.storySpan);
+      const k = clamp((p - 0.1) / 0.6);
+      const e = Math.round((k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2) * 200) / 200;
+      if (e !== lastK) {
+        story.style.setProperty("--k", (lastK = e));
+        story.classList.toggle("done", e > 0.97);
+      }
     }
   }
   let ticking = false;
@@ -146,46 +120,19 @@
       requestAnimationFrame(frame);
     }
   };
+  const remeasure = () => {
+    measure();
+    request();
+  };
   addEventListener("scroll", request, { passive: true });
-  addEventListener("resize", () => {
-    sizeMethod();
-    request();
-  });
-  wide.addEventListener?.("change", () => {
-    sizeMethod();
-    request();
-  });
-  sizeMethod();
+  addEventListener("resize", remeasure, { passive: true });
+  addEventListener("load", remeasure);
+  document.fonts?.ready.then(remeasure);
+  measure();
   frame();
-  // Les polices peuvent changer la largeur de la piste horizontale
-  document.fonts?.ready.then(() => {
-    sizeMethod();
-    request();
-  });
 
   /* ---------- Effets au pointeur (souris uniquement) ---------- */
   if (finePointer && !reduced) {
-    const glow = $(".cursor-glow");
-    let gx = -999, gy = -999, cx = gx, cy = gy, glowOn = false;
-    const loop = () => {
-      cx += (gx - cx) * 0.12;
-      cy += (gy - cy) * 0.12;
-      glow?.style.setProperty("--cx", `${cx.toFixed(1)}px`);
-      glow?.style.setProperty("--cy", `${cy.toFixed(1)}px`);
-      requestAnimationFrame(loop);
-    };
-    addEventListener("pointermove", (e) => {
-      gx = e.clientX;
-      gy = e.clientY;
-      if (!glowOn) {
-        glowOn = true;
-        cx = gx;
-        cy = gy;
-        body.classList.add("has-pointer");
-        requestAnimationFrame(loop);
-      }
-    }, { passive: true });
-
     // Quadrillage du hero qui suit le pointeur
     $$(".hero, .page-hero-dark").forEach((h) =>
       h.addEventListener("pointermove", (e) => {
@@ -275,8 +222,16 @@
       body.appendChild(bar);
     }
     bar.querySelector(".project-count").innerHTML = `<strong>${n}</strong> métier${n > 1 ? "s" : ""} sélectionné${n > 1 ? "s" : ""}`;
-    const cfg = $("#metiers");
-    const cfgVisible = cfg && cfg.getBoundingClientRect().bottom > innerHeight * 0.5 && cfg.getBoundingClientRect().top < innerHeight * 0.5;
+    updateBar();
+  }
+
+  // Affiche la barre « projet » seulement hors du configurateur et du formulaire
+  const cfgSection = $("#metiers");
+  function updateBar() {
+    if (!bar) return;
+    const n = lastCount > 0 ? lastCount : 0;
+    const c = cfgSection?.getBoundingClientRect();
+    const cfgVisible = c && c.bottom > innerHeight * 0.5 && c.top < innerHeight * 0.5;
     const formVisible = form && form.getBoundingClientRect().top < innerHeight * 0.85;
     const show = n > 0 && !formVisible && !cfgVisible;
     bar.classList.toggle("visible", show);
@@ -300,7 +255,15 @@
     })
   );
   form?.addEventListener("change", refreshSelection);
-  addEventListener("scroll", () => bar && refreshSelection(), { passive: true });
+  let barTick = false;
+  addEventListener("scroll", () => {
+    if (!bar || barTick) return;
+    barTick = true;
+    requestAnimationFrame(() => {
+      barTick = false;
+      updateBar();
+    });
+  }, { passive: true });
 
   // Page devis : pré-sélection via ?metier=plomberie
   const pre = new URLSearchParams(location.search).get("metier");

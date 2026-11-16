@@ -37,14 +37,13 @@ const steps = [
 
 const pad = (n) => String(n).padStart(2, "0");
 
-const methodSection = () => `<section class="method" id="methode" aria-labelledby="methode-title" data-hscroll>
+const methodSection = () => `<section class="method" id="methode" aria-labelledby="methode-title">
   <div class="method-sticky">
     <div class="container method-head">
       <div>
         <p class="eyebrow eyebrow-light">La méthode Nexora</p>
         <h2 id="methode-title" class="h2">Du premier message<br>à la dernière finition.</h2>
       </div>
-      <div class="method-meter" aria-hidden="true"><span></span></div>
     </div>
     <ol class="method-track">
       ${steps
@@ -57,11 +56,6 @@ const methodSection = () => `<section class="method" id="methode" aria-labelledb
       </li>`
         )
         .join("")}
-      <li class="step-card step-card-cta reveal">
-        <p class="step-cta-kicker">Étape 00</p>
-        <h3>Tout commence par un message.</h3>
-        <a class="btn btn-whatsapp btn-lg magnetic" href="/devis/" data-to-form>${icon("whatsapp")}Je me lance</a>
-      </li>
     </ol>
   </div>
 </section>`;
@@ -112,7 +106,7 @@ const story = () => {
       const oy = (50 + Math.sin(a) * 36).toFixed(1);
       const [sx, sy] = scatter[i];
       const r = ((i * 37) % 30) - 15;
-      return `<span class="node" style="--sx:${sx}%;--sy:${sy}%;--ox:${ox}%;--oy:${oy}%;--r:${r}deg">${icon(m.slug)}<b>${m.name}</b></span>`;
+      return `<span class="node" style="--sx:${sx};--sy:${sy};--ox:${ox};--oy:${oy};--r:${r}deg">${icon(m.slug)}<b>${m.name}</b></span>`;
     })
     .join("");
   const lines = metiers
@@ -217,8 +211,9 @@ function home() {
       <h1 class="display">${split("Vos travaux.|*Un seul contact.*")}</h1>
       <p class="lead enter" style="--d:4">Électricité, plomberie, peinture, sols… Mikhael sélectionne les bons professionnels, négocie les prix et suit votre chantier, à Paris et dans toute l’Île-de-France.</p>
       <div class="hero-actions enter" style="--d:5">
-        <a class="btn btn-whatsapp btn-lg magnetic" href="#projet" data-to-form>${icon("whatsapp")}Devis gratuit sur WhatsApp</a>
-        <a class="btn btn-glass btn-lg" href="#pourquoi">Comment ça marche</a>
+        <a class="btn btn-whatsapp btn-lg magnetic" href="${waDirect}" rel="noopener">${icon("whatsapp")}Devis gratuit sur WhatsApp</a>
+        <a class="btn btn-glass btn-lg" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
+        <a class="link-light hero-form-link" href="#projet" data-to-form>ou décrire mon projet ${icon("arrow")}</a>
       </div>
       <ul class="trust enter" style="--d:6">
         <li>${icon("check")}10+ ans dans le BTP</li>
@@ -317,8 +312,6 @@ ${parrainTeaser()}
     <div class="reveal">${zoneRadar}</div>
   </div>
 </section>
-
-${ticker(true)}
 
 <section class="section" id="faq" aria-labelledby="faq-title">
   <div class="container faq-grid">

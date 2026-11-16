@@ -145,8 +145,6 @@ ${ld}
 </head>
 <body${cls ? ` class="${cls}"` : ""}>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
-<div class="grain" aria-hidden="true"></div>
-<div class="cursor-glow" aria-hidden="true"></div>
 ${header(p.current)}
 <main id="contenu">
 ${p.body}
