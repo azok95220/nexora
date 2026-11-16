@@ -42,7 +42,7 @@ const methodSection = () => `<section class="method" id="methode" aria-labelledb
     <div class="container method-head">
       <div>
         <p class="eyebrow eyebrow-light">La méthode Nexora</p>
-        <h2 id="methode-title" class="h2">Du premier message<br>à la dernière finition.</h2>
+        <h2 id="methode-title" class="h2">Du premier message <br>à la dernière finition.</h2>
       </div>
     </div>
     <ol class="method-track">
@@ -163,7 +163,7 @@ const beforeAfter = () => {
     <div class="transfo-head">
       <div class="reveal">
         <p class="eyebrow eyebrow-light">Avant / après</p>
-        <h2 id="transfo-title" class="h1">Ce que nous pouvons<br>transformer pour vous.</h2>
+        <h2 id="transfo-title" class="h1">Ce que nous pouvons <br>transformer pour vous.</h2>
       </div>
       <div class="transfo-tabs reveal" role="tablist" aria-label="Exemples de projets">
         ${transformations.map((t, i) => `<button type="button" role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${t.name}</button>`).join("")}
@@ -237,7 +237,7 @@ ${story()}
   <div class="container founder-grid">
     <div class="founder-copy">
       <p class="eyebrow reveal">Le mot du fondateur</p>
-      <h2 id="founder-title" class="h1 reveal">Bonjour,<br>je m’appelle <span class="accent-blue">Mikhael.</span></h2>
+      <h2 id="founder-title" class="h1 reveal">Bonjour, <br>je m’appelle <span class="accent-blue">Mikhael.</span></h2>
       <div class="founder-text reveal">
         <p>Je travaille dans le <strong>BTP depuis plus de 10 ans</strong>. Au fil des chantiers, je me suis constitué un solide réseau d’entreprises et d’artisans de confiance.</p>
         <p>Mon rôle : <strong>trouver les bons professionnels pour votre projet, négocier pour vous les meilleurs prix et suivre vos travaux</strong> jusqu’à la dernière finition.</p>
@@ -264,7 +264,7 @@ ${beforeAfter()}
   <div class="container">
     <div class="section-head reveal">
       <p class="eyebrow">Composez votre projet</p>
-      <h2 id="metiers-title" class="h1">Un réseau pour chaque<br>étape de votre rénovation.</h2>
+      <h2 id="metiers-title" class="h1">Un réseau pour chaque <br>étape de votre rénovation.</h2>
       <p class="section-intro">Choisissez un projet type ou sélectionnez les métiers un par un : votre demande se prépare en direct.</p>
     </div>
     <div class="scenarios reveal" role="group" aria-label="Projets types">
@@ -305,7 +305,7 @@ ${parrainTeaser()}
   <div class="container zone-grid">
     <div class="reveal">
       <p class="eyebrow eyebrow-light">Zone d’intervention</p>
-      <h2 id="zone-title" class="h1">Paris et toute<br>l’Île-de-France.</h2>
+      <h2 id="zone-title" class="h1">Paris et toute <br>l’Île-de-France.</h2>
       <p class="section-intro">Paris, la petite et la grande couronne : un seul contact pour toute la région. Vérifiez en une seconde.</p>
       ${zoneChecker("zone-cp")}
     </div>
@@ -464,7 +464,7 @@ function zonePage() {
     ${bc.html}
     <div class="page-hero-grid">
       <div>
-        <h1 class="h1">${split("Zone d’intervention :|*Paris et toute l’Île-de-France*")}</h1>
+        <h1 class="h1">${split("Zone d’intervention :|*Paris et toute l’Île-de-France*")}</h1>
         <p class="lead enter" style="--d:4">Nous intervenons sur vos projets de rénovation à Paris et dans les huit départements franciliens. Vérifiez votre code postal.</p>
         <div class="enter" style="--d:5">${zoneChecker("zone-page-cp")}</div>
       </div>
@@ -630,7 +630,7 @@ const parrainTeaser = () => `<section class="section parrain-band" id="parrainag
   <div class="container parrain-grid">
     <div class="reveal">
       <p class="eyebrow eyebrow-light">Parrainage</p>
-      <h2 id="parrain-title" class="h1">Recommandez un proche.<br><span class="accent-wa">Une cuisine = 360&nbsp;€ pour vous.</span></h2>
+      <h2 id="parrain-title" class="h1">Recommandez un proche. <br><span class="accent-wa">Une cuisine = 360&nbsp;€ pour vous.</span></h2>
       <p class="parrain-lead">Vous connaissez quelqu’un qui a un projet de travaux ? S’il le fait avec Nexora, vous touchez <strong>3 % du montant</strong>, puis <strong>4 % dès votre 4ᵉ recommandation</strong>.</p>
       ${levels()}
       <div class="hero-actions">
@@ -751,15 +751,15 @@ function legalPage() {
   <div class="container prose">
     <h1 class="h1">Mentions légales</h1>
     <h2>Éditeur du site</h2>
-    <p>${site.name}<br>
-    Responsable de la publication : ${todo("nom et prénom")}<br>
-    Statut juridique : ${todo("forme juridique, ex. micro-entreprise")}<br>
-    SIRET : ${todo("numéro SIRET")}<br>
-    Adresse : ${todo("adresse postale")}<br>
-    Téléphone : <a href="tel:${site.phone}">${site.phoneDisplay}</a><br>
+    <p>${site.name} <br>
+    Responsable de la publication : ${todo("nom et prénom")} <br>
+    Statut juridique : ${todo("forme juridique, ex. micro-entreprise")} <br>
+    SIRET : ${todo("numéro SIRET")} <br>
+    Adresse : ${todo("adresse postale")} <br>
+    Téléphone : <a href="tel:${site.phone}">${site.phoneDisplay}</a> <br>
     E-mail : <a href="mailto:${site.email}">${site.email}</a></p>
     <h2>Hébergement</h2>
-    <p>Netlify, Inc. — 101 2nd Street, San Francisco, CA 94105, États-Unis — <a href="https://www.netlify.com" rel="noopener">netlify.com</a><br>Nom de domaine et messagerie : IONOS SARL — 7 place de la Gare, BP 70109, 57201 Sarreguemines Cedex, France</p>
+    <p>Netlify, Inc. — 101 2nd Street, San Francisco, CA 94105, États-Unis — <a href="https://www.netlify.com" rel="noopener">netlify.com</a> <br>Nom de domaine et messagerie : IONOS SARL — 7 place de la Gare, BP 70109, 57201 Sarreguemines Cedex, France</p>
     <h2>Activité</h2>
     <p>${site.name} accompagne les particuliers dans la préparation de leurs projets de travaux et les met en relation avec des professionnels. Les travaux sont chiffrés et réalisés par l’entreprise réalisatrice, qui transmet directement sa proposition au client.</p>
     <h2>Propriété intellectuelle</h2>

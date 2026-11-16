@@ -941,8 +941,65 @@ html:not(.js) .simu { display: none; }
   .footer-cta { padding-bottom: 40px; }
   .footer-big { font-size: 2.2rem; }
   .footer-grid { padding-block: 40px; gap: 28px; }
-  .footer-grid ul { grid-template-columns: 1fr 1fr; column-gap: 12px; }
   .footer-word { display: none; }
   .contact-points { margin-top: 24px; gap: 12px; }
   .contact-points li:not(:first-child) { display: none; }
+}
+
+/* ---------- Mobile : ergonomie ---------- */
+@media (max-width: 640px) {
+  /* Haut de page : tout tient dans le premier écran */
+  .hero { padding-top: 104px; padding-bottom: 28px; min-height: 100svh; }
+  .hero .pill { margin-bottom: 18px; font-size: .8rem; padding: 7px 14px 7px 10px; }
+  .hero .lead { margin-top: 16px; font-size: 1rem; line-height: 1.5; }
+  .hero-actions { margin-top: 22px; gap: 10px; }
+  .hero-actions .btn-lg { min-height: 54px; }
+  .hero-form-link { width: 100%; justify-content: center; padding: 6px; font-size: .92rem; }
+  .trust { margin-top: 14px; justify-content: center; gap: 6px 16px; font-size: .8rem; }
+  /* Titres : pas de retour à la ligne forcé sur petit écran */
+  .h1 br, .h2 br { display: none; }
+  .display br { display: inline; }
+  /* Zones tactiles d'au moins 44 px */
+  .metier-add { min-height: 44px; padding: 8px 14px; font-size: .86rem; }
+  .scenario { min-height: 44px; }
+  .transfo-tabs button { min-height: 44px; }
+  .faq-icon { width: 44px; height: 44px; }
+  .btn-text { min-height: 48px; }
+  .zone-check-row .btn { min-height: 48px; }
+  .zone-check-row input { font-size: 1.05rem; min-height: 48px; }
+  .field input, .field textarea { font-size: 16px; } /* évite le zoom automatique d'iOS */
+  /* Pied de page lisible */
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid > div:nth-child(2) ul { grid-template-columns: 1fr 1fr; }
+  .site-footer ul a { display: inline-block; padding: 4px 0; font-size: 1rem; }
+  .footer-title:not(:first-child) { margin-top: 24px; }
+  .footer-bottom { gap: 4px; }
+}
+/* Très petits écrans */
+@media (max-width: 380px) {
+  .display { font-size: 2.9rem; }
+  .brand-text { font-size: .9rem; }
+  .mobile-bar { grid-template-columns: 1fr 1.4fr; }
+  .mobile-bar .btn { font-size: .88rem; gap: 6px; }
+  .tiers, .levels { gap: 6px; }
+}
+@media (max-width: 640px) {
+  /* Pages intérieures : moins de vide en haut, formulaire plus vite accessible */
+  main > section:first-child:not(.hero) { padding-top: calc(var(--header-h) + 36px); }
+  .devis-hero .breadcrumb { margin-bottom: 20px; }
+  .devis-hero .mini-steps { display: none; }
+  .devis-hero .lead { margin-top: 14px; font-size: 1rem; }
+  .devis-hero .contact-grid { gap: 24px; }
+  .devis-hero .levels { margin-top: 18px; }
+  .devis-hero .levels-rules { font-size: .84rem; }
+  .page-hero-grid { margin-top: 20px; gap: 24px; }
+  .page-hero .lead { margin-top: 16px; font-size: 1rem; }
+  .page-hero .hero-actions { margin-top: 22px; }
+  .page-hero .hero-actions .btn { width: 100%; }
+  .form-card { padding: 20px 16px; border-radius: 22px; }
+}
+@media (max-width: 640px) {
+  .footer-grid > div:nth-child(3) > :nth-child(-n+2) { display: none; }
+  .footer-grid > div:nth-child(3) > .footer-title { margin-top: 0; }
+  .footer-grid > div:nth-child(3) ul { grid-template-columns: 1fr 1fr; }
 }

@@ -29,7 +29,7 @@ export const split = (text) => {
         })
         .join(" ")
     )
-    .join("<br>");
+    .join(" <br>");
 };
 
 const brand = `<a class="brand" href="/" aria-label="${site.name}, accueil">
