@@ -137,7 +137,12 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${site.url}/assets/img/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Nexora">
 <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 ${p.preloadHero ? '<link rel="preload" as="image" href="/assets/img/hero-1200.webp" imagesrcset="/assets/img/hero-800.webp 800w, /assets/img/hero-1200.webp 1200w, /assets/img/hero-1600.webp 1600w" imagesizes="100vw" fetchpriority="high">' : ""}
 <link rel="stylesheet" href="/assets/css/site.css?v=__V__">
