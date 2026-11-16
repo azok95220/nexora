@@ -12,6 +12,16 @@ await mkdir(out, { recursive: true });
 await cp("src/assets", join(out, "assets"), { recursive: true });
 await cp("src/static", out, { recursive: true });
 
+// Compression légère du CSS (commentaires et blancs inutiles)
+const cssPath = join(out, "assets/css/site.css");
+const css = (await readFile(cssPath, "utf8"))
+  .replace(/\/\*[\s\S]*?\*\//g, "")
+  .replace(/\s*\n\s*/g, "")
+  .replace(/\s*([{};])\s*/g, "$1")
+  .replace(/;}/g, "}")
+  .replace(/([a-z-]):\s+/g, "$1:");
+await writeFile(cssPath, css);
+
 // Version des fichiers CSS/JS pour forcer le rafraîchissement du cache après chaque modification
 const hash = createHash("sha1")
   .update(await readFile("src/assets/css/site.css"))

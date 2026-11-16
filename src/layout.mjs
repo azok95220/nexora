@@ -34,7 +34,7 @@ export const split = (text) => {
 
 const brand = `<a class="brand" href="/" aria-label="${site.name}, accueil">
   <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 24V8h3l8 10.6V8h3v16h-2.9L12 13.3V24z"/></svg></span>
-  <span class="brand-text">NEXORA<span>TRAVAUX</span></span>
+  <span class="brand-text">NEXORA <span>TRAVAUX</span></span>
 </a>`;
 
 function header(current) {
@@ -143,7 +143,7 @@ ${p.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Nexora">
-<link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 ${p.preloadHero ? '<link rel="preload" as="image" href="/assets/img/hero-1200.webp" imagesrcset="/assets/img/hero-800.webp 800w, /assets/img/hero-1200.webp 1200w, /assets/img/hero-1600.webp 1600w" imagesizes="100vw" fetchpriority="high">' : ""}
 <link rel="stylesheet" href="/assets/css/site.css?v=__V__">
 ${ld}

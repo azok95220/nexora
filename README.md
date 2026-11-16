@@ -60,3 +60,16 @@ Sur toutes les pages, les boutons « devis » ouvrent ce formulaire dans un pann
 
 Les mentions légales et la politique de confidentialité contiennent des champs surlignés
 `[À compléter]` (nom, statut, SIRET, adresse) à renseigner dès que l’entreprise est immatriculée.
+
+## Police de caractères
+
+`src/assets/fonts/inter-latin.woff2` est une version allégée d’Inter, limitée aux caractères utilisés par le site
+(alphabet latin, accents français, ponctuation). La police complète est conservée dans `tools/fonts/inter-full.woff2`.
+Si un nouveau caractère spécial est ajouté au contenu et s’affiche dans une autre police, régénérer le sous-ensemble :
+
+```sh
+pip install fonttools brotli
+pyftsubset tools/fonts/inter-full.woff2 --unicodes="U+0020-007E,U+00A0-00FF,U+0152,U+0153,U+2011-2026,U+202F,U+2032,U+2039,U+203A,U+20AC,U+2190-2193" \
+  --flavor=woff2 --layout-features=kern,liga,calt,ccmp,locl,mark,mkmk,cv11,ss01,ss03,frac,sups \
+  --output-file=src/assets/fonts/inter-latin.woff2
+```

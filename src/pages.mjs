@@ -567,7 +567,7 @@ function devisPage() {
 /* Parrainage : recommander un proche et toucher une commission       */
 
 // Règles de commission (à modifier ici, le simulateur en JS utilise les mêmes valeurs via data-*)
-const COMMISSION = { forfait: 0, seuil: 2000, taux: 3, tauxPro: 4, apresN: 3, plafond: 2000 };
+const COMMISSION = { forfait: 0, seuil: 2000, taux: 4, tauxPro: 5, apresN: 2, plafond: 2000 };
 const eur = (n) => `${Math.round(n).toLocaleString("fr-FR").replace(/\s/g, "&nbsp;")}&nbsp;€`;
 const gain = (montant, rang) =>
   montant < COMMISSION.seuil ? COMMISSION.forfait : Math.min(COMMISSION.plafond, (montant * (rang > COMMISSION.apresN ? COMMISSION.tauxPro : COMMISSION.taux)) / 100);
@@ -581,14 +581,14 @@ const exemples = [
 const parrainSteps = [
   ["user", "Vous nous recommandez quelqu’un", "Un ami, un voisin, un collègue, un client… qui a un projet de travaux. Avec son accord, vous nous transmettez son contact."],
   ["chat", "Nous nous occupons de son projet", "Mikhael l’appelle, organise la visite et lui trouve les bons professionnels, comme pour n’importe quel client."],
-  ["check", "Vous touchez 3 %, puis 4 %", `Une fois le chantier terminé et entièrement payé par le client, vous recevez 3 % du montant HT par virement. Dès votre 4ᵉ chantier recommandé : 4 %.`],
+  ["check", "Vous touchez 4 %, puis 5 %", `Une fois le chantier terminé et entièrement payé par le client, vous recevez 4 % du montant HT par virement. Dès votre 3ᵉ chantier recommandé : 5 %.`],
 ];
 
 const parrainFaq = [
   ["Qui peut parrainer ?", "Tout le monde : anciens clients, amis, voisins, gardiens d’immeuble, agents immobiliers, artisans… Il suffit de connaître quelqu’un qui a un projet de travaux à Paris ou en Île-de-France."],
-  ["Combien vais-je toucher ?", "3 % du montant HT des travaux pour vos 3 premiers chantiers recommandés, puis 4 % à partir du 4ᵉ. La commission s’applique aux chantiers d’au moins 2 000 € HT et elle est plafonnée à 2 000 € par chantier. Le montant exact vous est confirmé par écrit à la signature du devis."],
-  ["Un exemple concret ?", "Votre voisine refait sa cuisine pour 12 000 € HT : vous touchez 360 €. Si c’est votre 4ᵉ recommandation (ou plus), vous touchez 480 €."],
-  ["Comment sont comptés les chantiers ?", "Chaque chantier signé et réglé grâce à vous compte, sans limite de durée. Dès votre 4ᵉ chantier, le taux de 4 % s’applique à tous les chantiers suivants."],
+  ["Combien vais-je toucher ?", "4 % du montant HT des travaux pour vos 2 premiers chantiers recommandés, puis 5 % à partir du 3ᵉ. La commission s’applique aux chantiers d’au moins 2 000 € HT et elle est plafonnée à 2 000 € par chantier. Le montant exact vous est confirmé par écrit à la signature du devis."],
+  ["Un exemple concret ?", "Votre voisine refait sa cuisine pour 12 000 € HT : vous touchez 480 €. Si c’est votre 3ᵉ recommandation (ou plus), vous touchez 600 €."],
+  ["Comment sont comptés les chantiers ?", "Chaque chantier signé et réglé grâce à vous compte, sans limite de durée. Dès votre 3ᵉ chantier, le taux de 5 % s’applique à tous les chantiers suivants."],
   ["Quand la commission est-elle versée ?", "Une fois le chantier terminé et entièrement réglé par le client que vous avez recommandé, par virement."],
   ["Dois-je déclarer cette somme ?", "Oui : comme tout revenu, les commissions perçues sont à déclarer aux impôts. Nous vous remettons un justificatif."],
   ["Dois-je prévenir la personne ?", "Oui. Transmettez-nous uniquement le contact d’une personne d’accord pour être appelée au sujet de son projet."],
@@ -596,8 +596,8 @@ const parrainFaq = [
 
 /* Niveaux + exemples en euros */
 const levels = () => `<div class="levels">
-  <div class="level"><span class="level-k">Chantiers 1 à 3</span><strong>3&nbsp;%</strong><span>du montant HT</span></div>
-  <div class="level level-pro"><span class="level-k">Dès le 4ᵉ chantier</span><strong>4&nbsp;%</strong><span>du montant HT</span></div>
+  <div class="level"><span class="level-k">Chantiers 1 et 2</span><strong>4&nbsp;%</strong><span>du montant HT</span></div>
+  <div class="level level-pro"><span class="level-k">Dès le 3ᵉ chantier</span><strong>5&nbsp;%</strong><span>du montant HT</span></div>
 </div>
 <ul class="levels-rules">
   <li>${icon("check")}Pour les chantiers à partir de 2&nbsp;000&nbsp;€ HT</li>
@@ -620,13 +620,12 @@ const simulator = () => `<div class="simu" data-simu data-forfait="${COMMISSION.
   <div class="simu-rank" role="group" aria-labelledby="simu-rank-label">
     <button type="button" data-rank="1" aria-pressed="true">1ᵉʳ chantier</button>
     <button type="button" data-rank="2" aria-pressed="false">2ᵉ</button>
-    <button type="button" data-rank="3" aria-pressed="false">3ᵉ</button>
-    <button type="button" data-rank="4" aria-pressed="false">4ᵉ et +</button>
+    <button type="button" data-rank="3" aria-pressed="false">3ᵉ et +</button>
   </div>
   <div class="simu-result" aria-live="polite">
     <span>Vous touchez</span>
     <strong data-simu-gain>${eur(gain(12000, 1))}</strong>
-    <small data-simu-rule>3 % du montant HT</small>
+    <small data-simu-rule>4 % du montant HT</small>
   </div>
   <p class="simu-total" data-simu-total></p>
   <p class="simu-foot">Versée par virement une fois le chantier terminé et entièrement payé par le client.</p>
@@ -636,8 +635,8 @@ const parrainTeaser = () => `<section class="parrain-band" id="parrainage" aria-
   <div class="container parrain-compact reveal">
     <div>
       <p class="eyebrow eyebrow-light">Parrainage</p>
-      <h2 id="parrain-title" class="h2">Recommandez un proche : <span class="accent-wa">une cuisine = 360&nbsp;€ pour vous.</span></h2>
-      <p class="parrain-lead">3 % du chantier, puis 4 % dès votre 4ᵉ recommandation. Versés une fois le chantier terminé et payé.</p>
+      <h2 id="parrain-title" class="h2">Recommandez un proche : <span class="accent-wa">une cuisine = 480&nbsp;€ pour vous.</span></h2>
+      <p class="parrain-lead">4 % du chantier, puis 5 % dès votre 3ᵉ recommandation. Versés une fois le chantier terminé et payé.</p>
     </div>
     <div class="parrain-actions">
       <a class="btn btn-light btn-lg magnetic" href="/parrainage/">Je parraine ${icon("arrow")}</a>
@@ -676,7 +675,7 @@ const referralForm = () => `<form class="quote-form referral-form" novalidate da
       <button class="btn btn-outline" type="submit" data-channel="email">${icon("mail")}E-mail</button>
     </div>
   </div>
-  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Votre commission (3 %, puis 4 % dès le 4ᵉ chantier) vous est confirmée par écrit à la signature du devis, et versée une fois le chantier terminé et payé.</span></p>
+  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Votre commission (4 %, puis 5 % dès le 3ᵉ chantier) vous est confirmée par écrit à la signature du devis, et versée une fois le chantier terminé et payé.</span></p>
 </form>`;
 
 function parrainagePage() {
@@ -692,8 +691,8 @@ function parrainagePage() {
     <div class="contact-grid">
       <div class="contact-copy">
         <p class="eyebrow eyebrow-light">Parrainage</p>
-        <h1 class="h1">${split("Recommandez un proche. *Touchez 3 à 4 % du chantier.*")}</h1>
-        <p class="lead">Vous connaissez quelqu’un qui a un projet de travaux ? Mettez-le en relation avec Mikhael : si le chantier se fait, vous touchez 3 % du montant, puis 4 % dès votre 4ᵉ recommandation.</p>
+        <h1 class="h1">${split("Recommandez un proche. *Touchez 4 à 5 % du chantier.*")}</h1>
+        <p class="lead">Vous connaissez quelqu’un qui a un projet de travaux ? Mettez-le en relation avec Mikhael : si le chantier se fait, vous touchez 4 % du montant, puis 5 % dès votre 3ᵉ recommandation.</p>
         ${levels()}
         <ol class="mini-steps">
           ${parrainSteps.map(([, t, d], i) => `<li><span class="mini-num">${pad(i + 1)}</span><span><strong>${t}</strong>${d}</span></li>`).join("")}
@@ -730,9 +729,9 @@ function parrainagePage() {
 ${ctaBand("Vous avez vous-même un projet ?")}`;
   return page({
     path: "/parrainage/",
-    title: "Parrainage : recommandez Nexora Travaux et touchez 3 à 4 % du chantier",
+    title: "Parrainage : recommandez Nexora Travaux et touchez 4 à 5 % du chantier",
     description:
-      "Vous connaissez quelqu’un qui a un projet de travaux à Paris ou en Île-de-France ? Recommandez Nexora Travaux et touchez 3 % du montant des travaux, puis 4 % dès votre 4ᵉ recommandation.",
+      "Vous connaissez quelqu’un qui a un projet de travaux à Paris ou en Île-de-France ? Recommandez Nexora Travaux et touchez 4 % du montant des travaux, puis 5 % dès votre 3ᵉ recommandation.",
     current: "parrainage",
     theme: "dark",
     body,
