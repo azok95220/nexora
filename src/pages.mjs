@@ -134,6 +134,7 @@ const story = () => {
         ${nodes}
         <span class="hub"><span class="hub-core">${icon("user")}</span><b>Mikhael</b><small>Votre contact unique</small></span>
       </div>
+      <button class="story-replay" type="button" data-story-replay>${icon("replay")}Revoir l’animation</button>
     </div>
   </div>
 </section>`;
@@ -207,7 +208,7 @@ function home() {
   <p class="hero-coords" aria-hidden="true"><span>48°51′N</span><span>2°21′E</span><span>Paris · Île-de-France</span></p>
   <div class="container hero-inner">
     <div class="hero-copy">
-      <p class="pill enter" style="--d:0"><span class="live"></span>Devis gratuit · Réponse sur WhatsApp</p>
+      <a class="pill pill-link enter" style="--d:0" href="/parrainage/">${icon("gift")}<span>Gagnez de l’argent en parrainant</span>${icon("arrow")}</a>
       <h1 class="display">${split("Vos travaux.|*Un seul contact.*")}</h1>
       <p class="lead enter" style="--d:4">Électricité, plomberie, peinture, sols… Mikhael sélectionne les bons professionnels, négocie les prix et suit votre chantier, à Paris et dans toute l’Île-de-France.</p>
       <div class="hero-quick enter" style="--d:5">
@@ -236,7 +237,7 @@ function home() {
   <a class="scroll-hint" href="#pourquoi" aria-label="Faire défiler"><span></span></a>
 </section>
 
-${ticker()}
+${beforeAfter()}
 
 ${story()}
 
@@ -264,8 +265,6 @@ ${story()}
     ${chat}
   </div>
 </section>
-
-${beforeAfter()}
 
 <section class="section section-paper configurator" id="metiers" aria-labelledby="metiers-title">
   <div class="container">
@@ -633,22 +632,16 @@ const simulator = () => `<div class="simu" data-simu data-forfait="${COMMISSION.
   <p class="simu-foot">Versée par virement une fois le chantier terminé et entièrement payé par le client.</p>
 </div>`;
 
-const parrainTeaser = () => `<section class="section parrain-band" id="parrainage" aria-labelledby="parrain-title">
-  <div class="container parrain-grid">
-    <div class="reveal">
+const parrainTeaser = () => `<section class="parrain-band" id="parrainage" aria-labelledby="parrain-title">
+  <div class="container parrain-compact reveal">
+    <div>
       <p class="eyebrow eyebrow-light">Parrainage</p>
-      <h2 id="parrain-title" class="h1">Recommandez un proche. <br><span class="accent-wa">Une cuisine = 360&nbsp;€ pour vous.</span></h2>
-      <p class="parrain-lead">Vous connaissez quelqu’un qui a un projet de travaux ? S’il le fait avec Nexora, vous touchez <strong>3 % du montant</strong>, puis <strong>4 % dès votre 4ᵉ recommandation</strong>.</p>
-      ${levels()}
-      <div class="hero-actions">
-        <a class="btn btn-light btn-lg magnetic" href="/parrainage/">Recommander quelqu’un ${icon("arrow")}</a>
-        <a class="link-light" href="/parrainage/#simulateur">Calculer mes gains ${icon("arrow")}</a>
-      </div>
+      <h2 id="parrain-title" class="h2">Recommandez un proche : <span class="accent-wa">une cuisine = 360&nbsp;€ pour vous.</span></h2>
+      <p class="parrain-lead">3 % du chantier, puis 4 % dès votre 4ᵉ recommandation. Versés une fois le chantier terminé et payé.</p>
     </div>
-    <div class="reveal">
-      <p class="gain-title">Ce que vous pouvez gagner</p>
-      ${examplesList()}
-      <p class="gain-foot">Exemples pour un 1ᵉʳ chantier recommandé (dès le 4ᵉ : 4 %). Commission versée une fois le chantier terminé et payé.</p>
+    <div class="parrain-actions">
+      <a class="btn btn-light btn-lg magnetic" href="/parrainage/">Je parraine ${icon("arrow")}</a>
+      <a class="link-light" href="/parrainage/#simulateur">Calculer mes gains ${icon("arrow")}</a>
     </div>
   </div>
 </section>`;

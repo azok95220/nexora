@@ -250,8 +250,7 @@ main > section:first-child:not(.hero) { padding-top: calc(var(--header-h) + clam
 /* ---------- Scène « avant / après » ---------- */
 .story { position: relative; background: var(--ink-950); color: #fff; --k: 1; }
 .story-sticky { position: relative; padding-block: var(--section); overflow: hidden; }
-.motion .story { height: 210vh; --k: 0; }
-.motion .story-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; padding-block: 0; display: flex; align-items: center; }
+.motion .story { --k: 0; }
 .story-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
 .story-copy { position: relative; }
 .story-line { font-size: clamp(1.7rem, 3.4vw, 3rem); font-weight: 600; letter-spacing: -0.045em; line-height: 1.08; }
@@ -680,8 +679,7 @@ html:not(.js) .step-nav, html:not(.js) .step-nav-start { display: none; }
   .faq-head, .sticky-head { position: static; }
   .config-grid { grid-template-columns: 1fr; }
   .summary { position: static; }
-  .motion .story-sticky { align-items: stretch; padding-top: calc(var(--header-h) + 28px); padding-bottom: 40px; }
-  .motion .story-grid { grid-template-rows: auto 1fr; gap: 12px; height: 100%; }
+  .story-grid { gap: 28px; }
   .story-stage { max-width: min(440px, 100%); align-self: center; }
   .story-line { font-size: clamp(1.45rem, 6vw, 2.2rem); }
   .story-cta { margin-top: 20px; }
@@ -1076,4 +1074,45 @@ html.sheet-open { overflow: hidden; }
   .pick { white-space: nowrap; min-height: 44px; }
   .sheet .field textarea { min-height: 84px; }
   .sheet .step-hint { margin-top: 10px; }
+}
+
+/* ---------- Scène des artisans : animation automatique (ne bloque plus le défilement) ---------- */
+@property --k { syntax: "<number>"; inherits: true; initial-value: 1; }
+.motion .story.play { animation: storyK 2.2s cubic-bezier(.65, 0, .35, 1) 1.5s both; }
+@keyframes storyK { from { --k: 0; } to { --k: 1; } }
+.story-grid { position: relative; }
+.story-replay { justify-self: center; display: none; align-items: center; gap: 8px; margin-top: 4px; min-height: 44px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line-dark-2); background: transparent; color: var(--muted-light); font-size: .85rem; font-weight: 500; cursor: pointer; transition: color .2s, border-color .2s; }
+.story-replay:hover { color: #fff; border-color: #fff; }
+.motion .story.done .story-replay { display: inline-flex; grid-column: 2; }
+.story-replay .icon { width: 16px; height: 16px; }
+@media (max-width: 960px) { .motion .story.done .story-replay { grid-column: 1; } }
+
+/* ---------- Pastille parrainage du haut de page ---------- */
+.pill-link { text-decoration: none; padding: 8px 14px; gap: 8px; background: rgba(37, 211, 102, .16); border-color: rgba(37, 211, 102, .55); transition: background-color .25s, color .25s; }
+.pill-link .icon { width: 16px; height: 16px; color: var(--wa); transition: transform .3s var(--ease), color .25s; }
+.pill-link:hover { background: var(--wa); color: #04260f; }
+.pill-link:hover .icon { color: #04260f; }
+.pill-link:hover .icon:last-child { transform: translateX(3px); }
+
+/* ---------- Bandeau parrainage compact ---------- */
+.parrain-band { position: relative; padding-block: clamp(40px, 5vw, 64px); }
+.parrain-compact { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.parrain-compact .eyebrow { margin-bottom: 14px; }
+.parrain-compact .h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); max-width: 22em; }
+.parrain-compact .parrain-lead { margin-top: 12px; font-size: 1rem; }
+.parrain-actions { display: flex; align-items: center; gap: 8px 18px; flex-wrap: wrap; }
+
+/* ---------- Avant / après placé juste sous le premier écran ---------- */
+@media (max-width: 640px) {
+  .transfo { padding-top: 40px; }
+  .transfo-head { margin-bottom: 20px; gap: 16px; }
+  .transfo-head .eyebrow { margin-bottom: 12px; }
+  .transfo-head .h1 { font-size: 1.9rem; }
+  .transfo-info h3 { font-size: 1.3rem; }
+  .transfo-info p { margin-top: 10px; font-size: .95rem; }
+  .transfo-metiers { margin: 14px 0 18px; }
+  .transfo-note { margin-top: 20px; font-size: .78rem; }
+  .parrain-actions { width: 100%; }
+  .parrain-actions .btn { flex: 1; }
+  .hero .pill-link { font-size: .82rem; }
 }

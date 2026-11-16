@@ -68,23 +68,19 @@
 
   /* ---------- Scènes pilotées par le défilement (une seule boucle, sans relecture de la mise en page) ---------- */
   const hero = $("[data-hero]");
-  const story = $("[data-story]");
   const progress = $(".scroll-progress");
   let lastY = scrollY;
   let L = {}; // positions mises en cache, recalculées seulement au redimensionnement
 
   function measure() {
-    const top = (el) => el.getBoundingClientRect().top + scrollY;
     L = {
       max: doc.scrollHeight - innerHeight,
       vh: innerHeight,
       heroH: hero ? hero.offsetHeight : 0,
-      storyTop: story ? top(story) : 0,
-      storySpan: story ? story.offsetHeight - innerHeight : 0,
     };
   }
 
-  let lastHp = -1, lastK = -1, lastSp = -1;
+  let lastHp = -1, lastSp = -1;
   function frame() {
     ticking = false;
     const y = scrollY;
@@ -102,15 +98,6 @@
     if (hero && y < L.heroH + 50) {
       const hp = Math.round(clamp(y / L.heroH) * 200) / 200;
       if (hp !== lastHp) hero.style.setProperty("--hp", (lastHp = hp));
-    }
-    if (story && L.storySpan > 0) {
-      const p = clamp((y - L.storyTop) / L.storySpan);
-      const k = clamp((p - 0.1) / 0.6);
-      const e = Math.round((k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2) * 200) / 200;
-      if (e !== lastK) {
-        story.style.setProperty("--k", (lastK = e));
-        story.classList.toggle("done", e > 0.97);
-      }
     }
   }
   let ticking = false;
@@ -270,61 +257,111 @@
   if (pre && chip(pre)) chip(pre).checked = true;
   refreshSelection();
 
-  /* ---------- Avant / après : onglets + curseur ---------- */
+  /* ---------- Avant / après : onglets + curseur, défilement automatique ---------- */
   $$("[data-transfo]").forEach((sec) => {
     const tabs = $$('[role="tab"]', sec);
     const panels = $$('[role="tabpanel"]', sec);
-    // Petit balayage automatique pour montrer que l’image se compare
-    const hint = (panel) => {
-      const ba = panel && $(".ba", panel);
-      if (!ba || reduced || ba.dataset.touched || ba.dataset.hinted) return;
-      ba.dataset.hinted = "1";
-      const range = $(".ba-range", ba);
-      const t0 = performance.now();
-      const step = (t) => {
-        if (ba.dataset.touched) return;
-        const k = clamp((t - t0) / 2600);
-        const pos = k < 1 ? 50 + Math.sin(k * Math.PI * 2) * 32 * (1 - k * 0.3) : 50;
-        ba.style.setProperty("--pos", `${pos}%`);
-        range.value = String(Math.round(pos));
-        if (k < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    };
-    const select = (i) => {
+    let active = 0;
+    let auto = !reduced; // tourne tout seul jusqu’à la première interaction
+    let inView = false;
+    let timer = 0;
+    let raf = 0;
+
+    const show = (i) => {
+      active = i;
       tabs.forEach((t, k) => {
         t.setAttribute("aria-selected", String(k === i));
         t.tabIndex = k === i ? 0 : -1;
       });
       panels.forEach((p, k) => p.toggleAttribute("data-hidden", k !== i));
       panels[i].querySelectorAll(".reveal").forEach((r) => r.classList.add("in"));
-      hint(panels[i]);
     };
+
+    // Balayage du curseur : montre l’avant puis l’après
+    const sweep = (panel, done) => {
+      const ba = $(".ba", panel);
+      const range = $(".ba-range", ba);
+      const t0 = performance.now();
+      const step = (t) => {
+        if (!auto) return;
+        const k = clamp((t - t0) / 3200);
+        const pos = 50 + Math.sin(k * Math.PI * 2) * 36;
+        ba.style.setProperty("--pos", `${pos.toFixed(1)}%`);
+        range.value = String(Math.round(pos));
+        if (k < 1) raf = requestAnimationFrame(step);
+        else done?.();
+      };
+      raf = requestAnimationFrame(step);
+    };
+
+    const cycle = () => {
+      if (!auto || !inView) return;
+      sweep(panels[active], () => {
+        timer = setTimeout(() => {
+          if (!auto || !inView) return;
+          show((active + 1) % panels.length);
+          cycle();
+        }, 1400);
+      });
+    };
+    const stopAuto = () => {
+      auto = false;
+      clearTimeout(timer);
+      cancelAnimationFrame(raf);
+    };
+
     tabs.forEach((t, i) => {
-      t.addEventListener("click", () => select(i));
+      t.addEventListener("click", () => {
+        stopAuto();
+        show(i);
+      });
       t.addEventListener("keydown", (e) => {
         const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
         if (!d) return;
+        stopAuto();
         const n = (i + d + tabs.length) % tabs.length;
-        select(n);
+        show(n);
         tabs[n].focus();
       });
     });
     $$(".ba", sec).forEach((ba) => {
       const range = $(".ba-range", ba);
+      range.addEventListener("pointerdown", stopAuto, { passive: true });
       range.addEventListener("input", () => {
-        ba.dataset.touched = "1";
+        stopAuto();
         ba.style.setProperty("--pos", `${range.value}%`);
       });
     });
+
+    if ("IntersectionObserver" in window && auto) {
+      new IntersectionObserver((en) => {
+        const was = inView;
+        inView = en[0].isIntersecting;
+        clearTimeout(timer);
+        cancelAnimationFrame(raf);
+        if (inView && !was) timer = setTimeout(cycle, 600);
+      }, { threshold: 0.25 }).observe(sec);
+    }
+  });
+
+  /* ---------- Scène des artisans : se joue toute seule à l’écran, sans bloquer le défilement ---------- */
+  $$("[data-story]").forEach((st) => {
+    if (reduced) return;
+    const play = () => {
+      st.classList.remove("play", "done");
+      void st.offsetWidth;
+      st.classList.add("play");
+    };
+    st.addEventListener("animationend", (e) => e.animationName === "storyK" && st.classList.add("done"));
+    $("[data-story-replay]", st)?.addEventListener("click", play);
     if ("IntersectionObserver" in window) {
       const io = new IntersectionObserver((en) => {
         if (!en[0].isIntersecting) return;
         io.disconnect();
-        setTimeout(() => hint(panels.find((p) => !p.hasAttribute("data-hidden"))), 500);
-      }, { threshold: 0.5 });
-      io.observe($(".ba", sec));
-    }
+        play();
+      }, { threshold: 0.4 });
+      io.observe($(".story-stage", st));
+    } else play();
   });
 
   /* ---------- Formulaire de parrainage ---------- */
