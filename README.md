@@ -47,15 +47,20 @@ Sur toutes les pages, les boutons « devis » ouvrent ce formulaire dans un pann
 (`<dialog id="quote-sheet">`), sans défilement. Les raccourcis du haut de l’accueil et les liens
 `/devis/?metier=plomberie` pré-cochent les métiers. Sans JavaScript, les liens mènent à la page `/devis/`.
 
-## Mise en ligne (Netlify, domaine chez IONOS)
+## Mise en ligne (GitHub Pages, domaine chez IONOS)
 
-1. Netlify → « Add new site » → « Import from Git » → dépôt `azok95220/nexora`.
-2. Build command : `node build.mjs` — Publish directory : `dist`.
-3. Domain management → ajouter `nexoratravaux.fr` (et `www`).
-4. Chez IONOS (Domaines & SSL → nexoratravaux.fr → DNS) : remplacer l’enregistrement A de `nexoratravaux.fr` par l’IP indiquée par Netlify,
-   et faire pointer `www` (CNAME) vers l’adresse `xxx.netlify.app`. **Ne pas toucher aux enregistrements MX**
-   (ils gèrent la boîte contact@nexoratravaux.fr).
-5. Netlify active le HTTPS automatiquement.
+Chaque envoi sur `main` publie le site automatiquement (`.github/workflows/pages.yml` : `node build.mjs` puis
+publication de `dist/` sur GitHub Pages). Aucune limite de publications.
+
+Réglages (déjà faits, pour mémoire) :
+
+1. GitHub → dépôt → Settings → Pages → Source : **GitHub Actions** ; Custom domain : `nexoratravaux.fr` ; Enforce HTTPS.
+2. Chez IONOS (Domaines & SSL → nexoratravaux.fr → DNS) :
+   - `@` en **A** vers `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` ;
+   - `www` en **CNAME** vers `azok95220.github.io`.
+   **Ne pas toucher aux enregistrements MX** (messagerie contact@nexoratravaux.fr).
+
+`netlify.toml` et `src/static/_headers` ne servent que si le site est de nouveau publié sur Netlify.
 
 ## À compléter
 
