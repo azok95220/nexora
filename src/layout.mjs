@@ -263,7 +263,7 @@ export function quoteForm(id = "devis-form") {
     </div>
     <div class="field">
       <label for="${id}-project">Votre projet en quelques mots <span class="optional">facultatif</span></label>
-      <textarea id="${id}-project" name="project" rows="3" placeholder="Ex. : salle de bain d’environ 6 m², pour le printemps. Vous pourrez ajouter des photos dans WhatsApp."></textarea>
+      <textarea id="${id}-project" name="project" rows="2" placeholder="Ex. : salle de bain de 6 m², pour le printemps."></textarea>
     </div>
     <p class="form-error" role="alert" hidden></p>
     <div class="form-actions">
@@ -276,7 +276,7 @@ export function quoteForm(id = "devis-form") {
     <div class="step-nav step-nav-start"><button class="btn btn-text" type="button" data-prev>${icon("arrow", "icon ba-l")}Modifier les travaux</button></div>
   </div>
 
-  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Vous relisez votre message avant de l’envoyer. Ou appelez le <a href="tel:${site.phone}">${site.phoneDisplay}</a>.</span></p>
+  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> <span class="note-more">Vous relisez votre message avant de l’envoyer. Ou appelez le <a href="tel:${site.phone}">${site.phoneDisplay}</a>.</span></span></p>
 </form>`;
 }
 

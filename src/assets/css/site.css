@@ -1136,3 +1136,60 @@ html.sheet-open { overflow: hidden; }
   .trust { margin-top: 8px; font-size: .76rem; }
   .trust li:nth-child(n+2) { display: none; }
 }
+
+/* ---------- Fenêtre de devis compacte : tout tient sans défiler ---------- */
+.sheet { max-height: calc(100dvh - 24px); }
+.sheet-head { padding: 8px 10px 8px 20px; }
+.sheet-close { width: 40px; height: 40px; }
+.sheet-body { padding: 14px 20px 16px; }
+.sheet .form-progress { margin-bottom: 10px; }
+.sheet .step-title { font-size: 1.35rem; line-height: 1.15; }
+.sheet .step-hint { display: none; }
+.sheet .picks { flex-wrap: nowrap; overflow-x: auto; margin: 10px -20px 0; padding: 0 20px 2px; scrollbar-width: none; }
+.sheet .picks::-webkit-scrollbar { display: none; }
+.sheet .pick { white-space: nowrap; min-height: 36px; padding: 6px 12px; font-size: .84rem; }
+.sheet .tiles { grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
+.sheet .tile > span { flex-direction: row; align-items: center; gap: 8px; min-height: 44px; padding: 8px 10px; border-radius: 12px; font-size: .86rem; }
+.sheet .tile-icon { width: 18px; height: 18px; flex: none; }
+.sheet .tile-check { top: 50%; right: 8px; width: 16px; height: 16px; margin-top: -8px; }
+.sheet .tile:last-child { grid-column: 1 / -1; }
+.sheet .form-error { margin-top: 8px; }
+.sheet .step-nav { margin: 10px -20px -16px; padding: 10px 20px 14px; bottom: -16px; }
+.sheet .step-nav .btn-lg { min-height: 50px; }
+.sheet .step-selection { margin-top: 8px; padding: 8px 12px; font-size: .84rem; }
+.sheet .field { margin-top: 10px; gap: 6px; }
+.sheet .field label { font-size: .84rem; }
+.sheet .field input { padding: 11px 14px; }
+.sheet .field textarea { min-height: 64px; padding: 10px 14px; }
+.sheet .form-actions { margin-top: 12px; gap: 8px; }
+.sheet .form-actions .btn-lg { min-height: 50px; }
+.sheet .form-alt .btn { min-height: 44px; }
+.sheet .step-nav-start { margin-top: 2px; }
+.sheet .step-nav-start .btn-text { min-height: 36px; padding-inline: 4px; font-size: .88rem; }
+.sheet .form-note { margin-top: 10px; padding-top: 10px; font-size: .78rem; }
+.sheet .note-more { display: none; }
+@media (max-width: 640px) {
+  .sheet { max-height: calc(100dvh - 12px); }
+  .sheet-head { padding: 6px 8px 6px 16px; }
+  .sheet-body { padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); }
+  .sheet .picks { margin-inline: -16px; padding-inline: 16px; }
+  .sheet .step-title { font-size: 1.2rem; }
+  .sheet .tiles { grid-template-columns: repeat(3, 1fr); gap: 5px; }
+  .sheet .tile > span { flex-direction: column; align-items: flex-start; gap: 3px; min-height: 0; padding: 7px 8px; font-size: .78rem; line-height: 1.15; }
+  .sheet .tile:last-child > span { flex-direction: row; align-items: center; gap: 8px; }
+  .sheet .tile-icon { width: 16px; height: 16px; }
+  .sheet .tile-check { top: 8px; margin-top: 0; width: 14px; height: 14px; }
+  .sheet .step-nav { margin: 8px -16px -12px; padding: 8px 16px calc(10px + env(safe-area-inset-bottom)); bottom: -12px; }
+  .sheet .field-row { grid-template-columns: 1.3fr 1fr; gap: 8px; }
+}
+/* Écrans peu hauts : on retire encore le superflu */
+@media (max-height: 640px) {
+  .sheet .form-progress-label { font-size: .68rem; }
+  .sheet .form-note { display: none; }
+  .sheet .field textarea { min-height: 52px; }
+}
+@media (max-height: 580px) {
+  .sheet .step-title { font-size: 1.1rem; }
+  .sheet .step-selection { padding: 6px 10px; }
+  .sheet .field { margin-top: 8px; }
+}
