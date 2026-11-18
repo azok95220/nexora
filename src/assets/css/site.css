@@ -98,7 +98,7 @@ p { margin: 0; text-wrap: pretty; }
 @keyframes ping { from { transform: scale(.6); opacity: 1; } to { transform: scale(2.2); opacity: 0; } }
 
 /* Titres découpés en mots (animation de masque) */
-.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .1em .08em; margin: 0 -.1em -.08em; }
 .w > span { display: inline-block; }
 
 /* ---------- Boutons ---------- */
