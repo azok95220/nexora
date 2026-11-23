@@ -9,6 +9,14 @@ export const site = {
   phoneDisplay: "06 05 57 24 82",
   whatsapp: "https://wa.me/33605572482",
   email: "contact@nexoratravaux.fr",
+  // Identité légale de l'éditeur (mentions légales, confidentialité)
+  legal: {
+    owner: "Yanis Hadjour",
+    form: "Entrepreneur individuel (EI), micro-entreprise",
+    siret: "", // à renseigner dès réception
+    address: "59, rue de Ponthieu, Bureau 326, 75008 Paris",
+    addressNote: "adresse de domiciliation, Source SAS – ma-domiciliation.fr",
+  },
   description:
     "Un seul contact pour vos travaux : Nexora Travaux sélectionne les bons professionnels, négocie les prix et suit votre chantier du début à la fin. Électricité, plomberie, peinture, sols… à Paris et dans toute l’Île-de-France.",
 };

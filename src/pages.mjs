@@ -744,25 +744,27 @@ ${ctaBand("Vous avez vous-même un projet ?")}`;
 const todo = (t) => `<mark class="todo">[À compléter : ${t}]</mark>`;
 
 function legalPage() {
+  const L = site.legal;
   const body = `
 <section class="page-hero page-hero-tight page-hero-dark"><div class="container">${breadcrumb([["Accueil", "/"], ["Mentions légales", "/mentions-legales/"]]).html}</div></section>
 <section class="section section-tight">
   <div class="container prose">
     <h1 class="h1">Mentions légales</h1>
     <h2>Éditeur du site</h2>
-    <p>${site.name} <br>
-    Responsable de la publication : ${todo("nom et prénom")} <br>
-    Statut juridique : ${todo("forme juridique, ex. micro-entreprise")} <br>
-    SIRET : ${todo("numéro SIRET")} <br>
-    Adresse : ${todo("adresse postale")} <br>
+    <p>${L.owner} EI, exerçant sous le nom commercial ${site.name} <br>
+    Statut : ${L.form} <br>
+    SIRET : ${L.siret || todo("numéro SIRET")} <br>
+    Siège : ${L.address} (${L.addressNote}) <br>
     Téléphone : <a href="tel:${site.phone}">${site.phoneDisplay}</a> <br>
     E-mail : <a href="mailto:${site.email}">${site.email}</a></p>
+    <p>Directeur de la publication : ${L.owner}</p>
     <h2>Hébergement</h2>
-    <p>GitHub, Inc. — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis — <a href="https://pages.github.com" rel="noopener">pages.github.com</a><br>Nom de domaine et messagerie : IONOS SARL — 7 place de la Gare, BP 70109, 57201 Sarreguemines Cedex, France</p>
+    <p>GitHub, Inc. (service GitHub Pages) — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis — téléphone : +1 877 448 4820 — <a href="https://pages.github.com" rel="noopener">pages.github.com</a></p>
+    <p>Nom de domaine et messagerie : IONOS SARL — 7 place de la Gare, BP 70109, 57201 Sarreguemines Cedex, France</p>
     <h2>Activité</h2>
     <p>${site.name} accompagne les particuliers dans la préparation de leurs projets de travaux et les met en relation avec des professionnels. Les travaux sont chiffrés et réalisés par l’entreprise réalisatrice, qui transmet directement sa proposition au client.</p>
     <h2>Propriété intellectuelle</h2>
-    <p>L’ensemble des contenus de ce site (textes, éléments graphiques, logo) est protégé. Toute reproduction sans autorisation préalable est interdite.</p>
+    <p>L’ensemble des contenus de ce site (textes, photographies, éléments graphiques, logo) est protégé par le droit d’auteur. Toute reproduction ou réutilisation sans autorisation préalable est interdite.</p>
     <h2>Données personnelles</h2>
     <p>Consultez notre <a href="/confidentialite/">politique de confidentialité</a>.</p>
   </div>
@@ -776,28 +778,45 @@ function legalPage() {
 }
 
 function privacyPage() {
+  const L = site.legal;
   const body = `
 <section class="page-hero page-hero-tight page-hero-dark"><div class="container">${breadcrumb([["Accueil", "/"], ["Confidentialité", "/confidentialite/"]]).html}</div></section>
 <section class="section section-tight">
   <div class="container prose">
     <h1 class="h1">Politique de confidentialité</h1>
-    <h2>Données collectées</h2>
-    <p>Le formulaire de demande ne stocke aucune donnée sur ce site. Lorsque vous cliquez sur « Envoyer sur WhatsApp », « Envoyer par SMS » ou « Envoyer par e-mail », un message pré-rempli s’ouvre dans votre application : vous le relisez et choisissez de l’envoyer ou non. Seules les informations que vous nous envoyez ainsi (nom, code postal, type de travaux, description du projet, ainsi que votre numéro de téléphone ou votre adresse e-mail) nous parviennent.</p>
-    <h2>Finalité</h2>
-    <p>Ces informations servent uniquement à étudier votre projet, à organiser la visite et à vous mettre en relation avec le professionnel adapté. Elles peuvent être transmises à ce professionnel dans ce seul but.</p>
-    <h2>Durée de conservation</h2>
-    <p>Les échanges sont conservés le temps nécessaire au suivi de votre projet, puis supprimés au plus tard trois ans après le dernier contact.</p>
-    <h2>Cookies et mesure d’audience</h2>
-    <p>Ce site n’utilise pas de cookie publicitaire ni d’outil de suivi.</p>
+    <h2>Responsable du traitement</h2>
+    <p>${L.owner} EI (${site.name}), ${L.address}. Contact : <a href="mailto:${site.email}">${site.email}</a>.</p>
+
+    <h2>Ce que le site collecte</h2>
+    <p>Rien n’est enregistré sur ce site. Les formulaires (demande de devis, parrainage) préparent un message que vous relisez puis choisissez d’envoyer, ou non, par WhatsApp, SMS ou e-mail. Seules les informations que vous nous envoyez ainsi nous parviennent.</p>
+    <p>Ce site ne dépose aucun cookie et n’utilise aucun outil de mesure d’audience ni de publicité.</p>
+    <p>Comme tout hébergeur, GitHub (États-Unis) peut enregistrer l’adresse IP des visiteurs dans ses journaux techniques, à des fins de sécurité et de bon fonctionnement du service.</p>
+
+    <h2>Demandes de devis</h2>
+    <p><strong>Données :</strong> nom, code postal, type de travaux, description du projet, et votre numéro de téléphone ou adresse e-mail. <br>
+    <strong>Finalité :</strong> étudier votre projet, organiser la visite et vous mettre en relation avec le professionnel adapté. <br>
+    <strong>Base légale :</strong> mesures précontractuelles prises à votre demande. <br>
+    <strong>Destinataires :</strong> ${site.name} et, pour votre seul projet, le ou les professionnels retenus.</p>
+
+    <h2>Parrainage</h2>
+    <p><strong>Données :</strong> vos nom et téléphone ; le nom, et si vous le donnez le téléphone, de la personne recommandée ; le code postal et le type de travaux. Pour le versement d’une commission : vos coordonnées bancaires. <br>
+    <strong>Finalité :</strong> contacter la personne recommandée au sujet de son projet, suivre le parrainage et verser la commission. <br>
+    <strong>Base légale :</strong> exécution du programme de parrainage pour le parrain ; pour la personne recommandée, notre intérêt légitime, son contact ne devant nous être transmis qu’avec son accord. Elle peut s’opposer à tout moment à être recontactée.</p>
+
+    <h2>Messageries utilisées</h2>
+    <p>Si vous choisissez WhatsApp, votre message transite par le service de Meta et est soumis à ses propres conditions. Les e-mails sont reçus sur notre messagerie hébergée par IONOS en France.</p>
+
+    <h2>Durées de conservation</h2>
+    <p>Les échanges liés à un projet sont conservés le temps de son suivi, puis supprimés au plus tard trois ans après le dernier contact. Les éléments comptables (dont le paiement des commissions de parrainage) sont conservés dix ans, comme l’exige la loi.</p>
+
     <h2>Vos droits</h2>
-    <p>Vous pouvez demander l’accès, la rectification ou la suppression de vos données en nous écrivant à <a href="mailto:${site.email}">${site.email}</a> ou en nous appelant au <a href="tel:${site.phone}">${site.phoneDisplay}</a>. Vous pouvez également introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).</p>
-    <p>Responsable du traitement : ${site.name}, ${todo("nom et adresse du responsable")}</p>
+    <p>Vous pouvez demander l’accès, la rectification, l’effacement ou la limitation de vos données, vous opposer à leur traitement ou en demander la portabilité, en écrivant à <a href="mailto:${site.email}">${site.email}</a> ou en appelant le <a href="tel:${site.phone}">${site.phoneDisplay}</a>. Vous pouvez aussi introduire une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).</p>
   </div>
 </section>`;
   return page({
     path: "/confidentialite/",
     title: "Politique de confidentialité | Nexora Travaux",
-    description: "Comment Nexora Travaux traite les informations transmises lors d’une demande de devis.",
+    description: "Comment Nexora Travaux traite les informations transmises lors d’une demande de devis ou d’un parrainage.",
     body,
   });
 }
