@@ -1456,3 +1456,14 @@ body { background: var(--paper); }
 .pill-link .icon { color: var(--wa); }
 .pill-link:hover { background: var(--wa); color: #04260f; }
 .pill-link:hover .icon { color: #04260f; }
+
+/* Scène « Sans / Avec Nexora » : les deux phrases restent lisibles, seul le schéma s'anime */
+.motion .story-copy { display: block; }
+.motion .story-before { opacity: calc(1 - var(--k) * .5); transform: none; }
+.motion .story-after { margin-top: clamp(20px, 3vh, 32px); opacity: calc(.45 + var(--k) * .55); transform: none; }
+.motion .story-cta { margin-top: clamp(22px, 3.4vh, 36px); opacity: 1; transform: none; pointer-events: auto; }
+.motion .story.play { animation-duration: 1.4s; animation-delay: .9s; }
+@media (max-width: 640px) {
+  .motion .story-after { margin-top: 16px; }
+  .motion .story-cta { margin-top: 18px; }
+}
