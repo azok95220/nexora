@@ -1467,3 +1467,10 @@ body { background: var(--paper); }
   .motion .story-after { margin-top: 16px; }
   .motion .story-cta { margin-top: 18px; }
 }
+
+/* Montants gagnés en vert (vert = argent) */
+.simu-result strong { color: var(--wa); }
+.simu-total strong { color: var(--wa); }
+.parrain-band .accent-wa { color: var(--wa-dark); }
+.gain-list strong { color: var(--wa); }
+.gain-light .gain-list strong { color: var(--wa-dark); }
