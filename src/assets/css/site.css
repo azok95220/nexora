@@ -1409,3 +1409,44 @@ body { background: var(--paper); }
 @media (max-width: 960px) { .nav { transition-duration: .45s; } }
 .btn { transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s, transform .25s var(--ease); }
 .btn .icon, .faq-icon, .faq-icon::before, .faq-icon::after, .seal, .seal-arrow, .mini-arrow, .presta-list li, .mini-metiers a, .metier-card, .step-card { transition-duration: .25s; }
+
+/* ---------- Simulateur de parrainage : un seul bloc, projets en raccourcis ---------- */
+.simu-grid { align-items: center; }
+.simu-intro .section-intro { margin-top: 14px; }
+.simu-rules { display: grid; gap: 10px; margin-top: 28px; }
+.simu-rules li { display: grid; grid-template-columns: 92px 1fr; align-items: baseline; gap: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.simu-rules strong { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.03em; color: var(--blue); }
+.simu-rules span { color: var(--muted); font-size: .95rem; }
+.simu-intro .simu-foot { display: flex; gap: 8px; align-items: flex-start; margin-top: 18px; text-align: left; color: var(--muted); font-size: .88rem; }
+.simu-intro .simu-foot .icon { color: var(--blue); width: 18px; height: 18px; margin-top: 1px; }
+.simu-cta { margin-top: 24px; }
+.simu { padding: clamp(22px, 2.6vw, 32px); }
+.simu-label { margin-bottom: 10px; }
+.simu-presets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 18px; }
+.simu-presets button { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line-dark-2); background: transparent; color: #fff; font-weight: 600; font-size: .92rem; text-align: left; cursor: pointer; transition: background-color .2s, border-color .2s, color .2s; }
+.simu-presets small { font-weight: 400; font-size: .8rem; color: var(--muted-light); }
+.simu-presets button:hover { border-color: #fff; }
+.simu-presets button[aria-pressed="true"] { background: #fff; border-color: #fff; color: var(--ink-900); }
+.simu-presets button[aria-pressed="true"] small { color: var(--muted); }
+.simu-row label { font-family: var(--font); text-transform: none; letter-spacing: 0; font-size: .85rem; }
+.simu-row output { font-size: 1.1rem; }
+.simu input[type="range"] { margin: 8px 0 20px; }
+.simu-result { margin-top: 20px; padding: 20px 16px; }
+.simu-result strong { font-size: clamp(2.6rem, 5vw, 3.6rem); }
+.simu-total { margin-top: 12px; font-size: .88rem; }
+@media (max-width: 640px) {
+  .simu-rules li { grid-template-columns: 78px 1fr; }
+  .simu-rules strong { font-size: 1.15rem; }
+  .simu-cta { width: 100%; }
+  .simu-presets button { padding: 9px 12px; font-size: .86rem; }
+}
+
+/* Haut de la page parrainage : plus sobre, conditions détaillées dans le simulateur */
+.parrain-hero .levels-rules { display: none; }
+.parrain-hero .level-pro { background: rgba(52,102,255,.12); border-color: var(--blue-400); }
+.parrain-hero .level-pro strong { color: var(--blue-300); }
+.parrain-hero .level-pro span { color: var(--on-dark); }
+.parrain-hero-link { margin-top: 14px; padding-inline: 0; color: var(--blue-300); }
+@media (min-width: 961px) {
+  .parrain-hero .h1 { font-size: clamp(2rem, min(3.8vw, 6.6vh), 3.6rem); }
+}

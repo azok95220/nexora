@@ -611,12 +611,16 @@ const examplesList = () => `<ul class="gain-list">
 
 /* Simulateur interactif (sans JS : les exemples ci-dessus suffisent) */
 const simulator = () => `<div class="simu" data-simu data-forfait="${COMMISSION.forfait}" data-seuil="${COMMISSION.seuil}" data-taux="${COMMISSION.taux}" data-taux-pro="${COMMISSION.tauxPro}" data-apres="${COMMISSION.apresN}" data-plafond="${COMMISSION.plafond}">
+  <p class="simu-label" id="simu-preset-label">1. Le projet de votre proche</p>
+  <div class="simu-presets" role="group" aria-labelledby="simu-preset-label">
+    ${exemples.map(([t, m]) => `<button type="button" data-preset="${m}" aria-pressed="${m === 12000}">${t}<small>${eur(m)}</small></button>`).join("")}
+  </div>
   <div class="simu-row">
-    <label for="simu-amount">Montant du chantier recommandé</label>
+    <label for="simu-amount">ou réglez le montant HT</label>
     <output for="simu-amount" data-simu-amount>12&nbsp;000&nbsp;€ HT</output>
   </div>
   <input id="simu-amount" type="range" min="2000" max="60000" step="500" value="12000">
-  <p class="simu-label" id="simu-rank-label">C’est votre…</p>
+  <p class="simu-label" id="simu-rank-label">2. C’est votre…</p>
   <div class="simu-rank" role="group" aria-labelledby="simu-rank-label">
     <button type="button" data-rank="1" aria-pressed="true">1ᵉʳ chantier</button>
     <button type="button" data-rank="2" aria-pressed="false">2ᵉ</button>
@@ -628,7 +632,6 @@ const simulator = () => `<div class="simu" data-simu data-forfait="${COMMISSION.
     <small data-simu-rule>4 % du montant HT</small>
   </div>
   <p class="simu-total" data-simu-total></p>
-  <p class="simu-foot">Versée par virement une fois le chantier terminé et entièrement payé par le client.</p>
 </div>`;
 
 const parrainTeaser = () => `<section class="parrain-band" id="parrainage" aria-labelledby="parrain-title">
@@ -694,6 +697,7 @@ function parrainagePage() {
         <h1 class="h1">${split("Recommandez un proche. *Touchez 4 à 5 % du chantier.*")}</h1>
         <p class="lead">Mettez en relation avec Mikhael un proche qui a un projet de travaux : si le chantier se fait, vous êtes récompensé.</p>
         ${levels()}
+        <a class="link-light parrain-hero-link" href="#simulateur">Calculer mes gains ${icon("arrow")}</a>
         <ol class="mini-steps">
           ${parrainSteps.map(([, t, d], i) => `<li><span class="mini-num">${pad(i + 1)}</span><span><strong>${t}</strong>${d}</span></li>`).join("")}
         </ol>
@@ -705,11 +709,17 @@ function parrainagePage() {
 
 <section class="section section-paper" id="simulateur" aria-labelledby="simu-title">
   <div class="container simu-grid">
-    <div class="reveal">
+    <div class="reveal simu-intro">
       <p class="eyebrow">Simulateur</p>
-      <h2 id="simu-title" class="h1">Combien pouvez‑vous gagner ?</h2>
-      <p class="section-intro">Faites glisser le montant du chantier : votre commission s’affiche en direct.</p>
-      <div class="gain-light">${examplesList()}</div>
+      <h2 id="simu-title" class="h2">Combien pouvez‑vous gagner ?</h2>
+      <p class="section-intro">Choisissez le projet de votre proche : votre commission s’affiche aussitôt.</p>
+      <ul class="simu-rules">
+        <li><strong>4&nbsp;%</strong><span>sur vos 2 premiers chantiers recommandés</span></li>
+        <li><strong>5&nbsp;%</strong><span>à partir du 3ᵉ chantier</span></li>
+        <li><strong>2&nbsp;000&nbsp;€</strong><span>maximum par chantier, à partir de 2&nbsp;000&nbsp;€ HT de travaux</span></li>
+      </ul>
+      <p class="simu-foot">${icon("shield")}Versée par virement, une fois le chantier terminé et payé par le client.</p>
+      <a class="btn btn-primary simu-cta" href="#ref-name" data-ref-focus>Recommander quelqu’un ${icon("arrow")}</a>
     </div>
     <div class="reveal">${simulator()}</div>
   </div>

@@ -440,7 +440,16 @@
       // Cumul : 4 chantiers de ce montant recommandés
       const four = [1, 2, 3, 4].reduce((s, r) => s + gainOf(m, r), 0);
       total.innerHTML = `4 chantiers comme celui-ci = <strong>${fmt(four)}</strong> pour vous`;
+      presets.forEach((b) => b.setAttribute("aria-pressed", String(+b.dataset.preset === m)));
     };
+    // Projets types : règlent le curseur d'un clic
+    const presets = $$("[data-preset]", sim);
+    presets.forEach((b) =>
+      b.addEventListener("click", () => {
+        range.value = b.dataset.preset;
+        update();
+      })
+    );
     range.addEventListener("input", update);
     ranks.forEach((b) =>
       b.addEventListener("click", () => {
@@ -451,6 +460,17 @@
     );
     update();
   });
+
+  // « Recommander quelqu’un » : remonte au formulaire de parrainage et place le curseur
+  $$("[data-ref-focus]").forEach((a) =>
+    a.addEventListener("click", (e) => {
+      const field = $("#ref-name");
+      if (!field) return;
+      e.preventDefault();
+      field.closest(".form-card")?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
+      setTimeout(() => field.focus({ preventScroll: true }), reduced ? 0 : 450);
+    })
+  );
 
   /* ---------- Test de zone par code postal ---------- */
   const DEPTS = { 75: "Paris", 77: "Seine-et-Marne", 78: "Yvelines", 91: "Essonne", 92: "Hauts-de-Seine", 93: "Seine-Saint-Denis", 94: "Val-de-Marne", 95: "Val-d’Oise" };
