@@ -55,7 +55,7 @@
         const end = +el.dataset.count;
         const t0 = performance.now();
         const tick = (t) => {
-          const k = clamp((t - t0) / 1400);
+          const k = clamp((t - t0) / 800);
           el.textContent = String(Math.round(end * (1 - Math.pow(1 - k, 4))));
           if (k < 1) requestAnimationFrame(tick);
         };
@@ -284,7 +284,7 @@
       const t0 = performance.now();
       const step = (t) => {
         if (!auto) return;
-        const k = clamp((t - t0) / 3200);
+        const k = clamp((t - t0) / 2000);
         const pos = 50 + Math.sin(k * Math.PI * 2) * 36;
         ba.style.setProperty("--pos", `${pos.toFixed(1)}%`);
         range.value = String(Math.round(pos));
@@ -301,7 +301,7 @@
           if (!auto || !inView) return;
           show((active + 1) % panels.length);
           cycle();
-        }, 1400);
+        }, 800);
       });
     };
     const stopAuto = () => {
@@ -339,7 +339,7 @@
         inView = en[0].isIntersecting;
         clearTimeout(timer);
         cancelAnimationFrame(raf);
-        if (inView && !was) timer = setTimeout(cycle, 600);
+        if (inView && !was) timer = setTimeout(cycle, 300);
       }, { threshold: 0.25 }).observe(sec);
     }
   });
