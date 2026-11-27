@@ -1474,3 +1474,12 @@ body { background: var(--paper); }
 .parrain-band .accent-wa { color: var(--wa-dark); }
 .gain-list strong { color: var(--wa); }
 .gain-light .gain-list strong { color: var(--wa-dark); }
+
+/* ---------- Performance de l'accueil ---------- */
+/* Les sections hors écran ne sont calculées qu'à l'approche */
+main > section:not(:first-child), .site-footer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+/* Le titre s'affiche dès le premier rendu (l'animation part de mi-hauteur) */
+@keyframes wordUp { from { transform: translateY(45%); opacity: .35; } }
+/* Contraste : « Avec Nexora » toujours lisible, c'est « Sans Nexora » qui s'estompe */
+.motion .story-after { opacity: 1; }
+.cv-off main > section, .cv-off .site-footer { content-visibility: visible; }

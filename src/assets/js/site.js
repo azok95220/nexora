@@ -66,6 +66,22 @@
     counters.forEach((c) => co.observe(c));
   }
 
+  /* ---------- Liens vers une section : calculer toute la page avant le saut ----------
+     (les sections hors écran ne sont pas calculées tant qu'on ne s'en approche pas) */
+  const renderAll = () => doc.classList.add("cv-off");
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href*="#"]');
+    if (!a) return;
+    const url = new URL(a.href, location.href);
+    if (url.pathname === location.pathname && url.hash.length > 1) renderAll();
+  }, true);
+  addEventListener("hashchange", renderAll);
+  if (location.hash.length > 1) {
+    renderAll();
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: "instant", block: "start" }));
+  }
+
   /* ---------- Scènes pilotées par le défilement (une seule boucle, sans relecture de la mise en page) ---------- */
   const hero = $("[data-hero]");
   const progress = $(".scroll-progress");

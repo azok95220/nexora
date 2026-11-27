@@ -157,6 +157,12 @@ const chat = `<div class="phone reveal" aria-label="Exemple d’échange sur Wha
 </div>`;
 
 
+// Variantes allégées des photos : 480 px (portrait) ou 900 px (panoramique)
+const srcset = (t, k) => {
+  const small = t.shape === "wide" ? 900 : 480;
+  return `/assets/img/chantiers/${t.id}-${k}-${small}.webp ${small}w, /assets/img/chantiers/${t.id}-${k}.webp ${t.size[0]}w`;
+};
+
 const beforeAfter = () => {
   const name = (slug) => metiers.find((m) => m.slug === slug).name;
   return `<section class="section section-ink transfo" id="avant-apres" aria-labelledby="transfo-title" data-transfo>
@@ -174,8 +180,8 @@ const beforeAfter = () => {
       .map(
         (t, i) => `<div class="transfo-panel" role="tabpanel" id="panel-${t.id}" aria-labelledby="tab-${t.id}"${i === 0 ? "" : " data-hidden"}>
       <div class="ba ba-${t.shape} reveal" style="--pos:50%;--ar:${t.size[0]} / ${t.size[1]}">
-        <img src="/assets/img/chantiers/${t.id}-avant.webp" width="${t.size[0]}" height="${t.size[1]}" alt="${t.name} avant travaux" loading="lazy" decoding="async">
-        <div class="ba-after"><img src="/assets/img/chantiers/${t.id}-apres.webp" width="${t.size[0]}" height="${t.size[1]}" alt="${t.name} après travaux" loading="lazy" decoding="async"></div>
+        <img src="/assets/img/chantiers/${t.id}-avant.webp" srcset="${srcset(t, "avant")}" sizes="${t.shape === "wide" ? "(max-width: 960px) 100vw, 60vw" : "(max-width: 640px) 100vw, 500px"}" width="${t.size[0]}" height="${t.size[1]}" alt="${t.name} avant travaux" loading="lazy" decoding="async">
+        <div class="ba-after"><img src="/assets/img/chantiers/${t.id}-apres.webp" srcset="${srcset(t, "apres")}" sizes="${t.shape === "wide" ? "(max-width: 960px) 100vw, 60vw" : "(max-width: 640px) 100vw, 500px"}" width="${t.size[0]}" height="${t.size[1]}" alt="${t.name} après travaux" loading="lazy" decoding="async"></div>
         <span class="ba-tag ba-tag-before" aria-hidden="true">Avant</span>
         <span class="ba-tag ba-tag-after" aria-hidden="true">Après</span>
         <span class="ba-handle" aria-hidden="true"><span>${icon("arrow", "icon ba-l")}${icon("arrow")}</span></span>
@@ -349,7 +355,8 @@ ${parrainTeaser()}
 
   return page({
     path: "/",
-    title: "Nexora Travaux | Devis travaux gratuit en Île-de-France : les bons pros, un seul contact",
+    title: "Nexora Travaux | Devis travaux gratuit à Paris et en Île-de-France",
+    ogTitle: "Nexora Travaux — Vos travaux, un seul contact. Devis gratuit.",
     description:
       "Électricité, plomberie, peinture, sols, carrelage… Nexora Travaux sélectionne les bons professionnels, négocie les prix et suit votre chantier à Paris et en Île-de-France. Devis gratuit, échange simple sur WhatsApp.",
     body,
@@ -739,7 +746,9 @@ function parrainagePage() {
 ${ctaBand("Vous avez vous-même un projet ?")}`;
   return page({
     path: "/parrainage/",
-    title: "Parrainage : recommandez Nexora Travaux et touchez 4 à 5 % du chantier",
+    title: "Parrainage Nexora Travaux : touchez 4 à 5 % du chantier",
+    ogTitle: "Recommandez un proche, touchez 4 à 5 % du chantier",
+    ogImage: "og-parrainage.jpg",
     description:
       "Vous connaissez quelqu’un qui a un projet de travaux à Paris ou en Île-de-France ? Recommandez Nexora Travaux et touchez 4 % du montant des travaux, puis 5 % dès votre 3ᵉ recommandation.",
     current: "parrainage",
