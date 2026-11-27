@@ -1450,3 +1450,9 @@ body { background: var(--paper); }
 @media (min-width: 961px) {
   .parrain-hero .h1 { font-size: clamp(2rem, min(3.8vw, 6.6vh), 3.6rem); }
 }
+
+/* Pastille « Gagnez de l'argent en parrainant » : vert = argent, attire l'œil */
+.pill-link { background: rgba(37,211,102,.16); border-color: rgba(37,211,102,.55); }
+.pill-link .icon { color: var(--wa); }
+.pill-link:hover { background: var(--wa); color: #04260f; }
+.pill-link:hover .icon { color: #04260f; }
