@@ -1223,3 +1223,10 @@ html.sheet-open { overflow: hidden; }
   .footer-grid { gap: 18px; }
   .footer-bottom { flex-direction: row; flex-wrap: wrap; justify-content: space-between; padding-block: 12px 88px; }
 }
+
+/* ---------- Bouton WhatsApp flottant : rond parfait, icône centrée ---------- */
+.wa-float { height: 60px; min-width: 60px; padding: 0 14px; gap: 0; justify-content: center; transition: transform .6s var(--ease), box-shadow .3s, gap .4s var(--ease), padding .4s var(--ease); }
+.wa-float .icon { width: 32px; height: 32px; }
+.wa-float span { margin: 0; }
+.wa-float:hover, .wa-float:focus-visible { gap: 10px; padding-right: 22px; }
+.wa-float:hover span, .wa-float:focus-visible span { max-width: 140px; margin: 0; }
