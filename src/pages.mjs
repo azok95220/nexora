@@ -170,7 +170,7 @@ const beforeAfter = () => {
     <div class="transfo-head">
       <div class="reveal">
         <p class="eyebrow eyebrow-light">Avant / après</p>
-        <h2 id="transfo-title" class="h1">Ce que nous pouvons <br>transformer pour vous.</h2>
+        <h2 id="transfo-title" class="h1">Ils nous ont fait confiance. <br>Voici le résultat.</h2>
       </div>
       <div class="transfo-tabs reveal" role="tablist" aria-label="Exemples de projets">
         ${transformations.map((t, i) => `<button type="button" role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${t.name}</button>`).join("")}
@@ -196,7 +196,7 @@ const beforeAfter = () => {
     </div>`
       )
       .join("")}
-    <p class="transfo-note">${icon("spark")}Avant : photos des lieux. Après : aperçu du résultat.</p>
+    <p class="transfo-note">${icon("check")}Chantiers réalisés par notre réseau d’artisans.</p>
   </div>
 </section>`;
 };
