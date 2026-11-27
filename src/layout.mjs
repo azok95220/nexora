@@ -18,7 +18,7 @@ export const split = (text) => {
     .map((line) =>
       line
         .trim()
-        .split(/\s+/)
+        .split(/[ \t\n\r]+/)
         .map((w) => {
           if (w.startsWith("*")) { accent = true; w = w.slice(1); }
           const end = w.endsWith("*");

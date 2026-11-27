@@ -647,7 +647,7 @@ const parrainTeaser = () => `<section class="parrain-band" id="parrainage" aria-
 
 const referralForm = () => `<form class="quote-form referral-form" novalidate data-referral-form>
   <p class="step-title">Votre recommandation</p>
-  <p class="step-hint">Une minute suffit. Votre message est prêt à partir sur WhatsApp, vous le relisez avant l’envoi.</p>
+  <p class="step-hint">Une minute : votre message part sur WhatsApp, vous le relisez avant l’envoi.</p>
   <fieldset class="ref-group">
     <legend>Vous</legend>
     <div class="field-row">
@@ -662,11 +662,11 @@ const referralForm = () => `<form class="quote-form referral-form" novalidate da
       <div class="field"><label for="ref-friend-phone">Son téléphone <span class="optional">facultatif</span></label><input id="ref-friend-phone" name="friendPhone" type="tel" inputmode="tel" placeholder="06 12 34 56 78"></div>
     </div>
     <div class="field-row">
-      <div class="field"><label for="ref-cp">Code postal du chantier <span class="optional">facultatif</span></label><input id="ref-cp" name="cp" inputmode="numeric" maxlength="5" placeholder="Ex. 75011"></div>
+      <div class="field"><label for="ref-cp">Code postal <span class="optional">facultatif</span></label><input id="ref-cp" name="cp" inputmode="numeric" maxlength="5" placeholder="Ex. 75011"></div>
       <div class="field"><label for="ref-works">Type de travaux <span class="optional">facultatif</span></label><input id="ref-works" name="works" placeholder="Ex. salle de bain, peinture…"></div>
     </div>
   </fieldset>
-  <label class="consent"><input type="checkbox" name="consent" required><span>La personne recommandée est d’accord pour être contactée par Nexora Travaux.</span></label>
+  <label class="consent"><input type="checkbox" name="consent" required><span>La personne recommandée est d’accord pour être contactée.</span></label>
   <p class="form-error" role="alert" hidden></p>
   <div class="form-actions">
     <button class="btn btn-whatsapp btn-lg" type="submit" data-channel="whatsapp">${icon("whatsapp")}Envoyer sur WhatsApp</button>
@@ -675,7 +675,7 @@ const referralForm = () => `<form class="quote-form referral-form" novalidate da
       <button class="btn btn-outline" type="submit" data-channel="email">${icon("mail")}E-mail</button>
     </div>
   </div>
-  <p class="form-note">${icon("shield")}<span><strong>Gratuit et sans engagement.</strong> Votre commission (4 %, puis 5 % dès le 3ᵉ chantier) vous est confirmée par écrit à la signature du devis, et versée une fois le chantier terminé et payé.</span></p>
+  <p class="form-note">${icon("shield")}<span><strong>Gratuit.</strong> Commission confirmée par écrit à la signature du devis, versée une fois le chantier terminé et payé.</span></p>
 </form>`;
 
 function parrainagePage() {
@@ -684,15 +684,15 @@ function parrainagePage() {
     ["Parrainage", "/parrainage/"],
   ]);
   const body = `
-<section class="section section-ink section-contact devis-hero">
+<section class="section section-ink section-contact devis-hero parrain-hero">
   <div class="contact-glow" aria-hidden="true"></div>
   <div class="container">
     ${bc.html}
     <div class="contact-grid">
       <div class="contact-copy">
         <p class="eyebrow eyebrow-light">Parrainage</p>
-        <h1 class="h1">${split("Recommandez un proche. *Touchez 4 à 5 % du chantier.*")}</h1>
-        <p class="lead">Vous connaissez quelqu’un qui a un projet de travaux ? Mettez-le en relation avec Mikhael : si le chantier se fait, vous touchez 4 % du montant, puis 5 % dès votre 3ᵉ recommandation.</p>
+        <h1 class="h1">${split("Recommandez un proche. *Touchez 4 à 5 % du chantier.*")}</h1>
+        <p class="lead">Mettez en relation avec Mikhael un proche qui a un projet de travaux : si le chantier se fait, vous êtes récompensé.</p>
         ${levels()}
         <ol class="mini-steps">
           ${parrainSteps.map(([, t, d], i) => `<li><span class="mini-num">${pad(i + 1)}</span><span><strong>${t}</strong>${d}</span></li>`).join("")}
