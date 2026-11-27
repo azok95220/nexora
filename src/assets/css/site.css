@@ -603,11 +603,6 @@ html:not(.js) .step-nav, html:not(.js) .step-nav-start { display: none; }
 
 /* ---------- Pied de page ---------- */
 .site-footer { position: relative; background: var(--ink-950); color: #fff; padding-top: var(--section); overflow: hidden; border-top: 1px solid var(--line-dark); }
-.footer-cta { padding-bottom: clamp(56px, 8vw, 96px); border-bottom: 1px solid var(--line-dark); }
-.footer-big { display: inline-flex; align-items: center; gap: .3em; font-size: clamp(2.4rem, 7vw, 6.4rem); font-weight: 600; letter-spacing: -0.06em; line-height: 1; text-decoration: none; transition: color .3s; }
-.footer-big .icon { width: .8em; height: .8em; transform: rotate(-45deg); transition: transform .5s var(--ease); color: var(--wa); }
-.footer-big:hover { color: var(--blue-300); }
-.footer-big:hover .icon { transform: rotate(0); }
 .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; padding-block: 64px; }
 .footer-brand p { margin: 20px 0; color: var(--muted-light); max-width: 30em; font-size: .95rem; }
 .footer-link { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-weight: 600; text-decoration: none; }
@@ -618,7 +613,6 @@ html:not(.js) .step-nav, html:not(.js) .step-nav-start { display: none; }
 .site-footer ul { display: grid; gap: 10px; }
 .site-footer ul a { text-decoration: none; color: rgba(255,255,255,.82); font-size: .95rem; }
 .site-footer ul a:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
-.footer-word { font-size: clamp(4.5rem, 21vw, 21rem); font-weight: 700; letter-spacing: -0.07em; line-height: .78; text-align: center; color: transparent; -webkit-text-stroke: 1px rgba(159,183,255,.22); user-select: none; margin-bottom: -.05em; transform: translateY(calc((1 - var(--fw, 1)) * 30%)); }
 .footer-bottom { display: flex; justify-content: space-between; gap: 16px; padding-block: 24px; border-top: 1px solid var(--line-dark); font-size: .85rem; color: var(--muted-light); }
 
 /* ---------- Contact WhatsApp flottant + barre mobile ---------- */
@@ -902,11 +896,8 @@ html:not(.js) .simu { display: none; }
   .zone-grid { gap: 32px; }
   .faq summary { padding: 18px 0; font-size: 1rem; }
   .faq-head .btn { margin-top: 20px; }
-  .footer-cta { padding-bottom: 40px; }
-  .footer-big { font-size: 2.2rem; }
-  .footer-grid { padding-block: 40px; gap: 28px; }
-  .footer-word { display: none; }
-  .contact-points { margin-top: 24px; gap: 12px; }
+      .footer-grid { padding-block: 40px; gap: 28px; }
+    .contact-points { margin-top: 24px; gap: 12px; }
   .contact-points li:not(:first-child) { display: none; }
 }
 
@@ -934,7 +925,6 @@ html:not(.js) .simu { display: none; }
   .field input, .field textarea { font-size: 16px; } /* évite le zoom automatique d'iOS */
   /* Pied de page lisible */
   .footer-grid { grid-template-columns: 1fr; }
-  .footer-grid > div:nth-child(2) ul { grid-template-columns: 1fr 1fr; }
   .site-footer ul a { display: inline-block; padding: 4px 0; font-size: 1rem; }
   .footer-title:not(:first-child) { margin-top: 24px; }
   .footer-bottom { gap: 4px; }
@@ -963,9 +953,6 @@ html:not(.js) .simu { display: none; }
   .form-card { padding: 20px 16px; border-radius: 22px; }
 }
 @media (max-width: 640px) {
-  .footer-grid > div:nth-child(3) > :nth-child(-n+2) { display: none; }
-  .footer-grid > div:nth-child(3) > .footer-title { margin-top: 0; }
-  .footer-grid > div:nth-child(3) ul { grid-template-columns: 1fr 1fr; }
 }
 
 /* ---------- Devis rapide : raccourcis du hero + panneau ---------- */
@@ -1192,4 +1179,47 @@ html.sheet-open { overflow: hidden; }
   .sheet .step-title { font-size: 1.1rem; }
   .sheet .step-selection { padding: 6px 10px; }
   .sheet .field { margin-top: 8px; }
+}
+
+/* ---------- Pied de page compact ---------- */
+.site-footer { padding-top: clamp(40px, 5vw, 56px); }
+.footer-grid { grid-template-columns: 1.2fr 1.3fr .9fr; gap: 24px 48px; padding-block: 0 clamp(28px, 4vw, 40px); }
+.footer-name { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+.footer-brand p:not(.footer-name) { margin: 6px 0 14px; font-size: .9rem; }
+.footer-link { margin-top: 6px; font-size: .92rem; }
+.footer-cta-btn { margin-top: 16px; }
+.footer-title { margin-bottom: 12px; }
+.site-footer ul { gap: 8px; }
+.site-footer ul a { font-size: .9rem; }
+.footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+.footer-bottom { padding-block: 16px; font-size: .8rem; }
+@media (max-width: 960px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .site-footer { padding-top: 32px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 22px; padding-bottom: 20px; }
+  .footer-brand { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 6px 12px; }
+  .footer-brand .footer-name, .footer-brand p:not(.footer-name) { grid-column: 1 / -1; }
+  .footer-brand p:not(.footer-name) { margin: 0 0 6px; }
+  .footer-link { grid-column: 1; margin-top: 0; font-size: .85rem; }
+  .footer-cta-btn { grid-column: 2; grid-row: 2 / span 2; margin-top: 0; justify-self: end; }
+  .footer-grid > nav:nth-child(3) ul { grid-template-columns: 1fr 1fr; column-gap: 12px; }
+  .site-footer ul { gap: 2px; }
+  .site-footer ul a { padding: 6px 0; font-size: .92rem; }
+  .footer-bottom { padding-block: 14px 92px; }
+}
+@media (max-width: 380px) {
+  .footer-brand { grid-template-columns: 1fr; }
+  .footer-cta-btn { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 6px; }
+}
+.footer-brand .footer-name { margin: 0; color: #fff; }
+@media (max-width: 640px) {
+  .footer-brand p:not(.footer-name) { display: none; }
+  .footer-brand .footer-name { margin-bottom: 8px; }
+  .site-footer ul a { padding: 4px 0; }
+  .footer-title { margin-bottom: 6px; }
+  .footer-grid { gap: 18px; }
+  .footer-bottom { flex-direction: row; flex-wrap: wrap; justify-content: space-between; padding-block: 12px 88px; }
 }

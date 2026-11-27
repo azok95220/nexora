@@ -62,41 +62,28 @@ function header(current) {
 
 function footer() {
   return `<footer class="site-footer">
-  <div class="container">
-    <div class="footer-cta reveal">
-      <p class="eyebrow eyebrow-light">Prêt à commencer ?</p>
-      <a class="footer-big" href="/devis/" data-to-form>Parlons de votre projet ${icon("arrow")}</a>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <p class="footer-name">${site.name}</p>
+      <p>Un seul contact pour vos travaux, à Paris et en Île-de-France.</p>
+      <a class="footer-link" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
+      <a class="footer-link" href="mailto:${site.email}">${icon("mail")}${site.email}</a>
+      <a class="btn btn-whatsapp btn-sm footer-cta-btn" href="/devis/" data-to-form>Devis gratuit ${icon("arrow")}</a>
     </div>
-    <div class="footer-grid">
-      <div class="footer-brand">
-        ${brand}
-        <p>${site.tagline}. Un seul contact pour coordonner les bons professionnels de votre rénovation, à Paris et en Île-de-France.</p>
-        <a class="footer-link" href="tel:${site.phone}">${icon("phone")}${site.phoneDisplay}</a>
-        <a class="footer-link" href="mailto:${site.email}">${icon("mail")}${site.email}</a>
-      </div>
-      <div>
-        <h2 class="footer-title">Métiers</h2>
-        <ul>${metiers.map((m) => `<li><a href="/metiers/${m.slug}/">${m.name}</a></li>`).join("")}</ul>
-      </div>
-      <div>
-        <h2 class="footer-title">Zone</h2>
-        <ul>
-          <li><a href="/zone-intervention/">Paris (75)</a></li>
-          <li><a href="/zone-intervention/">Petite couronne (92, 93, 94)</a></li>
-          <li><a href="/zone-intervention/">Grande couronne (77, 78, 91, 95)</a></li>
-        </ul>
-        <h2 class="footer-title">Informations</h2>
-        <ul>
-          <li><a href="/devis/">Devis gratuit</a></li>
-          <li><a href="/parrainage/">Parrainage</a></li>
-          <li><a href="${waDirect}" rel="noopener">WhatsApp</a></li>
-          <li><a href="/mentions-legales/">Mentions légales</a></li>
-          <li><a href="/confidentialite/">Confidentialité</a></li>
-        </ul>
-      </div>
-    </div>
+    <nav aria-label="Nos métiers">
+      <h2 class="footer-title">Métiers</h2>
+      <ul class="footer-cols">${metiers.map((m) => `<li><a href="/metiers/${m.slug}/">${m.name}</a></li>`).join("")}</ul>
+    </nav>
+    <nav aria-label="Informations">
+      <h2 class="footer-title">Informations</h2>
+      <ul>
+        <li><a href="/zone-intervention/">Zone d’intervention</a></li>
+        <li><a href="/parrainage/">Parrainage</a></li>
+        <li><a href="/mentions-legales/">Mentions légales</a></li>
+        <li><a href="/confidentialite/">Confidentialité</a></li>
+      </ul>
+    </nav>
   </div>
-  <div class="footer-word" aria-hidden="true">NEXORA</div>
   <div class="container footer-bottom">
     <span>© ${new Date().getFullYear()} ${site.name}</span>
     <span>Paris &amp; toute l’Île-de-France</span>
